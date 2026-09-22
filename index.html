@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id" class="h-full bg-slate-50">
 <head>
@@ -99,22 +100,22 @@
 
                 <!-- Access Status & Action Controls -->
                 <div class="flex items-center space-x-2">
-                    <!-- Quick Mode Switcher Dropdown / Segmented Control -->
-                    <div class="bg-slate-800 p-1 rounded-xl border border-slate-700 flex items-center space-x-1 text-xs">
-                        <button id="mode-btn-public" onclick="setAppMode('public')" class="px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 bg-sbi-600 text-white shadow">
-                            <i class="fa-solid fa-eye text-sky-300"></i>
-                            <span class="hidden md:inline">Mode Pengunjung</span>
-                        </button>
-                        <button id="mode-btn-editor" onclick="setAppMode('editor')" class="px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-700">
-                            <i class="fa-solid fa-pen-to-square text-amber-400"></i>
-                            <span class="hidden md:inline">Mode Tim / Penginput</span>
-                        </button>
+                    <!-- Access Mode Badge -->
+                    <div id="access-mode-badge" class="hidden sm:flex items-center space-x-1.5 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-xs">
+                        <span class="w-2 h-2 rounded-full bg-slate-400" id="access-dot"></span>
+                        <span class="text-slate-300 font-medium" id="access-text">Mode Publik (Read-Only)</span>
                     </div>
 
-                    <!-- Direct Add Data Button (Visible in Editor Mode) -->
-                    <button id="header-add-btn" onclick="openAddModal('media')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
+                    <!-- Admin Auth Button -->
+                    <button id="admin-auth-btn" onclick="toggleAdminAuth()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-lock text-amber-400" id="admin-auth-icon"></i>
+                        <span id="admin-auth-label">Login Admin</span>
+                    </button>
+
+                    <!-- Add Data Button (Admin Protected) -->
+                    <button onclick="handleProtectedAction('add')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
                         <i class="fa-solid fa-plus"></i>
-                        <span class="hidden sm:inline">Input Data Baru</span>
+                        <span class="hidden sm:inline">Input Data</span>
                     </button>
 
                     <button onclick="window.print()" class="bg-sbi-800 hover:bg-sbi-700 text-slate-200 text-xs sm:text-sm px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1">
@@ -147,10 +148,6 @@
                 <button onclick="switchTab('impact')" id="tab-impact" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
                     <i class="fa-solid fa-square-poll-vertical"></i>
                     <span>Laporan Dampak (Impact)</span>
-                </button>
-                <button onclick="switchTab('studio')" id="tab-studio" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition bg-sbi-900/40 border-l border-sbi-700">
-                    <i class="fa-solid fa-pen-to-square text-amber-400"></i>
-                    <span>Studio Input Data</span>
                 </button>
                 <button onclick="switchTab('team')" id="tab-team" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
                     <i class="fa-solid fa-users-gear"></i>
@@ -534,7 +531,7 @@
                         <h3 class="text-lg font-bold text-slate-900">Suara Perubahan (Testimonial Impact)</h3>
                         <p class="text-xs text-slate-500">Kumpulan kesaksian nyata dari Kepala Sekolah, Guru, Siswa, dan Orang Tua</p>
                     </div>
-                    <button onclick="openAddModal('testimony')" class="editor-only-btn bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-lg">
+                    <button onclick="openAddModal('testimony')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-lg">
                         <i class="fa-solid fa-plus mr-1"></i> Tambah Testimoni
                     </button>
                 </div>
@@ -546,100 +543,7 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- TAB 6: STUDIO INPUT DATA (NO-LOGIN WORKSPACE FOR TEAM) -->
-        <!-- ========================================================= -->
-        <div id="page-studio" class="page-content space-y-6 hidden">
-            <div class="bg-gradient-to-r from-sbi-900 via-sbi-800 to-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-3">
-                <div class="inline-flex items-center space-x-2 bg-amber-400 text-slate-950 px-3 py-1 rounded-full text-xs font-bold">
-                    <i class="fa-solid fa-laptop-code"></i>
-                    <span>Ruang Kerja Tim Kontributor</span>
-                </div>
-                <h2 class="text-2xl font-bold">Studio Input & Pengelolaan Konten Terpadu</h2>
-                <p class="text-xs text-slate-200">
-                    Gunakan panel ini untuk langsung menginput berita, merilis praktik baik sekolah, merekam testimoni, atau memperbarui database mitra tanpa perlu melalui proses login.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Card 1: Media Center -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-sbi-500 transition">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-sbi-600 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-bullhorn"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-base">Berita & Media Center</h3>
-                        <p class="text-xs text-slate-500 mt-1">Publikasikan rilis kegiatan, link reels, dan gambar infografis baru.</p>
-                    </div>
-                    <button onclick="openAddModal('media')" class="w-full bg-sbi-600 hover:bg-sbi-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-plus"></i>
-                        <span>Input Berita / Konten</span>
-                    </button>
-                </div>
-
-                <!-- Card 2: Praktik Baik -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-sbired-500 transition">
-                    <div class="w-12 h-12 rounded-xl bg-rose-50 text-sbired-600 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-base">Praktik Baik Sekolah</h3>
-                        <p class="text-xs text-slate-500 mt-1">Catat program inovatif English Day / Corner dari SD & SMP sasaran.</p>
-                    </div>
-                    <button onclick="openAddModal('practice')" class="w-full bg-sbired-500 hover:bg-sbired-600 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-plus"></i>
-                        <span>Input Praktik Baik</span>
-                    </button>
-                </div>
-
-                <!-- Card 3: Human Story -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-amber-500 transition">
-                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-heart"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-base">Human Storytelling</h3>
-                        <p class="text-xs text-slate-500 mt-1">Dokumentasikan kisah inspiratif perubahan sikap guru dan siswa.</p>
-                    </div>
-                    <button onclick="openAddModal('story')" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-plus"></i>
-                        <span>Input Story Baru</span>
-                    </button>
-                </div>
-
-                <!-- Card 4: Database Mitra -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-emerald-500 transition">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-handshake"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-base">Database Mitra</h3>
-                        <p class="text-xs text-slate-500 mt-1">Tambahkan jejaring instansi, media partner, atau komunitas baru.</p>
-                    </div>
-                    <button onclick="openAddModal('mitra')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-plus"></i>
-                        <span>Input Data Mitra</span>
-                    </button>
-                </div>
-
-                <!-- Card 5: Testimoni Dampak -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-purple-500 transition">
-                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-comment-dots"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-base">Testimoni Perubahan</h3>
-                        <p class="text-xs text-slate-500 mt-1">Rekam kesaksian Kepala Sekolah, Orang Tua, dan Pengawas.</p>
-                    </div>
-                    <button onclick="openAddModal('testimony')" class="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-plus"></i>
-                        <span>Input Testimoni</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========================================================= -->
-        <!-- TAB 7: TIM & ALUR KERJA -->
+        <!-- TAB 6: TIM & ALUR KERJA -->
         <!-- ========================================================= -->
         <div id="page-team" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-6">
@@ -759,45 +663,8 @@
 
     <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT -->
     <script>
-        // App Access Mode: 'public' or 'editor'
-        let currentAppMode = 'public';
-
-        function setAppMode(mode) {
-            currentAppMode = mode;
-            const btnPublic = document.getElementById('mode-btn-public');
-            const btnEditor = document.getElementById('mode-btn-editor');
-            const addBtn = document.getElementById('header-add-btn');
-
-            if (mode === 'editor') {
-                btnPublic.className = "px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-700";
-                btnEditor.className = "px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 bg-amber-500 text-slate-950 shadow font-bold";
-                if (addBtn) addBtn.classList.remove('hidden');
-                
-                // Show editor elements
-                document.querySelectorAll('.editor-only-btn').forEach(el => el.classList.remove('hidden'));
-                showToast("Berhasil masuk ke Mode Tim / Penginput Data (Akses terbuka tanpa login)");
-            } else {
-                btnPublic.className = "px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 bg-sbi-600 text-white shadow";
-                btnEditor.className = "px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-700";
-                if (addBtn) addBtn.classList.add('hidden');
-                
-                // Hide editor buttons for clean public view
-                document.querySelectorAll('.editor-only-btn').forEach(el => el.classList.add('hidden'));
-            }
-        }
-
-        // Detect URL parameter or hash to automatically set mode
-        function detectModeFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
-            const hash = window.location.hash;
-
-            if (mode === 'editor' || mode === 'admin' || hash === '#editor' || hash === '#input') {
-                setAppMode('editor');
-            } else {
-                setAppMode('public');
-            }
-        }
+        // Global Auth State
+        let isAdminLoggedIn = false;
 
         // State storage initialized with complete real document data for Hulu Sungai Tengah
         const appState = {
@@ -1452,7 +1319,7 @@
 
         // INITIALIZATION ON LOAD
         window.onload = function() {
-            detectModeFromURL();
+            updateAccessUI();
             renderTargetOutputs();
             renderMediaCenter();
             renderPractices();
