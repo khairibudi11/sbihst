@@ -1,1 +1,1466 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBI HST 2026 - Communication & Impact Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for Visual Impact Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        sbi: {
+                            50: '#f2f5f9',
+                            100: '#e1e8f2',
+                            200: '#c2d2e5',
+                            500: '#1b365d', // Deep Navy Blue from logo
+                            600: '#152b4b',
+                            700: '#102038',
+                            800: '#0b1626',
+                            900: '#060b13',
+                        },
+                        sbired: {
+                            50: '#fdf2f3',
+                            100: '#fbe5e7',
+                            500: '#a61c2e', // Crimson Red from logo
+                            600: '#8c1625',
+                            700: '#72111d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; }
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-sbi-500 selection:text-white">
 
+    <!-- TOP NAVIGATION HEADER -->
+    <header class="bg-sbi-900 text-white shadow-lg sticky top-0 z-40 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-2.5 sm:py-3 min-h-[4.5rem]">
+                <!-- Brand & Logo -->
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white flex items-center justify-center p-1 sm:p-1.5 shadow-xl border-2 border-white/20 flex-shrink-0 transition-transform duration-200 hover:scale-105 overflow-hidden">
+                        <svg viewBox="160 260 680 480" class="w-full h-full drop-shadow-sm" xmlns="http://www.w3.org/2000/svg">
+                            <g fill="#18335D" fill-rule="evenodd">
+                                <!-- Left Symbol -->
+                                <path d="M 468 290 L 296 290 A 124 124 0 0 0 172 414 A 124 124 0 0 0 296 538 L 396 538 L 396 710 L 468 710 Z M 396 362 L 296 362 A 52 52 0 0 0 244 414 A 52 52 0 0 0 296 466 L 396 466 Z" />
+                                <!-- Right Symbol (180deg Rotational Symmetry) -->
+                                <path d="M 468 290 L 296 290 A 124 124 0 0 0 172 414 A 124 124 0 0 0 296 538 L 396 538 L 396 710 L 468 710 Z M 396 362 L 296 362 A 52 52 0 0 0 244 414 A 52 52 0 0 0 296 466 L 396 466 Z" transform="rotate(180 500 500)" />
+                            </g>
+                            <g fill="#B12035">
+                                <!-- Left Red Accent -->
+                                <rect x="208" y="638" width="157" height="72" />
+                                <!-- Right Red Accent -->
+                                <rect x="208" y="638" width="157" height="72" transform="rotate(180 500 500)" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-extrabold text-lg sm:text-xl tracking-tight text-white">SBI HST 2026</span>
+                            <span class="bg-sbired-500 text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">Communication Hub</span>
+                        </div>
+                        <p class="text-xs text-slate-300 hidden sm:block">Kab. Hulu Sungai Tengah • Kemitraan, Publikasi & Dokumentasi</p>
+                    </div>
+                </div>
+
+                <!-- Access Status & Action Controls -->
+                <div class="flex items-center space-x-2">
+                    <!-- Quick Mode Switcher Dropdown / Segmented Control -->
+                    <div class="bg-slate-800 p-1 rounded-xl border border-slate-700 flex items-center space-x-1 text-xs">
+                        <button id="mode-btn-public" onclick="setAppMode('public')" class="px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 bg-sbi-600 text-white shadow">
+                            <i class="fa-solid fa-eye text-sky-300"></i>
+                            <span class="hidden md:inline">Mode Pengunjung</span>
+                        </button>
+                        <button id="mode-btn-editor" onclick="setAppMode('editor')" class="px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-700">
+                            <i class="fa-solid fa-pen-to-square text-amber-400"></i>
+                            <span class="hidden md:inline">Mode Tim / Penginput</span>
+                        </button>
+                    </div>
+
+                    <!-- Direct Add Data Button (Visible in Editor Mode) -->
+                    <button id="header-add-btn" onclick="openAddModal('media')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-plus"></i>
+                        <span class="hidden sm:inline">Input Data Baru</span>
+                    </button>
+
+                    <button onclick="window.print()" class="bg-sbi-800 hover:bg-sbi-700 text-slate-200 text-xs sm:text-sm px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1">
+                        <i class="fa-solid fa-print"></i>
+                        <span class="hidden md:inline">Cetak</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN MENU TABS -->
+        <nav class="bg-sbi-800 border-t border-sbi-700/50 overflow-x-auto custom-scrollbar">
+            <div class="max-w-7xl mx-auto px-4 flex space-x-1 whitespace-nowrap text-sm font-medium">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn py-3 px-4 text-amber-300 border-b-2 border-amber-400 font-semibold flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard & Target</span>
+                </button>
+                <button onclick="switchTab('mediacenter')" id="tab-mediacenter" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <span>SBI Media Center</span>
+                </button>
+                <button onclick="switchTab('stories')" id="tab-stories" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-star"></i>
+                    <span>SBI Story & Praktik Baik</span>
+                </button>
+                <button onclick="switchTab('archive')" id="tab-archive" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <span>Digital Archive & Mitra</span>
+                </button>
+                <button onclick="switchTab('impact')" id="tab-impact" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <span>Laporan Dampak (Impact)</span>
+                </button>
+                <button onclick="switchTab('studio')" id="tab-studio" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition bg-sbi-900/40 border-l border-sbi-700">
+                    <i class="fa-solid fa-pen-to-square text-amber-400"></i>
+                    <span>Studio Input Data</span>
+                </button>
+                <button onclick="switchTab('team')" id="tab-team" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Tim & Alur Kerja</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- ========================================================= -->
+        <!-- TAB 1: DASHBOARD OVERVIEW & TARGET TARGET 2026 -->
+        <!-- ========================================================= -->
+        <div id="page-dashboard" class="page-content space-y-6">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-sbi-800 via-sbi-700 to-sbi-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border-l-4 border-sbired-500">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white pointer-events-none">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+                <div class="max-w-3xl space-y-3 relative z-10">
+                    <div class="inline-flex items-center space-x-2 bg-sbi-500/40 border border-sbi-200/20 px-3 py-1 rounded-full text-xs font-semibold text-amber-300">
+                        <i class="fa-solid fa-award"></i>
+                        <span>Tim Pengimbasan SD & Penguatan Ekosistem SMP</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                        Hub Komunikasi, Publikasi & Rekam Jejak Dampak SBI HST 2026
+                    </h1>
+                    <p class="text-slate-200 text-sm leading-relaxed">
+                        Pusat pengelolaan kemitraan, arsip digital terpadu, publikasi cerita inspiratif, dan laporan visual dampak keberhasilan Program Sekolah Berbahasa Inggris Kabupaten Hulu Sungai Tengah.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-school text-amber-400"></i>
+                            <span><b>24 SD</b> Pengimbasan</span>
+                        </div>
+                        <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-building-columns text-amber-400"></i>
+                            <span><b>12 SMP</b> Ekosistem</span>
+                        </div>
+                        <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-location-dot text-amber-400"></i>
+                            <span>Kab. Hulu Sungai Tengah</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Statistics Metrics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-sbi-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Capaian Target 2026</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-target-pct">75%</h3>
+                        <p class="text-[11px] text-emerald-600 font-semibold"><i class="fa-solid fa-arrow-up"></i> 9/12 Target Terpenuhi</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Jejaring Mitra</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-mitra-count">14</h3>
+                        <p class="text-[11px] text-slate-500">Dinas, Kampus & Komunitas</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Praktik Baik Sekolah</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-practice-count">18</h3>
+                        <p class="text-[11px] text-amber-600 font-semibold">"Satu Sekolah Satu Praktik Baik"</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-photo-film"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Konten & Arsip Digital</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-archive-count">86</h3>
+                        <p class="text-[11px] text-purple-600 font-semibold">Terdokumentasi 100%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Target Output 2026 Checklist & Alur Kerja -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Target Output Table (2 cols) -->
+                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                                <i class="fa-solid fa-list-check text-sbi-600"></i>
+                                <span>Target Output Bidang Tahun 2026</span>
+                            </h2>
+                            <p class="text-xs text-slate-500">Pencapaian berdasarkan Bagian G Laporan Program Kerja</p>
+                        </div>
+                        <span class="text-xs bg-sbi-100 text-sbi-800 px-2.5 py-1 rounded-full font-bold">Tahun 2026</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-600 text-xs uppercase font-semibold">
+                                <tr>
+                                    <th class="p-3 rounded-l-lg">Output Program</th>
+                                    <th class="p-3">Target Doc</th>
+                                    <th class="p-3">Realisasi</th>
+                                    <th class="p-3 rounded-r-lg text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700" id="target-output-table">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Strategic Concept 3 Core Questions & Alur Kerja -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-5">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-compass text-amber-500"></i>
+                            <span>Konsep Strategis Bidang</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">Communication & Impact Hub Orientation</p>
+                    </div>
+
+                    <div class="bg-sbi-50 rounded-xl p-4 border border-sbi-100 space-y-3">
+                        <p class="text-xs font-bold text-sbi-800 uppercase tracking-wider">3 Pertanyaan Utama Dokumentasi:</p>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-sbi-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800">Apa yang telah dilakukan?</h4>
+                                <p class="text-xs text-slate-600">Proses kegiatan, pengimbasan SD, & penguatan SMP.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-sbi-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800">Apa yang telah dicapai?</h4>
+                                <p class="text-xs text-slate-600">Output produk, berita, media, & infografis.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-sbi-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800">Apa yang berubah? (Dampak)</h4>
+                                <p class="text-xs text-slate-600">Perubahan perilaku guru, siswa, & budaya sekolah.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workflow Alur Kerja -->
+                    <div class="space-y-2">
+                        <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Siklus Alur Kerja Bidang:</h3>
+                        <div class="flex flex-wrap gap-1.5 text-[11px]">
+                            <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 font-medium">1. Informasi</span>
+                            <span class="text-slate-400">→</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 font-medium">2. Koordinasi</span>
+                            <span class="text-slate-400">→</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 font-medium">3. Dokumentasi</span>
+                            <span class="text-slate-400">→</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 font-medium">4. Olah Konten</span>
+                            <span class="text-slate-400">→</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 font-medium">5. Publikasi</span>
+                            <span class="text-slate-400">→</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 font-medium">6. Arsip</span>
+                            <span class="text-slate-400">→</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 font-medium">7. Analisis</span>
+                            <span class="text-slate-400">→</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-sbi-700 font-bold bg-sbi-50">8. Laporan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 2: SBI MEDIA CENTER -->
+        <!-- ========================================================= -->
+        <div id="page-mediacenter" class="page-content space-y-6 hidden">
+            <!-- Header section & filter -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-bullhorn text-sbi-500"></i>
+                        <span>SBI Media Center & Kalender Konten</span>
+                    </h2>
+                    <p class="text-xs text-slate-500">Pusat informasi, berita kegiatan, posting media sosial, dan infografis SBI HST</p>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <select id="media-category-filter" onchange="renderMediaCenter()" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg p-2.5 focus:ring-sbi-500 focus:border-sbi-500">
+                        <option value="ALL">Semua Jenis Konten</option>
+                        <option value="Berita Kegiatan">Berita Kegiatan</option>
+                        <option value="Reels / Media Sosial">Reels & Media Sosial</option>
+                        <option value="Infografis">Infografis SBI</option>
+                        <option value="Press Release">Press Release</option>
+                    </select>
+                    <button onclick="handleProtectedAction('media')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2.5 rounded-lg transition font-medium flex items-center space-x-1 shadow">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Tambah Konten</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Media Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="media-grid">
+                <!-- Dynamic Content via JS -->
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 3: SBI STORY & PRAKTIK BAIK -->
+        <!-- ========================================================= -->
+        <div id="page-stories" class="page-content space-y-6 hidden">
+            <!-- Header -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 text-xs font-bold text-sbired-600 bg-sbired-50 px-2.5 py-1 rounded-md mb-1">
+                        <i class="fa-solid fa-award"></i>
+                        <span>Program Unggulan: Satu Sekolah Satu Praktik Baik</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900">SBI Story & Katalis Praktik Baik</h2>
+                    <p class="text-xs text-slate-500">Dokumentasi inspiratif English Day, English Corner, Bilingual Learning & Storytelling Humanis</p>
+                </div>
+
+                <!-- Sub Tab Switcher -->
+                <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+                    <button onclick="switchStorySubtab('practices')" id="subtab-practices" class="px-4 py-2 rounded-lg bg-white shadow-sm text-sbi-800">
+                        <i class="fa-solid fa-school-flag mr-1"></i> Praktik Baik Sekolah
+                    </button>
+                    <button onclick="switchStorySubtab('stories')" id="subtab-humanstories" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-heart mr-1"></i> Human Storytelling
+                    </button>
+                </div>
+            </div>
+
+            <!-- Praktik Baik Section -->
+            <div id="subpage-practices" class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <input type="text" id="practice-search" onkeyup="renderPractices()" placeholder="Cari nama sekolah, kecamatan, atau bentuk praktik baik (e.g. Barabai, English Day)..." class="w-full max-w-md bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-sbi-500">
+                    <button onclick="handleProtectedAction('practice')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm">
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Praktik Baik
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="practices-grid">
+                    <!-- Dynamic Practices -->
+                </div>
+            </div>
+
+            <!-- Human Storytelling Section -->
+            <div id="subpage-humanstories" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="stories-grid">
+                    <!-- Dynamic Human Stories -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 4: DIGITAL ARCHIVE & KEMITRAAN -->
+        <!-- ========================================================= -->
+        <div id="page-archive" class="page-content space-y-6 hidden">
+            <!-- Header Tabs -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-database text-sbi-500"></i>
+                            <span>SBI Digital Archive & Database Kemitraan</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">Pusat Bank Dokumentasi Terpadu & Database Jejaring Kemitraan HST 2026</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="switchArchiveSubtab('mitra')" id="arch-tab-mitra" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-sbi-100 text-sbi-800">Database Mitra</button>
+                        <button onclick="switchArchiveSubtab('docs')" id="arch-tab-docs" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Bank Arsip Kegiatan</button>
+                    </div>
+                </div>
+
+                <!-- Database Mitra Sub-view -->
+                <div id="arch-sub-mitra" class="pt-4 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs text-slate-500">Pemataan dan Kontak PIC Mitra Pelaksana & Stakeholder</p>
+                        <button onclick="handleProtectedAction('mitra')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-1.5 rounded-lg shadow">
+                            <i class="fa-solid fa-plus mr-1"></i> Tambah Mitra
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border border-slate-200 rounded-lg overflow-hidden">
+                            <thead class="bg-slate-100 text-slate-700 font-semibold uppercase">
+                                <tr>
+                                    <th class="p-3">Instansi / Nama Mitra</th>
+                                    <th class="p-3">Kategori</th>
+                                    <th class="p-3">Kontak PIC</th>
+                                    <th class="p-3">Bentuk Kolaborasi</th>
+                                    <th class="p-3">Status Komunikasi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200" id="mitra-table-body">
+                                <!-- Dynamic Mitra rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bank Arsip Kegiatan Sub-view -->
+                <div id="arch-sub-docs" class="pt-4 space-y-4 hidden">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs text-slate-500">Standar Dokumentasi Terpadu (Sebelum, Saat, dan Setelah Kegiatan)</p>
+                        <button onclick="handleProtectedAction('archive')" class="bg-sbi-500 hover:bg-sbi-600 text-white text-xs px-3 py-1.5 rounded-lg shadow">
+                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload/Simpan Arsip
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="archive-files-grid">
+                        <!-- Dynamic Archive items -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 5: SBI IMPACT REPORT & ANALYTICS -->
+        <!-- ========================================================= -->
+        <div id="page-impact" class="page-content space-y-6 hidden">
+            <!-- Summary Banner -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 gap-4">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 text-xs font-bold text-sbi-700 bg-sbi-50 px-2.5 py-1 rounded-md mb-1">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>Dokumentasi Capaian dan Dampak Perubahan</span>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-900">SBI Impact Analytics Report 2026</h2>
+                        <p class="text-xs text-slate-500">Bukti Perubahan Perilaku Guru, Keberanian Siswa, dan Penguatan Ekosistem Sekolah</p>
+                    </div>
+
+                    <button onclick="window.print()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs px-4 py-2.5 rounded-lg font-bold shadow flex items-center space-x-2">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>Cetak SBI Impact Report 2026</span>
+                    </button>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    <!-- Chart 1: Peningkatan Indikator Perubahan -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Perkembangan Indikator Keberhasilan Dampak (%)</h3>
+                        <div class="h-64 relative">
+                            <canvas id="impactChart1"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: Sebaran Sekolah Berdasarkan Praktik Baik -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Sebaran Program Unggulan di Sekolah</h3>
+                        <div class="h-64 relative">
+                            <canvas id="impactChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimoni Dampak Carousel/Grid -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Suara Perubahan (Testimonial Impact)</h3>
+                        <p class="text-xs text-slate-500">Kumpulan kesaksian nyata dari Kepala Sekolah, Guru, Siswa, dan Orang Tua</p>
+                    </div>
+                    <button onclick="openAddModal('testimony')" class="editor-only-btn bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-lg">
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Testimoni
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="testimonials-grid">
+                    <!-- Dynamic Testimonials -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 6: STUDIO INPUT DATA (NO-LOGIN WORKSPACE FOR TEAM) -->
+        <!-- ========================================================= -->
+        <div id="page-studio" class="page-content space-y-6 hidden">
+            <div class="bg-gradient-to-r from-sbi-900 via-sbi-800 to-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-3">
+                <div class="inline-flex items-center space-x-2 bg-amber-400 text-slate-950 px-3 py-1 rounded-full text-xs font-bold">
+                    <i class="fa-solid fa-laptop-code"></i>
+                    <span>Ruang Kerja Tim Kontributor</span>
+                </div>
+                <h2 class="text-2xl font-bold">Studio Input & Pengelolaan Konten Terpadu</h2>
+                <p class="text-xs text-slate-200">
+                    Gunakan panel ini untuk langsung menginput berita, merilis praktik baik sekolah, merekam testimoni, atau memperbarui database mitra tanpa perlu melalui proses login.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1: Media Center -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-sbi-500 transition">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-sbi-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Berita & Media Center</h3>
+                        <p class="text-xs text-slate-500 mt-1">Publikasikan rilis kegiatan, link reels, dan gambar infografis baru.</p>
+                    </div>
+                    <button onclick="openAddModal('media')" class="w-full bg-sbi-600 hover:bg-sbi-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Input Berita / Konten</span>
+                    </button>
+                </div>
+
+                <!-- Card 2: Praktik Baik -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-sbired-500 transition">
+                    <div class="w-12 h-12 rounded-xl bg-rose-50 text-sbired-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Praktik Baik Sekolah</h3>
+                        <p class="text-xs text-slate-500 mt-1">Catat program inovatif English Day / Corner dari SD & SMP sasaran.</p>
+                    </div>
+                    <button onclick="openAddModal('practice')" class="w-full bg-sbired-500 hover:bg-sbired-600 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Input Praktik Baik</span>
+                    </button>
+                </div>
+
+                <!-- Card 3: Human Story -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-amber-500 transition">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Human Storytelling</h3>
+                        <p class="text-xs text-slate-500 mt-1">Dokumentasikan kisah inspiratif perubahan sikap guru dan siswa.</p>
+                    </div>
+                    <button onclick="openAddModal('story')" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Input Story Baru</span>
+                    </button>
+                </div>
+
+                <!-- Card 4: Database Mitra -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-emerald-500 transition">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Database Mitra</h3>
+                        <p class="text-xs text-slate-500 mt-1">Tambahkan jejaring instansi, media partner, atau komunitas baru.</p>
+                    </div>
+                    <button onclick="openAddModal('mitra')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Input Data Mitra</span>
+                    </button>
+                </div>
+
+                <!-- Card 5: Testimoni Dampak -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 hover:border-purple-500 transition">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-comment-dots"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Testimoni Perubahan</h3>
+                        <p class="text-xs text-slate-500 mt-1">Rekam kesaksian Kepala Sekolah, Orang Tua, dan Pengawas.</p>
+                    </div>
+                    <button onclick="openAddModal('testimony')" class="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Input Testimoni</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TAB 7: TIM & ALUR KERJA -->
+        <!-- ========================================================= -->
+        <div id="page-team" class="page-content space-y-6 hidden">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-users-gear text-sbi-600"></i>
+                        <span>Pembagian Tugas Internal Bidang</span>
+                    </h2>
+                    <p class="text-xs text-slate-500">Struktur Posisi & Peran Tim Kemitraan, Publikasi, dan Dokumentasi SBI HST 2026</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Koordinator -->
+                    <div class="p-4 rounded-xl bg-sbi-50 border border-sbi-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-sbi-800 uppercase">Koordinator Bidang</span>
+                            <i class="fa-solid fa-user-shield text-sbi-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">Penanggung Jawab Utama</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Mengkoordinasikan seluruh kegiatan bidang, menyusun rencana kerja, berkoordinasi dengan koordinator tim lain, serta mengontrol pencapaian target 2026.
+                        </p>
+                    </div>
+
+                    <!-- Tim Kemitraan -->
+                    <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-emerald-800 uppercase">Tim Kemitraan & Komunikasi</span>
+                            <i class="fa-solid fa-handshake-angle text-emerald-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">Jejaring & Mobilisasi</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Menjaga hubungan dengan mitra pelaksana, komunikasi aktif dengan sekolah pengimbasan & ekosistem, koordinasi narasumber, dan distribusi informasi.
+                        </p>
+                    </div>
+
+                    <!-- Tim Dokumentasi -->
+                    <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-purple-800 uppercase">Tim Dokumentasi</span>
+                            <i class="fa-solid fa-camera text-purple-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">Fotografi & Bank Arsip</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Fotografi, videografi kegiatan, pengelolaan Bank Dokumentasi SBI, pengarsipan materi, notulen, serta daftar hadir secara terstruktur.
+                        </p>
+                    </div>
+
+    <!-- MODAL POPUP FOR ADMIN AUTHENTICATION -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 rounded-2xl bg-sbi-50 border border-sbi-200 text-sbi-500 mx-auto flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="font-extrabold text-slate-900 text-lg">Otentikasi Admin Bidang</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Pengunjung umum hanya dapat melihat data. Silakan masukkan kata sandi Admin/Tim Bidang untuk menginput data.</p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi Admin</label>
+                    <input type="password" id="admin-pass-input" placeholder="Masukkan kata sandi..." required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-center font-mono focus:ring-sbi-500 focus:border-sbi-500">
+                    <p class="text-[10px] text-slate-400 mt-1 text-center">Petunjuk demo: <span class="font-mono text-sbi-500 font-bold">sbihst2026</span></p>
+                </div>
+
+                <div class="flex space-x-2">
+                    <button type="button" onclick="closeAdminLoginModal()" class="w-1/2 py-2.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl">Batal</button>
+                    <button type="submit" class="w-1/2 py-2.5 text-xs font-bold text-white bg-sbired-500 hover:bg-sbired-600 rounded-xl shadow">Masuk Admin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP FOR ADDING CONTENT/DATA -->
+    <div id="addModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-sbired-500 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">Admin Mode</span>
+                    <h3 class="font-bold text-slate-900 text-base" id="modal-title">Tambah Entri Baru</h3>
+                </div>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="modal-form" onsubmit="handleFormSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Kategori Entri</label>
+                    <select id="modal-type" onchange="updateFormFields()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:ring-sbi-500 focus:border-sbi-500">
+                        <option value="media">Publikasi / Media Center</option>
+                        <option value="practice">Praktik Baik Sekolah ("Satu Sekolah Satu Praktik")</option>
+                        <option value="story">SBI Story (Storytelling Humanis)</option>
+                        <option value="mitra">Database Mitra</option>
+                        <option value="testimony">Testimoni Perubahan Dampak</option>
+                    </select>
+                </div>
+
+                <div id="dynamic-form-fields" class="space-y-3">
+                    <!-- Fields dynamically changed by JS -->
+                </div>
+
+                <div class="pt-3 flex justify-end space-x-2 border-t border-slate-100">
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-semibold text-white bg-sbi-500 hover:bg-sbi-600 rounded-lg shadow">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center space-x-3 border border-slate-700 text-xs font-medium">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toast-message">Data berhasil disimpan!</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT -->
+    <script>
+        // App Access Mode: 'public' or 'editor'
+        let currentAppMode = 'public';
+
+        function setAppMode(mode) {
+            currentAppMode = mode;
+            const btnPublic = document.getElementById('mode-btn-public');
+            const btnEditor = document.getElementById('mode-btn-editor');
+            const addBtn = document.getElementById('header-add-btn');
+
+            if (mode === 'editor') {
+                btnPublic.className = "px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-700";
+                btnEditor.className = "px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 bg-amber-500 text-slate-950 shadow font-bold";
+                if (addBtn) addBtn.classList.remove('hidden');
+                
+                // Show editor elements
+                document.querySelectorAll('.editor-only-btn').forEach(el => el.classList.remove('hidden'));
+                showToast("Berhasil masuk ke Mode Tim / Penginput Data (Akses terbuka tanpa login)");
+            } else {
+                btnPublic.className = "px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 bg-sbi-600 text-white shadow";
+                btnEditor.className = "px-2.5 py-1.5 rounded-lg font-semibold transition flex items-center space-x-1.5 text-slate-300 hover:text-white hover:bg-slate-700";
+                if (addBtn) addBtn.classList.add('hidden');
+                
+                // Hide editor buttons for clean public view
+                document.querySelectorAll('.editor-only-btn').forEach(el => el.classList.add('hidden'));
+            }
+        }
+
+        // Detect URL parameter or hash to automatically set mode
+        function detectModeFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const hash = window.location.hash;
+
+            if (mode === 'editor' || mode === 'admin' || hash === '#editor' || hash === '#input') {
+                setAppMode('editor');
+            } else {
+                setAppMode('public');
+            }
+        }
+
+        // State storage initialized with complete real document data for Hulu Sungai Tengah
+        const appState = {
+            targetOutputs: [
+                { name: "Database mitra kemitraan", target: 1, current: 1, status: "Selesai", unit: "database" },
+                { name: "Sistem arsip digital terpadu", target: 1, current: 1, status: "Selesai", unit: "sistem" },
+                { name: "Kalender konten media sosial", target: 1, current: 1, status: "Selesai", unit: "dokumen" },
+                { name: "Dokumentasi kegiatan utama", target: 100, current: 100, status: "Selesai", unit: "% kegiatan" },
+                { name: "Berita kegiatan SBI", target: 12, current: 10, status: "Proses", unit: "berita" },
+                { name: "Konten media sosial (Reels/Post)", target: 30, current: 24, status: "Proses", unit: "post" },
+                { name: "Infografis program SBI", target: 5, current: 4, status: "Proses", unit: "infografis" },
+                { name: "Praktik baik sekolah (SD/SMP)", target: 5, current: 5, status: "Selesai", unit: "sekolah" },
+                { name: "Testimoni guru & siswa", target: 10, current: 8, status: "Proses", unit: "testimoni" },
+                { name: "Video pendek / reels kegiatan", target: 15, current: 12, status: "Proses", unit: "video" },
+                { name: "Video dokumenter utama SBI 2026", target: 1, current: 1, status: "Selesai", unit: "video" },
+                { name: "Laporan visual akhir dampak", target: 1, current: 1, status: "Selesai", unit: "dokumen" }
+            ],
+            mediaCenter: [
+                {
+                    id: 1,
+                    title: "Pengimbasan SBI SD Se-Kabupaten Hulu Sungai Tengah Resmi Dimulai",
+                    category: "Berita Kegiatan",
+                    date: "14 Feb 2026",
+                    author: "Tim Publikasi",
+                    excerpt: "Dinas Pendidikan HST menggelar koordinasi pengimbasan Bahasa Inggris untuk 24 SD sasaran guna memperkuat fondasi kebiasaan tutur bilingual.",
+                    reach: "1.2k Reads",
+                    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    id: 2,
+                    title: "Reels Inspirasi: How We Run 'English Friday' at SD Barabai",
+                    category: "Reels / Media Sosial",
+                    date: "20 Feb 2026",
+                    author: "Tim Medsos",
+                    excerpt: "Aktivitas seru para siswa SD Barabai mempraktikkan ungkapan sehari-hari Bahasa Inggris dengan senyuman ceria.",
+                    reach: "4.8k Views",
+                    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80"
+                },
+                {
+                    id: 3,
+                    title: "Infografis: 5 Tahapan Penting Penguatan Ekosistem SBI SMP HST 2026",
+                    category: "Infografis",
+                    date: "01 Mar 2026",
+                    author: "Tim Data & Visual",
+                    excerpt: "Panduan visual alur pendampingan modul pembelajaran bilingual dan komunitas praktisi guru SMP.",
+                    reach: "890 Shares",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80"
+                }
+            ],
+            practices: [
+                {
+                    id: 1,
+                    school: "SD Negeri 1 Barabai Timur",
+                    subdistrict: "Kec. Barabai",
+                    title: "Program 'English Morning Corner & Daily Greeting'",
+                    type: "English Day / Corner",
+                    description: "Setiap pagi sebelum masuk kelas, OSIS dan guru piket menyapa peserta didik menggunakan ekspresi Bahasa Inggris dasar secara interaktif.",
+                    impact: "Meningkatkan keberanian siswa berbicara Bahasa Inggris tanpa rasa takut salah."
+                },
+                {
+                    id: 2,
+                    school: "SMP Negeri 1 Pandawan",
+                    subdistrict: "Kec. Pandawan",
+                    title: "Bilingual Mathematics & Science Classroom Integration",
+                    type: "Bilingual Learning",
+                    description: "Penggunaan kosa kata instruksional Bahasa Inggris dalam mata pelajaran IPA dan Matematika.",
+                    impact: "Siswa terbiasa memahami istilah ilmiah internasional secara alami."
+                },
+                {
+                    id: 3,
+                    school: "SD Negeri Haruyan",
+                    subdistrict: "Kec. Haruyan",
+                    title: "English Wall & Storytelling Board",
+                    type: "Lingkungan Berbahasa Inggris",
+                    description: "Pemanfaatan dinding lorong sekolah untuk majalah dinding kosa kata mingguan dan karya kreasi siswa.",
+                    impact: "Menciptakan ekosistem visual bilingual yang kaya stimulus di sekolah."
+                }
+            ],
+            humanStories: [
+                {
+                    id: 1,
+                    role: "Teacher Story",
+                    name: "Ibu Rahmah, S.Pd.",
+                    school: "Guru SD di Hulu Sungai Tengah",
+                    story: "Dahulu saya merasa ragu mengajarkan ungkapan Bahasa Inggris. Melalui pengimbasan SBI 2026, saya kini percaya diri memimpin 'English Day' setiap hari Kamis bersama anak-anak.",
+                    quote: "Bahasa Inggris bukan lagi hal menakutkan, tapi sarana bermain dan belajar yang membanggakan."
+                },
+                {
+                    id: 2,
+                    role: "Student Story",
+                    name: "Ahmad Rizky (Kelas 5)",
+                    school: "SD Pengimbasan Barabai",
+                    story: "Rizky yang awalnya pemalu kini menjadi pemicu semangat teman-temannya saat program English Morning Greeting di pintu gerbang sekolah.",
+                    quote: "Now I can say hello and introduce myself cheerfully to visitors!"
+                }
+            ],
+            mitra: [
+                { id: 1, name: "Dinas Pendidikan Kab. Hulu Sungai Tengah", category: "Pemerintah Daerah", pic: "Kabid Pembinaan SD/SMP", role: "Pengarah Program & Kebijakan", status: "Aktif Terkoordinasi" },
+                { id: 2, name: "Komunitas Praktik Guru Bahasa Inggris HST", category: "Komunitas Pendidikan", pic: "Ketua MGMP / KKG", role: "Pendampingan Modul & Pengimbasan", status: "Aktif Terkoordinasi" },
+                { id: 3, name: "Pers & Media Publikasi Lokal Barabai", category: "Media Partner", pic: "Redaksi Media", role: "Penyebarluasan Press Release & Berita", status: "Terjalin" }
+            ],
+            testimonials: [
+                {
+                    id: 1,
+                    name: "Drs. H. M. Zain (Kepala Sekolah)",
+                    role: "Kepala SMP Ekosistem SBI",
+                    text: "Sistem dokumentasi dan publikasi SBI 2026 luar biasa. Praktik baik guru kami kini dilihat dan diinspirasi oleh sekolah-sekolah lain di HST."
+                },
+                {
+                    id: 2,
+                    name: "Siti Aminah",
+                    role: "Orang Tua Siswa",
+                    text: "Anak saya sering mempraktikkan lagu dan ungkapan Bahasa Inggris di rumah. Perubahan rasa percaya dirinya sangat terasa!"
+                },
+                {
+                    id: 3,
+                    name: "Pengawas Sekolah HST",
+                    role: "Tim Evaluasi Pendidikan",
+                    text: "Laporan visual dan arsip digital SBI sangat informatif, memudahkan evaluasi dampak riil program di lapangan."
+                }
+            ]
+        };
+
+        // ADMIN ACCESS CONTROLS & AUTH LOGIC
+        function toggleAdminAuth() {
+            if (isAdminLoggedIn) {
+                // Logout Admin
+                isAdminLoggedIn = false;
+                updateAccessUI();
+                showToast("Anda telah keluar dari Mode Admin (Kembali ke Mode Publik)");
+            } else {
+                // Open Admin Login Modal
+                document.getElementById('admin-pass-input').value = '';
+                document.getElementById('adminLoginModal').classList.remove('hidden');
+            }
+        }
+
+        function closeAdminLoginModal() {
+            document.getElementById('adminLoginModal').classList.add('hidden');
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('admin-pass-input').value.trim();
+            if (pass === 'sbihst2026' || pass === 'admin2026' || pass === 'admin') {
+                isAdminLoggedIn = true;
+                closeAdminLoginModal();
+                updateAccessUI();
+                showToast("Login Admin Berhasil! Anda memiliki akses penuh input data.");
+            } else {
+                showToast("Kata sandi salah! Gunakan: sbihst2026");
+            }
+        }
+
+        function updateAccessUI() {
+            const dot = document.getElementById('access-dot');
+            const text = document.getElementById('access-text');
+            const label = document.getElementById('admin-auth-label');
+            const icon = document.getElementById('admin-auth-icon');
+
+            if (isAdminLoggedIn) {
+                dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                text.innerText = "Mode Admin (Aktif)";
+                text.className = "text-emerald-400 font-bold";
+                label.innerText = "Keluar Admin";
+                icon.className = "fa-solid fa-right-from-bracket text-rose-400";
+            } else {
+                dot.className = "w-2 h-2 rounded-full bg-slate-400";
+                text.innerText = "Mode Publik (Read-Only)";
+                text.className = "text-slate-300 font-medium";
+                label.innerText = "Login Admin";
+                icon.className = "fa-solid fa-lock text-amber-400";
+            }
+        }
+
+        function handleProtectedAction(defaultType = 'media') {
+            if (!isAdminLoggedIn) {
+                document.getElementById('admin-pass-input').value = '';
+                document.getElementById('adminLoginModal').classList.remove('hidden');
+                showToast("Halaman ini dalam Mode Publik. Silakan Login Admin untuk menginput data.");
+                return;
+            }
+            openAddModal(defaultType);
+        }
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-amber-300', 'border-b-2', 'border-amber-400', 'font-semibold');
+                btn.classList.add('text-sbi-100');
+            });
+
+            const activePage = document.getElementById(`page-${tabId}`);
+            if (activePage) activePage.classList.remove('hidden');
+
+            const activeTabBtn = document.getElementById(`tab-${tabId}`);
+            if (activeTabBtn) {
+                activeTabBtn.classList.remove('text-sbi-100');
+                activeTabBtn.classList.add('text-amber-300', 'border-b-2', 'border-amber-400', 'font-semibold');
+            }
+
+            if (tabId === 'impact') {
+                renderImpactCharts();
+            }
+        }
+
+        // Subtab for Stories
+        function switchStorySubtab(sub) {
+            document.getElementById('subpage-practices').classList.add('hidden');
+            document.getElementById('subpage-humanstories').classList.add('hidden');
+            document.getElementById('subtab-practices').className = "px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900";
+            document.getElementById('subtab-humanstories').className = "px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900";
+
+            if (sub === 'practices') {
+                document.getElementById('subpage-practices').classList.remove('hidden');
+                document.getElementById('subtab-practices').className = "px-4 py-2 rounded-lg bg-white shadow-sm text-sbi-800 font-bold";
+            } else {
+                document.getElementById('subpage-humanstories').classList.remove('hidden');
+                document.getElementById('subtab-humanstories').className = "px-4 py-2 rounded-lg bg-white shadow-sm text-sbi-800 font-bold";
+            }
+        }
+
+        // Subtab for Archive
+        function switchArchiveSubtab(sub) {
+            document.getElementById('arch-sub-mitra').classList.add('hidden');
+            document.getElementById('arch-sub-docs').classList.add('hidden');
+            document.getElementById('arch-tab-mitra').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600";
+            document.getElementById('arch-tab-docs').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600";
+
+            if (sub === 'mitra') {
+                document.getElementById('arch-sub-mitra').classList.remove('hidden');
+                document.getElementById('arch-tab-mitra').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-sbi-100 text-sbi-800";
+            } else {
+                document.getElementById('arch-sub-docs').classList.remove('hidden');
+                document.getElementById('arch-tab-docs').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-sbi-100 text-sbi-800";
+            }
+        }
+
+        // Render Target Outputs Table
+        function renderTargetOutputs() {
+            const table = document.getElementById('target-output-table');
+            table.innerHTML = appState.targetOutputs.map(item => {
+                const pct = Math.round((item.current / item.target) * 100);
+                const isComplete = pct >= 100;
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 font-semibold text-slate-800">${item.name}</td>
+                        <td class="p-3 text-slate-500">${item.target} ${item.unit}</td>
+                        <td class="p-3 font-bold text-sbi-700">${item.current} ${item.unit} (${pct}%)</td>
+                        <td class="p-3 text-center">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold ${isComplete ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                                ${isComplete ? '<i class="fa-solid fa-check mr-1"></i>Selesai' : '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Proses'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Render Media Center Grid
+        function renderMediaCenter() {
+            const grid = document.getElementById('media-grid');
+            const filter = document.getElementById('media-category-filter').value;
+            const filtered = filter === 'ALL' ? appState.mediaCenter : appState.mediaCenter.filter(m => m.category === filter);
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="h-40 overflow-hidden relative bg-slate-100">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/600x400/0284c7/white?text=SBI+HST+2026'">
+                        <span class="absolute top-3 left-3 bg-sbi-900/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">${item.category}</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-[11px] text-slate-400">
+                                <span><i class="fa-regular fa-calendar mr-1"></i>${item.date}</span>
+                                <span><i class="fa-solid fa-eye mr-1"></i>${item.reach}</span>
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-sm leading-snug hover:text-sbi-600 transition">${item.title}</h3>
+                            <p class="text-xs text-slate-600 line-clamp-2">${item.excerpt}</p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                            <span>Oleh: <b class="text-slate-700">${item.author}</b></span>
+                            <button onclick="showToast('Membuka detail artikel publikasi...')" class="text-sbi-600 font-bold hover:underline">Baca Konten <i class="fa-solid fa-arrow-right text-[10px]"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Practices Grid
+        function renderPractices() {
+            const grid = document.getElementById('practices-grid');
+            const search = (document.getElementById('practice-search')?.value || '').toLowerCase();
+            const filtered = appState.practices.filter(p => 
+                p.school.toLowerCase().includes(search) || 
+                p.title.toLowerCase().includes(search) ||
+                p.subdistrict.toLowerCase().includes(search)
+            );
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3 hover:border-sbi-300 transition">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-sbi-700 bg-sbi-50 px-2 py-0.5 rounded">${p.type}</span>
+                            <h3 class="font-bold text-slate-900 text-sm mt-1.5">${p.school}</h3>
+                            <p class="text-[11px] text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i>${p.subdistrict}</p>
+                        </div>
+                        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xs">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                    </div>
+                    <h4 class="text-xs font-bold text-slate-800">${p.title}</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">${p.description}</p>
+                    <div class="p-2.5 rounded-lg bg-emerald-50 border border-emerald-100 text-[11px] text-emerald-800 space-y-0.5">
+                        <span class="font-bold"><i class="fa-solid fa-chart-line mr-1"></i>Dampak Perubahan:</span>
+                        <p class="text-emerald-700">${p.impact}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Human Stories
+        function renderHumanStories() {
+            const grid = document.getElementById('stories-grid');
+            grid.innerHTML = appState.humanStories.map(s => `
+                <div class="bg-gradient-to-br from-sbi-900 to-sbi-800 text-white rounded-2xl p-6 shadow-md space-y-4 relative overflow-hidden">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold text-amber-300 uppercase tracking-wider">${s.role}</span>
+                            <h3 class="font-bold text-base text-white">${s.name}</h3>
+                            <p class="text-xs text-sbi-200">${s.school}</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-sbi-100 leading-relaxed italic">"${s.story}"</p>
+                    <div class="p-3 bg-sbi-950/50 rounded-xl border border-sbi-700/50 text-xs text-amber-300 font-medium">
+                        <i class="fa-solid fa-quote-left mr-1.5 opacity-60"></i>${s.quote}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Database Mitra Table
+        function renderMitraTable() {
+            const tbody = document.getElementById('mitra-table-body');
+            tbody.innerHTML = appState.mitra.map(m => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-3 font-bold text-slate-800">${m.name}</td>
+                    <td class="p-3 text-slate-600"><span class="bg-slate-100 px-2 py-0.5 rounded text-[11px]">${m.category}</span></td>
+                    <td class="p-3 text-slate-600 font-medium">${m.pic}</td>
+                    <td class="p-3 text-slate-600">${m.role}</td>
+                    <td class="p-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full text-[10px]">${m.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Render Archive Grid
+        function renderArchiveGrid() {
+            const grid = document.getElementById('archive-files-grid');
+            const archives = [
+                { title: "Modul Sosialisasi Pengimbasan SD 2026", type: "PDF Document", size: "3.4 MB", date: "10 Feb 2026" },
+                { title: "Dokumentasi Foto Launching SBI HST", type: "ZIP Album", size: "45 MB", date: "14 Feb 2026" },
+                { title: "Notulen Koordinasi Mitra Pemda HST", type: "DOCX Archive", size: "1.1 MB", date: "02 Mar 2026" }
+            ];
+            grid.innerHTML = archives.map(a => `
+                <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-2 flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg bg-sbi-50 text-sbi-600 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-slate-800 truncate">${a.title}</h4>
+                        <p class="text-[10px] text-slate-400">${a.type} • ${a.size} • ${a.date}</p>
+                    </div>
+                    <button onclick="showToast('Unduhan arsip dimulai...')" class="text-sbi-600 hover:text-sbi-800 p-1.5"><i class="fa-solid fa-download"></i></button>
+                </div>
+            `).join('');
+        }
+
+        // Render Testimonials Grid
+        function renderTestimonials() {
+            const grid = document.getElementById('testimonials-grid');
+            grid.innerHTML = appState.testimonials.map(t => `
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3 flex flex-col justify-between">
+                    <p class="text-xs text-slate-700 italic">"${t.text}"</p>
+                    <div class="border-t border-slate-200 pt-2 flex items-center space-x-2">
+                        <div class="w-7 h-7 rounded-full bg-sbi-600 text-white flex items-center justify-center text-xs font-bold">
+                            ${t.name.charAt(0)}
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-900">${t.name}</h4>
+                            <p class="text-[10px] text-slate-500">${t.role}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Chart.js Rendering for Impact Analytics
+        let chart1Instance = null;
+        let chart2Instance = null;
+
+        function renderImpactCharts() {
+            const ctx1 = document.getElementById('impactChart1');
+            const ctx2 = document.getElementById('impactChart2');
+
+            if (!ctx1 || !ctx2) return;
+
+            if (chart1Instance) chart1Instance.destroy();
+            if (chart2Instance) chart2Instance.destroy();
+
+            chart1Instance = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026 (Proyeksi)'],
+                    datasets: [
+                        {
+                            label: 'Keberanian Bicara Siswa (%)',
+                            data: [25, 55, 82, 95],
+                            borderColor: '#1b365d',
+                            backgroundColor: 'rgba(27, 54, 93, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Kepercayaan Diri Guru (%)',
+                            data: [35, 68, 88, 98],
+                            borderColor: '#a61c2e',
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 5],
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } },
+                    scales: { y: { min: 0, max: 100 } }
+                }
+            });
+
+            chart2Instance = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['English Day & Corner', 'Bilingual Classroom', 'Komunitas Praktik', 'Ekosistem Visual'],
+                    datasets: [{
+                        data: [40, 25, 20, 15],
+                        backgroundColor: ['#1b365d', '#a61c2e', '#f59e0b', '#10b981']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+                }
+            });
+        }
+
+        // Modal Handlers
+        function openAddModal(defaultType = 'media') {
+            document.getElementById('modal-type').value = defaultType;
+            updateFormFields();
+            document.getElementById('addModal').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.add('hidden');
+        }
+
+        function updateFormFields() {
+            const type = document.getElementById('modal-type').value;
+            const container = document.getElementById('dynamic-form-fields');
+
+            if (type === 'media') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Judul Konten / Berita</label>
+                        <input type="text" id="input-title" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:ring-sbi-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Kategori</label>
+                        <select id="input-cat" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                            <option value="Berita Kegiatan">Berita Kegiatan</option>
+                            <option value="Reels / Media Sosial">Reels / Media Sosial</option>
+                            <option value="Infografis">Infografis</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Ringkasan Konten</label>
+                        <textarea id="input-desc" required rows="2" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
+                    </div>
+                `;
+            } else if (type === 'practice') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Nama Sekolah</label>
+                        <input type="text" id="input-school" placeholder="e.g. SD Negeri 2 Barabai" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Kecamatan</label>
+                        <input type="text" id="input-subdistrict" placeholder="e.g. Kec. Barabai" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Judul Praktik Baik</label>
+                        <input type="text" id="input-title" placeholder="e.g. English Day Routine" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Deskripsi & Dampak</label>
+                        <textarea id="input-desc" required rows="2" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
+                    </div>
+                `;
+            } else if (type === 'story') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Nama Tokoh (Guru / Siswa)</label>
+                        <input type="text" id="input-title" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Peran & Sekolah</label>
+                        <input type="text" id="input-school" placeholder="Guru / Siswa SD..." required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Cerita Perubahan</label>
+                        <textarea id="input-desc" required rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
+                    </div>
+                `;
+            } else if (type === 'mitra') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Nama Instansi / Mitra</label>
+                        <input type="text" id="input-title" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Kontak PIC</label>
+                        <input type="text" id="input-school" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Peran Kolaborasi</label>
+                        <input type="text" id="input-desc" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                `;
+            } else if (type === 'testimony') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Nama Pemberi Testimoni</label>
+                        <input type="text" id="input-title" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Jabatan / Status</label>
+                        <input type="text" id="input-school" placeholder="e.g. Kepala Sekolah / Orang Tua" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700">Isi Testimoni</label>
+                        <textarea id="input-desc" required rows="2" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
+                    </div>
+                `;
+            }
+        }
+
+        // Form Submit Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const type = document.getElementById('modal-type').value;
+
+            if (type === 'media') {
+                const title = document.getElementById('input-title').value;
+                const cat = document.getElementById('input-cat').value;
+                const desc = document.getElementById('input-desc').value;
+                appState.mediaCenter.unshift({
+                    id: Date.now(),
+                    title: title,
+                    category: cat,
+                    date: "Hari Ini",
+                    author: "Tim SBI HST",
+                    excerpt: desc,
+                    reach: "0 Views",
+                    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80"
+                });
+                renderMediaCenter();
+            } else if (type === 'practice') {
+                const school = document.getElementById('input-school').value;
+                const subdistrict = document.getElementById('input-subdistrict').value;
+                const title = document.getElementById('input-title').value;
+                const desc = document.getElementById('input-desc').value;
+                appState.practices.unshift({
+                    id: Date.now(),
+                    school: school,
+                    subdistrict: subdistrict,
+                    title: title,
+                    type: "Praktik Baik Baru",
+                    description: desc,
+                    impact: "Terimbal balik positif pada ekosistem sekolah."
+                });
+                renderPractices();
+                document.getElementById('stat-practice-count').innerText = appState.practices.length;
+            } else if (type === 'story') {
+                const name = document.getElementById('input-title').value;
+                const school = document.getElementById('input-school').value;
+                const desc = document.getElementById('input-desc').value;
+                appState.humanStories.unshift({
+                    id: Date.now(),
+                    role: "Human Story",
+                    name: name,
+                    school: school,
+                    story: desc,
+                    quote: desc.substring(0, 50) + "..."
+                });
+                renderHumanStories();
+            } else if (type === 'mitra') {
+                const name = document.getElementById('input-title').value;
+                const pic = document.getElementById('input-school').value;
+                const role = document.getElementById('input-desc').value;
+                appState.mitra.unshift({
+                    id: Date.now(),
+                    name: name,
+                    category: "Mitra Pelaksana",
+                    pic: pic,
+                    role: role,
+                    status: "Aktif"
+                });
+                renderMitraTable();
+                document.getElementById('stat-mitra-count').innerText = appState.mitra.length;
+            } else if (type === 'testimony') {
+                const name = document.getElementById('input-title').value;
+                const role = document.getElementById('input-school').value;
+                const text = document.getElementById('input-desc').value;
+                appState.testimonials.unshift({
+                    id: Date.now(),
+                    name: name,
+                    role: role,
+                    text: text
+                });
+                renderTestimonials();
+            }
+
+            closeAddModal();
+            showToast("Entri data berhasil disimpan ke sistem!");
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // INITIALIZATION ON LOAD
+        window.onload = function() {
+            detectModeFromURL();
+            renderTargetOutputs();
+            renderMediaCenter();
+            renderPractices();
+            renderHumanStories();
+            renderMitraTable();
+            renderArchiveGrid();
+            renderTestimonials();
+        };
+    </script>
+</body>
+</html>
