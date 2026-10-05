@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBI HST 2026 - Communication & Data Guru Hub</title>
+    <title>SBI HST 2026 - Communication, Data Guru & Media Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js for Visual Impact & Sebaran Analytics -->
@@ -24,6 +24,8 @@
                             50: '#f2f5f9',
                             100: '#e1e8f2',
                             200: '#c2d2e5',
+                            300: '#94b2d3',
+                            400: '#5a87b8',
                             500: '#1b365d',
                             600: '#152b4b',
                             700: '#102038',
@@ -33,6 +35,7 @@
                         sbired: {
                             50: '#fdf2f3',
                             100: '#fbe5e7',
+                            200: '#f7cad0',
                             500: '#a61c2e',
                             600: '#8c1625',
                             700: '#72111d',
@@ -96,13 +99,13 @@
                 <!-- Access Status & Action Controls -->
                 <div class="flex items-center space-x-2">
                     <div id="access-mode-badge" class="hidden sm:flex items-center space-x-1.5 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-xs">
-                        <span class="w-2 h-2 rounded-full bg-slate-400" id="access-dot"></span>
-                        <span class="text-slate-300 font-medium" id="access-text">Mode Publik (Read-Only)</span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="access-dot"></span>
+                        <span class="text-slate-300 font-medium" id="access-text">Sistem Aktif (Live Sync)</span>
                     </div>
 
                     <button id="admin-auth-btn" onclick="toggleAdminAuth()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
-                        <i class="fa-solid fa-lock text-amber-400" id="admin-auth-icon"></i>
-                        <span id="admin-auth-label">Login Admin</span>
+                        <i class="fa-solid fa-lock-open text-emerald-400" id="admin-auth-icon"></i>
+                        <span id="admin-auth-label">Admin Mode</span>
                     </button>
 
                     <button onclick="window.print()" class="bg-sbi-800 hover:bg-sbi-700 text-slate-200 text-xs sm:text-sm px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1">
@@ -128,6 +131,10 @@
                     <i class="fa-solid fa-bullhorn"></i>
                     <span>SBI Media Center</span>
                 </button>
+                <button onclick="switchTab('praktikbaik')" id="tab-praktikbaik" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Praktik Baik & Inovasi</span>
+                </button>
             </div>
         </nav>
     </header>
@@ -135,201 +142,490 @@
     <!-- MAIN CONTENT CONTAINER -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
-        <!-- TAB 1: DASHBOARD OVERVIEW & TARGET 2026 -->
+        <!-- ================= PAGE 1: DASHBOARD OVERVIEW & TARGET 2026 ================= -->
         <div id="page-dashboard" class="page-content space-y-6">
+            <!-- Hero Banner -->
             <div class="bg-gradient-to-r from-sbi-800 via-sbi-700 to-sbi-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border-l-4 border-sbired-500">
                 <div class="max-w-3xl space-y-3 relative z-10">
                     <div class="inline-flex items-center space-x-2 bg-sbi-500/40 border border-sbi-200/20 px-3 py-1 rounded-full text-xs font-semibold text-amber-300">
                         <i class="fa-solid fa-award"></i>
                         <span>Tim Pengimbasan SD & Penguatan Ekosistem SMP</span>
                     </div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
                         Hub Komunikasi, Data Guru & Rekam Jejak Dampak SBI HST 2026
                     </h1>
-                    <p class="text-slate-200 text-sm leading-relaxed">
-                        Pusat pengelolaan kemitraan, direktori guru SBI, pemetaan sebaran wilayah, publikasi cerita inspiratif, dan laporan visual dampak keberhasilan Program Sekolah Berbahasa Inggris Kabupaten Hulu Sungai Tengah.
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed">
+                        Pusat pemetaan guru berbahasa Inggris, direktori sekolah pengimbasan, publikasi narasi positif, serta pemantauan statistik pencapaian target program Sekolah Berbahasa Inggris Kabupaten Hulu Sungai Tengah secara interaktif.
                     </p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-sbi-600 flex items-center justify-center text-xl font-bold">
+            <!-- Stat Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Capaian Target Overall</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800 mt-1" id="stat-target-pct">78%</h3>
+                        <p class="text-[11px] text-emerald-600 font-semibold mt-1"><i class="fa-solid fa-arrow-up"></i> Terkoneksi Real-time</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-bullseye"></i>
                     </div>
-                    <div>
-                        <p class="text-xs text-slate-500 font-medium">Capaian Target 2026</p>
-                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-target-pct">75%</h3>
-                        <p class="text-[11px] text-emerald-600 font-semibold"><i class="fa-solid fa-arrow-up"></i> Terkoneksi ke Data Aktivitas</p>
-                    </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-chalkboard-user"></i>
-                    </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center justify-between">
                     <div>
                         <p class="text-xs text-slate-500 font-medium">Total Guru Terdata</p>
-                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-teacher-count">0</h3>
-                        <p class="text-[11px] text-indigo-600 font-semibold"><i class="fa-solid fa-check-double"></i> Live Update dari Data Guru</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800 mt-1" id="stat-teacher-count">0</h3>
+                        <p class="text-[11px] text-sbi-600 font-semibold mt-1"><i class="fa-solid fa-check-circle"></i> Live Sync dari Data Guru</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-sbi-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-chalkboard-user"></i>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold">
-                        <i class="fa-solid fa-photo-film"></i>
-                    </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center justify-between">
                     <div>
-                        <p class="text-xs text-slate-500 font-medium">Total Media & Konten</p>
-                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-media-count">0</h3>
-                        <p class="text-[11px] text-purple-600 font-semibold"><i class="fa-solid fa-link"></i> Live Media Center</p>
+                        <p class="text-xs text-slate-500 font-medium">Artikel / Media Center</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800 mt-1" id="stat-media-count">0</h3>
+                        <p class="text-[11px] text-purple-600 font-semibold mt-1"><i class="fa-solid fa-newspaper"></i> Terpublikasi Kebijakan</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Praktik Baik Terkumpul</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800 mt-1" id="stat-praktik-count">0</h3>
+                        <p class="text-[11px] text-emerald-600 font-semibold mt-1"><i class="fa-solid fa-book-open"></i> Inovasi Pengajaran</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-lightbulb"></i>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- TAB 2: DATA GURU SBI & SEBARANNYA (DENGAN LINK GOOGLE MAPS) -->
-        <div id="page-teachers" class="page-content space-y-6 hidden">
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <div class="inline-flex items-center space-x-2 text-xs font-bold text-sbi-700 bg-sbi-50 px-2.5 py-1 rounded-md mb-1">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        <span>Sistem Informasi & Pemetaan Guru Berbahasa Inggris</span>
+            <!-- Visual Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Target Progress Chart -->
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 lg:col-span-2 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm">Visualisasi Kemajuan Output Target SBI HST 2026</h3>
+                            <p class="text-xs text-slate-500">Perbandingan antara Target Capaian dan Realisasi Terkini</p>
+                        </div>
+                        <span class="text-xs font-semibold bg-sbi-50 text-sbi-700 px-2.5 py-1 rounded-md">Update Otomatis</span>
                     </div>
-                    <h2 class="text-xl font-bold text-slate-900">Data Guru SBI & Sebaran Wilayah HST 2026</h2>
-                    <p class="text-xs text-slate-500">Klik lokasi/alamat sekolah untuk membuka lokasi langsung di Google Maps</p>
+                    <div class="h-64 relative">
+                        <canvas id="targetChart"></canvas>
+                    </div>
                 </div>
-                <button onclick="openTeacherModal()" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3.5 py-2.5 rounded-lg font-bold flex items-center space-x-1.5 shadow">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span>Tambah Data Guru</span>
-                </button>
+
+                <!-- Sebaran Guru Per CEFR Level Chart -->
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-4">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h3 class="font-bold text-slate-800 text-sm">Distribusi Level CEFR Guru</h3>
+                        <p class="text-xs text-slate-500">Persentase tingkat kemahiran Bahasa Inggris guru terdaftar</p>
+                    </div>
+                    <div class="h-64 relative flex items-center justify-center">
+                        <canvas id="cefrChart"></canvas>
+                    </div>
+                </div>
             </div>
 
+            <!-- Target Status Table -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">Matriks Rencana & Capaian Indikator Utama</h3>
+                        <p class="text-xs text-slate-500">Target indikator kinerja program penguatan ekosistem SBI HST 2026</p>
+                    </div>
+                </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-slate-700 text-xs uppercase font-semibold border-b border-slate-200">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
                             <tr>
-                                <th class="p-3">Nama Guru</th>
-                                <th class="p-3">Sekolah</th>
-                                <th class="p-3">Kecamatan / Alamat (Google Maps)</th>
-                                <th class="p-3">Level CEFR</th>
+                                <th class="p-3">Indikator Kinerja Output</th>
+                                <th class="p-3 text-center">Target 2026</th>
+                                <th class="p-3 text-center">Capaian Saat Ini</th>
+                                <th class="p-3">Persentase (%)</th>
+                                <th class="p-3">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="teacher-table-body" class="divide-y divide-slate-100">
-                            <!-- Populated via JS -->
+                        <tbody class="divide-y divide-slate-100 font-medium">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-semibold text-slate-800">1. Pendataan Guru SBI Berbasis Digital & Map</td>
+                                <td class="p-3 text-center">50 Guru</td>
+                                <td class="p-3 text-center font-bold text-sbi-600" id="matrix-teacher-current">0 Guru</td>
+                                <td class="p-3">
+                                    <div class="w-full bg-slate-200 rounded-full h-2">
+                                        <div class="bg-sbi-500 h-2 rounded-full" id="matrix-teacher-bar" style="width: 0%"></div>
+                                    </div>
+                                </td>
+                                <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold text-[10px]">ON TRACK</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-semibold text-slate-800">2. Publikasi Praktik Baik & Modul Inovasi Pengajaran</td>
+                                <td class="p-3 text-center">10 Dokumen</td>
+                                <td class="p-3 text-center font-bold text-emerald-600" id="matrix-praktik-current">0 Dokumen</td>
+                                <td class="p-3">
+                                    <div class="w-full bg-slate-200 rounded-full h-2">
+                                        <div class="bg-emerald-500 h-2 rounded-full" id="matrix-praktik-bar" style="width: 0%"></div>
+                                    </div>
+                                </td>
+                                <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold text-[10px]">ON TRACK</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-semibold text-slate-800">3. Rilis Pers, Liputan Media & Hub Komunikasi</td>
+                                <td class="p-3 text-center">5 Publikasi</td>
+                                <td class="p-3 text-center font-bold text-purple-600" id="matrix-media-current">0 Rilis</td>
+                                <td class="p-3">
+                                    <div class="w-full bg-slate-200 rounded-full h-2">
+                                        <div class="bg-purple-500 h-2 rounded-full" id="matrix-media-bar" style="width: 0%"></div>
+                                    </div>
+                                </td>
+                                <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold text-[10px]">ON TRACK</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 3: SBI MEDIA CENTER (DENGAN UPLOAD FOTO & LINK LUAR) -->
-        <div id="page-mediacenter" class="page-content space-y-6 hidden">
+        <!-- ================= PAGE 2: DATA GURU SBI & SEBARAN (GOOGLE MAPS CONNECTED) ================= -->
+        <div id="page-teachers" class="page-content space-y-6 hidden">
+            <!-- Header section for Teachers -->
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-xl font-bold text-slate-900">SBI Media Center</h2>
-                    <p class="text-xs text-slate-500">Publikasi foto kegiatan, berita, dan tautan rilis media eksternal</p>
+                    <div class="inline-flex items-center space-x-2 text-xs font-bold text-sbi-700 bg-sbi-50 px-2.5 py-1 rounded-md mb-1">
+                        <i class="fa-solid fa-map-location-dot text-sbired-500"></i>
+                        <span>Sistem Informasi Direktori & Pemetaan Lokasi Guru SBI</span>
+                    </div>
+                    <h2 class="text-xl font-extrabold text-slate-900">Data Guru SBI & Sebaran Wilayah HST 2026</h2>
+                    <p class="text-xs text-slate-500 mt-1">
+                        <i class="fa-solid fa-circle-info text-sbi-500"></i>
+                        <strong>Fitur Google Maps:</strong> Klik nama kecamatan / alamat pada tabel di bawah untuk membuka titik koordinat lokasi sekolah di Google Maps secara presisi.
+                    </p>
                 </div>
-                <button onclick="openMediaModal()" class="bg-sbi-800 hover:bg-sbi-700 text-white text-xs px-3.5 py-2.5 rounded-lg font-bold flex items-center space-x-1.5 shadow">
-                    <i class="fa-solid fa-upload"></i>
-                    <span>Upload Foto / Berita Baru</span>
+                <div class="flex items-center space-x-2">
+                    <button onclick="openTeacherModal()" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-4 py-2.5 rounded-lg font-bold flex items-center space-x-2 shadow transition">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>+ Tambah Data Guru</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search and Filters Bar -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div>
+                    <label class="font-bold text-slate-600 mb-1 block">Cari Nama Guru / Sekolah</label>
+                    <div class="relative">
+                        <input type="text" id="search-teacher" onkeyup="filterTeachers()" placeholder="Ketik nama atau sekolah..." class="w-full border border-slate-300 rounded-lg p-2.5 pl-8 focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-3 text-slate-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="font-bold text-slate-600 mb-1 block">Filter Level CEFR</label>
+                    <select id="filter-cefr" onchange="filterTeachers()" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                        <option value="ALL">Semua Level CEFR</option>
+                        <option value="A1 Basic">A1 Basic</option>
+                        <option value="A2 Elementary">A2 Elementary</option>
+                        <option value="B1 Intermediate">B1 Intermediate</option>
+                        <option value="B2 Upper-Intermediate">B2 Upper-Intermediate</option>
+                        <option value="C1 Advanced">C1 Advanced</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="font-bold text-slate-600 mb-1 block">Filter Jenjang Sekolah</label>
+                    <select id="filter-jenjang" onchange="filterTeachers()" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                        <option value="ALL">Semua Jenjang (SD & SMP)</option>
+                        <option value="SD">Sekolah Dasar (SD)</option>
+                        <option value="SMP">Sekolah Menengah Pertama (SMP)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-sbi-900 text-white uppercase font-bold text-[11px] tracking-wider">
+                            <tr>
+                                <th class="p-3.5">No</th>
+                                <th class="p-3.5">Nama Guru & NIP</th>
+                                <th class="p-3.5">Nama Sekolah</th>
+                                <th class="p-3.5">Kecamatan / Alamat (Google Maps Link)</th>
+                                <th class="p-3.5 text-center">Level CEFR</th>
+                                <th class="p-3.5 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacher-table-body" class="divide-y divide-slate-100 font-medium">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 3: SBI MEDIA CENTER (WITH PHOTO UPLOAD & EXTERNAL LINKS) ================= -->
+        <div id="page-mediacenter" class="page-content space-y-6 hidden">
+            <!-- Header Section -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 text-xs font-bold text-purple-800 bg-purple-50 px-2.5 py-1 rounded-md mb-1">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Pusat Publikasi, Narasi Positif & Rilis Media Hub</span>
+                    </div>
+                    <h2 class="text-xl font-extrabold text-slate-900">SBI Media Center HST</h2>
+                    <p class="text-xs text-slate-500 mt-1">Dokumentasi kegiatan, rilis berita resmi, dan link luar artikel publikasi program SBI.</p>
+                </div>
+                <button onclick="openMediaModal()" class="bg-sbi-800 hover:bg-sbi-700 text-white text-xs px-4 py-2.5 rounded-lg font-bold flex items-center space-x-2 shadow transition">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>+ Upload Foto / Berita Baru</span>
                 </button>
             </div>
 
+            <!-- Media Cards Grid Container -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="media-cards-container">
-                <!-- Media Cards Rendered Here -->
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+
+        <!-- ================= PAGE 4: PRAKTIK BAIK & INOVASI ================= -->
+        <div id="page-praktikbaik" class="page-content space-y-6 hidden">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md mb-1">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <span>Repository Praktik Baik Pengajaran Berbahasa Inggris</span>
+                    </div>
+                    <h2 class="text-xl font-extrabold text-slate-900">Kumpulan Praktik Baik & Modul Inovatif</h2>
+                    <p class="text-xs text-slate-500 mt-1">Karya dan metode pengajaran kreatif yang telah diterapkan oleh guru SBI di HST.</p>
+                </div>
+                <button onclick="openPraktikModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-2.5 rounded-lg font-bold flex items-center space-x-2 shadow transition">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>+ Tambah Praktik Baik</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="praktik-container">
+                <!-- Dynamically populated via JS -->
             </div>
         </div>
 
     </main>
 
-    <!-- MODAL ADD TEACHER -->
-    <div id="teacher-modal" class="fixed inset-0 bg-slate-900/50 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 space-y-4">
-            <h3 class="text-lg font-bold text-slate-900">Tambah Data Guru</h3>
+    <!-- ================= MODAL 1: TAMBAH DATA GURU ================= -->
+    <div id="teacher-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                    <i class="fa-solid fa-user-plus text-sbired-500"></i>
+                    <span>Input Data Guru SBI Baru</span>
+                </h3>
+                <button onclick="closeTeacherModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
             <div class="space-y-3 text-xs">
                 <div>
-                    <label class="font-bold text-slate-700">Nama Lengkap</label>
-                    <input type="text" id="input-teacher-name" class="w-full border rounded p-2 mt-1" placeholder="cth: Ahmad, S.Pd">
+                    <label class="font-bold text-slate-700 mb-1 block">Nama Lengkap & Gelar *</label>
+                    <input type="text" id="input-teacher-name" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="cth: Ahmad Fauzi, S.Pd">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="font-bold text-slate-700 mb-1 block">Nama Sekolah *</label>
+                        <input type="text" id="input-teacher-school" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="cth: SDN 1 Barabai / SMPN 1 Barabai">
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 mb-1 block">Jenjang *</label>
+                        <select id="input-teacher-jenjang" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                            <option value="SD">SD (Sekolah Dasar)</option>
+                            <option value="SMP">SMP (Sekolah Menengah Pertama)</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
-                    <label class="font-bold text-slate-700">Sekolah</label>
-                    <input type="text" id="input-teacher-school" class="w-full border rounded p-2 mt-1" placeholder="cth: SDN 1 Barabai">
+                    <label class="font-bold text-slate-700 mb-1 block">Kecamatan & Alamat Sekolah (Digunakan untuk Google Maps Link) *</label>
+                    <input type="text" id="input-teacher-address" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="cth: Kecamatan Barabai, Hulu Sungai Tengah">
                 </div>
-                <div>
-                    <label class="font-bold text-slate-700">Kecamatan / Alamat Lengkap</label>
-                    <input type="text" id="input-teacher-address" class="w-full border rounded p-2 mt-1" placeholder="cth: Barabai, Hulu Sungai Tengah">
-                </div>
-                <div>
-                    <label class="font-bold text-slate-700">Level CEFR</label>
-                    <select id="input-teacher-cefr" class="w-full border rounded p-2 mt-1">
-                        <option value="A2 Basic">A2 Basic</option>
-                        <option value="B1 Intermediate">B1 Intermediate</option>
-                        <option value="B2 Upper-Intermediate">B2 Upper-Intermediate</option>
-                    </select>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="font-bold text-slate-700 mb-1 block">Level CEFR *</label>
+                        <select id="input-teacher-cefr" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                            <option value="A1 Basic">A1 Basic</option>
+                            <option value="A2 Elementary">A2 Elementary</option>
+                            <option value="B1 Intermediate" selected>B1 Intermediate</option>
+                            <option value="B2 Upper-Intermediate">B2 Upper-Intermediate</option>
+                            <option value="C1 Advanced">C1 Advanced</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 mb-1 block">Kontak / HP (Opsional)</label>
+                        <input type="text" id="input-teacher-phone" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="cth: 08123456789">
+                    </div>
                 </div>
             </div>
-            <div class="flex justify-end space-x-2 pt-2">
-                <button onclick="closeTeacherModal()" class="px-3 py-1.5 bg-slate-200 text-slate-700 text-xs rounded font-bold">Batal</button>
-                <button onclick="saveTeacher()" class="px-3 py-1.5 bg-sbi-600 text-white text-xs rounded font-bold">Simpan Data</button>
+            <div class="flex justify-end space-x-2 pt-3 border-t border-slate-100">
+                <button onclick="closeTeacherModal()" class="px-4 py-2 bg-slate-100 text-slate-700 text-xs rounded-lg font-bold hover:bg-slate-200">Batal</button>
+                <button onclick="saveTeacher()" class="px-4 py-2 bg-sbi-600 text-white text-xs rounded-lg font-bold hover:bg-sbi-700 shadow">Simpan Data Guru</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL ADD MEDIA CENTER -->
-    <div id="media-modal" class="fixed inset-0 bg-slate-900/50 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 space-y-4">
-            <h3 class="text-lg font-bold text-slate-900">Upload Media / Berita Baru</h3>
+    <!-- ================= MODAL 2: UPLOAD MEDIA & LINK LUAR ================= -->
+    <div id="media-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-sbi-600"></i>
+                    <span>Upload Foto & Tautan Artikel Media</span>
+                </h3>
+                <button onclick="closeMediaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
             <div class="space-y-3 text-xs">
                 <div>
-                    <label class="font-bold text-slate-700">Judul Konten / Berita</label>
-                    <input type="text" id="input-media-title" class="w-full border rounded p-2 mt-1" placeholder="Judul berita/kegiatan">
+                    <label class="font-bold text-slate-700 mb-1 block">Judul Berita / Rilis Media *</label>
+                    <input type="text" id="input-media-title" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="Ketik judul artikel...">
                 </div>
                 <div>
-                    <label class="font-bold text-slate-700">URL Gambar / Foto</label>
-                    <input type="text" id="input-media-img" class="w-full border rounded p-2 mt-1" placeholder="https://... (URL Foto)">
+                    <label class="font-bold text-slate-700 mb-1 block">URL Gambar / Upload Foto *</label>
+                    <input type="text" id="input-media-img" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="https://images.unsplash.com/... atau URL foto">
                 </div>
                 <div>
-                    <label class="font-bold text-slate-700">URL Tautan Luar (Link Baca Konten)</label>
-                    <input type="text" id="input-media-url" class="w-full border rounded p-2 mt-1" placeholder="https://... (Link Web Luar / Halaman Berita)">
+                    <label class="font-bold text-slate-700 mb-1 block">URL Tautan Luar (Link Baca Artikel Selengkapnya) *</label>
+                    <input type="text" id="input-media-url" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="https://website-berita.com/artikel-sbi-hst">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="font-bold text-slate-700 mb-1 block">Kategori</label>
+                        <select id="input-media-cat" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                            <option value="Berita Utama">Berita Utama</option>
+                            <option value="Pengimbasan SD">Pengimbasan SD</option>
+                            <option value="Ekosistem SMP">Ekosistem SMP</option>
+                            <option value="Liputan Khusus">Liputan Khusus</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="font-bold text-slate-700 mb-1 block">Tanggal Terbit</label>
+                        <input type="text" id="input-media-date" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="cth: 5 Oktober 2026">
+                    </div>
                 </div>
                 <div>
-                    <label class="font-bold text-slate-700">Deskripsi Singkat</label>
-                    <textarea id="input-media-desc" class="w-full border rounded p-2 mt-1" rows="3" placeholder="Ringkasan isi berita..."></textarea>
+                    <label class="font-bold text-slate-700 mb-1 block">Ringkasan / Deskripsi Berita *</label>
+                    <textarea id="input-media-desc" rows="3" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sbi-500 focus:outline-none" placeholder="Tuliskan ringkasan singkat artikel..."></textarea>
                 </div>
             </div>
-            <div class="flex justify-end space-x-2 pt-2">
-                <button onclick="closeMediaModal()" class="px-3 py-1.5 bg-slate-200 text-slate-700 text-xs rounded font-bold">Batal</button>
-                <button onclick="saveMedia()" class="px-3 py-1.5 bg-sbired-500 text-white text-xs rounded font-bold">Upload & Publikasi</button>
+            <div class="flex justify-end space-x-2 pt-3 border-t border-slate-100">
+                <button onclick="closeMediaModal()" class="px-4 py-2 bg-slate-100 text-slate-700 text-xs rounded-lg font-bold hover:bg-slate-200">Batal</button>
+                <button onclick="saveMedia()" class="px-4 py-2 bg-sbi-800 text-white text-xs rounded-lg font-bold hover:bg-sbi-900 shadow">Upload & Publikasi</button>
             </div>
         </div>
     </div>
 
+    <!-- ================= MODAL 3: TAMBAH PRAKTIK BAIK ================= -->
+    <div id="praktik-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                    <i class="fa-solid fa-lightbulb text-emerald-600"></i>
+                    <span>Tambah Praktik Baik Inovasi</span>
+                </h3>
+                <button onclick="closePraktikModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="font-bold text-slate-700 mb-1 block">Judul Inovasi / Praktik Baik *</label>
+                    <input type="text" id="input-praktik-title" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Judul metode pengajaran...">
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 mb-1 block">Nama Guru & Sekolah Penggagas *</label>
+                    <input type="text" id="input-praktik-author" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="cth: Rahmah, S.Pd - SDN 1 Barabai">
+                </div>
+                <div>
+                    <label class="font-bold text-slate-700 mb-1 block">Rincian Deskripsi Inovasi *</label>
+                    <textarea id="input-praktik-desc" rows="4" class="w-full border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Jelaskan gambaran umum dan dampak inovasi..."></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-2 pt-3 border-t border-slate-100">
+                <button onclick="closePraktikModal()" class="px-4 py-2 bg-slate-100 text-slate-700 text-xs rounded-lg font-bold hover:bg-slate-200">Batal</button>
+                <button onclick="savePraktik()" class="px-4 py-2 bg-emerald-600 text-white text-xs rounded-lg font-bold hover:bg-emerald-700 shadow">Simpan Praktik Baik</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT SYSTEM LOGIC -->
     <script>
-        // Data State
+        // Default Application Data State
         let appData = {
             teachers: [
-                { name: "Siti Rahmah, S.Pd", school: "SDN 1 Barabai", address: "Barabai, Hulu Sungai Tengah", cefr: "B1 Intermediate" },
-                { name: "Budi Santoso, M.Pd", school: "SMPN 2 Batu Benawa", address: "Batu Benawa, Hulu Sungai Tengah", cefr: "B2 Upper-Intermediate" }
+                { id: 1, name: "Ahmad Fauzi, S.Pd", school: "SDN 1 Barabai", jenjang: "SD", address: "Kecamatan Barabai, Hulu Sungai Tengah", cefr: "B2 Upper-Intermediate", phone: "08123456781" },
+                { id: 2, name: "Siti Rahmah, M.Pd", school: "SMPN 2 Batu Benawa", jenjang: "SMP", address: "Kecamatan Batu Benawa, Hulu Sungai Tengah", cefr: "B1 Intermediate", phone: "08123456782" },
+                { id: 3, name: "Budi Santoso, S.Pd", school: "SDN 2 Hantakan", jenjang: "SD", address: "Kecamatan Hantakan, Hulu Sungai Tengah", cefr: "A2 Elementary", phone: "08123456783" },
+                { id: 4, name: "Dewi Lestari, S.Pd", school: "SMPN 1 Labuan Amas Selatan", jenjang: "SMP", address: "Kecamatan Labuan Amas Selatan, Hulu Sungai Tengah", cefr: "B2 Upper-Intermediate", phone: "08123456784" },
+                { id: 5, name: "Muhammad Ridwan, S.Pd", school: "SDN 1 Pandawan", jenjang: "SD", address: "Kecamatan Pandawan, Hulu Sungai Tengah", cefr: "B1 Intermediate", phone: "08123456785" }
             ],
             media: [
                 {
-                    title: "Pengimbasan Program SBI di SDN 1 Barabai",
-                    img: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80",
-                    url: "https://dindik.kst.go.id",
-                    desc: "Dokumentasi pelatihan pengawasan pembelajaran Bahasa Inggris interaktif untuk para guru."
+                    id: 1,
+                    title: "Penguatan Ekosistem SBI HST 2026: Workshop Metodologi Pengajaran Interaktif Bagi Guru SD & SMP",
+                    img: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80",
+                    url: "https://dindik.hulusungaitengahkab.go.id",
+                    cat: "Berita Utama",
+                    date: "4 Oktober 2026",
+                    desc: "Kegiatan pengimbasan intensif yang diselenggarakan untuk meningkatkan efektivitas pengajaran Bahasa Inggris kontekstual di wilayah Hulu Sungai Tengah."
+                },
+                {
+                    id: 2,
+                    title: "Sinergi Kemitraan Kunci Keberhasilan Program Sekolah Berbahasa Inggris di Kab. Hulu Sungai Tengah",
+                    img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
+                    url: "https://berita.hulusungaitengahkab.go.id",
+                    cat: "Ekosistem SMP",
+                    date: "2 Oktober 2026",
+                    desc: "Inisiatif bersama antar lembaga pendidikan untuk memperluas akses pembelajaran bahasa asing yang inklusif dan berkelanjutan."
+                }
+            ],
+            praktik: [
+                {
+                    id: 1,
+                    title: "Metode Morning English Circle Secara Konsisten",
+                    author: "Siti Rahmah, M.Pd - SMPN 2 Batu Benawa",
+                    desc: "Penerapan rutinitas percakapan 10 menit sebelum kelas dimulai untuk melatih kepercayaan diri siswa menggunakan Bahasa Inggris sehari-hari."
+                },
+                {
+                    id: 2,
+                    title: "Integrasi Media Card Games Visual untuk Kosakata",
+                    author: "Ahmad Fauzi, S.Pd - SDN 1 Barabai",
+                    desc: "Penggunaan media kartu berbergambar dalam permainan kelompok untuk mempercepat pemahaman kosa kata dasar pada jenjang Sekolah Dasar."
                 }
             ]
         };
 
+        let targetChartInstance = null;
+        let cefrChartInstance = null;
+
         function initApp() {
-            renderTeachers();
-            renderMedia();
+            // Load state from local storage if exists
+            const savedData = localStorage.getItem('sbi_hst_2026_data');
+            if(savedData) {
+                try {
+                    appData = JSON.parse(savedData);
+                } catch(e) { console.error("Error parsing stored data", e); }
+            }
+
+            renderTeacherTable();
+            renderMediaCards();
+            renderPraktikBaik();
             updateDashboardStats();
+            initCharts();
         }
 
-        // Tab Navigation
+        function saveData() {
+            localStorage.setItem('sbi_hst_2026_data', JSON.stringify(appData));
+            updateDashboardStats();
+            updateCharts();
+        }
+
         function switchTab(tabName) {
             document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -337,43 +633,98 @@
                 btn.classList.add('text-sbi-100');
             });
 
-            document.getElementById('page-' + tabName).classList.remove('hidden');
+            const page = document.getElementById('page-' + tabName);
+            if(page) page.classList.remove('hidden');
+
             const activeBtn = document.getElementById('tab-' + tabName);
-            activeBtn.classList.add('text-amber-300', 'border-b-2', 'border-amber-400', 'font-semibold');
-            activeBtn.classList.remove('text-sbi-100');
+            if(activeBtn) {
+                activeBtn.classList.add('text-amber-300', 'border-b-2', 'border-amber-400', 'font-semibold');
+                activeBtn.classList.remove('text-sbi-100');
+            }
         }
 
-        // Dashboard Live Stats Update
         function updateDashboardStats() {
-            document.getElementById('stat-teacher-count').innerText = appData.teachers.length;
-            document.getElementById('stat-media-count').innerText = appData.media.length;
+            const totalTeachers = appData.teachers.length;
+            const totalMedia = appData.media.length;
+            const totalPraktik = appData.praktik.length;
+
+            document.getElementById('stat-teacher-count').innerText = totalTeachers;
+            document.getElementById('stat-media-count').innerText = totalMedia;
+            document.getElementById('stat-praktik-count').innerText = totalPraktik;
+
+            // Matrix values
+            document.getElementById('matrix-teacher-current').innerText = totalTeachers + " Guru";
+            document.getElementById('matrix-media-current').innerText = totalMedia + " Rilis";
+            document.getElementById('matrix-praktik-current').innerText = totalPraktik + " Dokumen";
+
+            // Progress bar percentages
+            const tPct = Math.min(Math.round((totalTeachers / 50) * 100), 100);
+            const pPct = Math.min(Math.round((totalPraktik / 10) * 100), 100);
+            const mPct = Math.min(Math.round((totalMedia / 5) * 100), 100);
+
+            document.getElementById('matrix-teacher-bar').style.width = tPct + '%';
+            document.getElementById('matrix-praktik-bar').style.width = pPct + '%';
+            document.getElementById('matrix-media-bar').style.width = mPct + '%';
+
+            const avgPct = Math.round((tPct + pPct + mPct) / 3);
+            document.getElementById('stat-target-pct').innerText = avgPct + '%';
         }
 
-        // 1. Render Teacher Data with Google Maps Connection
-        function renderTeachers() {
+        function renderTeacherTable() {
             const tbody = document.getElementById('teacher-table-body');
             tbody.innerHTML = '';
-            appData.teachers.forEach((t, index) => {
-                // Link Google Maps berdasarkan Nama Sekolah & Alamat
+
+            const searchTerm = document.getElementById('search-teacher')?.value.toLowerCase() || '';
+            const cefrFilter = document.getElementById('filter-cefr')?.value || 'ALL';
+            const jenjangFilter = document.getElementById('filter-jenjang')?.value || 'ALL';
+
+            const filtered = appData.teachers.filter(t => {
+                const matchSearch = t.name.toLowerCase().includes(searchTerm) || t.school.toLowerCase().includes(searchTerm);
+                const matchCefr = cefrFilter === 'ALL' || t.cefr === cefrFilter;
+                const matchJenjang = jenjangFilter === 'ALL' || t.jenjang === jenjangFilter;
+                return matchSearch && matchCefr && matchJenjang;
+            });
+
+            if(filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Tidak ada data guru yang cocok.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach((t, index) => {
+                // Link Google Maps
                 const mapQuery = encodeURIComponent(`${t.school}, ${t.address}`);
                 const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
                 tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 text-xs">
-                        <td class="p-3 font-semibold text-slate-800">${t.name}</td>
-                        <td class="p-3 text-slate-600">${t.school}</td>
-                        <td class="p-3">
-                            <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="text-sbi-600 hover:text-sbired-500 font-medium flex items-center space-x-1.5 underline">
-                                <i class="fa-solid fa-map-pin text-sbired-500"></i>
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3.5 font-bold text-slate-400">${index + 1}</td>
+                        <td class="p-3.5">
+                            <div class="font-bold text-slate-900">${t.name}</div>
+                            <div class="text-[10px] text-slate-400">${t.phone || '-'}</div>
+                        </td>
+                        <td class="p-3.5">
+                            <span class="font-semibold text-slate-800">${t.school}</span>
+                            <span class="ml-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${t.jenjang === 'SD' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">${t.jenjang}</span>
+                        </td>
+                        <td class="p-3.5">
+                            <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-sbi-600 hover:text-sbired-600 font-semibold underline transition group">
+                                <i class="fa-solid fa-location-dot text-sbired-500 group-hover:scale-125 transition-transform"></i>
                                 <span>${t.address}</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 opacity-70"></i>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-70"></i>
                             </a>
                         </td>
-                        <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">${t.cefr}</span></td>
+                        <td class="p-3.5 text-center">
+                            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold text-[10px]">${t.cefr}</span>
+                        </td>
+                        <td class="p-3.5 text-center">
+                            <button onclick="deleteTeacher(${t.id})" class="text-rose-500 hover:text-rose-700 font-bold text-xs p-1"><i class="fa-solid fa-trash"></i></button>
+                        </td>
                     </tr>
                 `;
             });
         }
+
+        function filterTeachers() { renderTeacherTable(); }
 
         function openTeacherModal() { document.getElementById('teacher-modal').classList.remove('hidden'); }
         function closeTeacherModal() { document.getElementById('teacher-modal').classList.add('hidden'); }
@@ -381,34 +732,64 @@
         function saveTeacher() {
             const name = document.getElementById('input-teacher-name').value;
             const school = document.getElementById('input-teacher-school').value;
+            const jenjang = document.getElementById('input-teacher-jenjang').value;
             const address = document.getElementById('input-teacher-address').value;
             const cefr = document.getElementById('input-teacher-cefr').value;
+            const phone = document.getElementById('input-teacher-phone').value;
 
-            if(!name || !school) return alert("Mohon lengkapi data!");
+            if(!name || !school || !address) return alert("Mohon lengkapi field mandatory (Nama, Sekolah, dan Alamat/Kecamatan)!");
 
-            appData.teachers.push({ name, school, address, cefr });
-            renderTeachers();
-            updateDashboardStats();
+            appData.teachers.push({ id: Date.now(), name, school, jenjang, address, cefr, phone });
+            saveData();
+            renderTeacherTable();
             closeTeacherModal();
+
+            // Clear inputs
+            document.getElementById('input-teacher-name').value = '';
+            document.getElementById('input-teacher-school').value = '';
+            document.getElementById('input-teacher-address').value = '';
         }
 
-        // 2. Render Media Center Cards with External Link
-        function renderMedia() {
+        function deleteTeacher(id) {
+            if(confirm("Apakah Anda yakin ingin menghapus data guru ini?")) {
+                appData.teachers = appData.teachers.filter(t => t.id !== id);
+                saveData();
+                renderTeacherTable();
+            }
+        }
+
+        function renderMediaCards() {
             const container = document.getElementById('media-cards-container');
             container.innerHTML = '';
+
+            if(appData.media.length === 0) {
+                container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 bg-white rounded-xl border">Belum ada media center terpublikasi.</div>`;
+                return;
+            }
+
             appData.media.forEach((m) => {
                 container.innerHTML += `
-                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-                        <img src="${m.img}" alt="${m.title}" class="w-full h-44 object-cover">
-                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
-                            <div>
-                                <h3 class="font-bold text-slate-800 text-sm leading-snug">${m.title}</h3>
-                                <p class="text-xs text-slate-500 mt-1.5">${m.desc}</p>
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition duration-200">
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            <img src="${m.img}" alt="${m.title}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+                            <span class="absolute top-3 left-3 bg-sbi-900/90 text-amber-300 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">${m.cat}</span>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                            <div class="space-y-2">
+                                <div class="text-[10px] font-bold text-slate-400 flex items-center space-x-1">
+                                    <i class="fa-regular fa-calendar"></i>
+                                    <span>${m.date}</span>
+                                </div>
+                                <h3 class="font-extrabold text-slate-900 text-sm leading-snug hover:text-sbi-600 transition">${m.title}</h3>
+                                <p class="text-xs text-slate-500 leading-relaxed">${m.desc}</p>
                             </div>
-                            <a href="${m.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center space-x-2 bg-sbi-800 hover:bg-sbi-700 text-white text-xs font-bold py-2 px-3 rounded-lg transition w-full text-center">
-                                <span>Baca Selengkapnya</span>
-                                <i class="fa-solid fa-external-link text-[10px]"></i>
-                            </a>
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                                <a href="${m.url}" target="_blank" rel="noopener noreferrer" class="flex-1 inline-flex items-center justify-center space-x-2 bg-sbi-800 hover:bg-sbi-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm">
+                                    <span>Baca Selengkapnya</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </a>
+                                <button onclick="deleteMedia(${m.id})" class="text-slate-400 hover:text-rose-500 p-2 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -420,22 +801,166 @@
 
         function saveMedia() {
             const title = document.getElementById('input-media-title').value;
-            const img = document.getElementById('input-media-img').value || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80';
+            const img = document.getElementById('input-media-img').value || 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80';
             const url = document.getElementById('input-media-url').value || '#';
+            const cat = document.getElementById('input-media-cat').value;
+            const date = document.getElementById('input-media-date').value || '5 Oktober 2026';
             const desc = document.getElementById('input-media-desc').value;
 
-            if(!title) return alert("Mohon isi judul media/konten!");
+            if(!title || !desc) return alert("Mohon lengkapi judul dan deskripsi berita!");
 
-            appData.media.push({ title, img, url, desc });
-            renderMedia();
-            updateDashboardStats();
+            appData.media.push({ id: Date.now(), title, img, url, cat, date, desc });
+            saveData();
+            renderMediaCards();
             closeMediaModal();
+
+            document.getElementById('input-media-title').value = '';
+            document.getElementById('input-media-desc').value = '';
+        }
+
+        function deleteMedia(id) {
+            if(confirm("Hapus publikasi berita ini?")) {
+                appData.media = appData.media.filter(m => m.id !== id);
+                saveData();
+                renderMediaCards();
+            }
+        }
+
+        function renderPraktikBaik() {
+            const container = document.getElementById('praktik-container');
+            container.innerHTML = '';
+
+            if(appData.praktik.length === 0) {
+                container.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 bg-white rounded-xl border">Belum ada praktik baik tersimpan.</div>`;
+                return;
+            }
+
+            appData.praktik.forEach((p) => {
+                container.innerHTML += `
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-3 relative">
+                        <div class="flex items-start justify-between">
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase">Praktik Baik</span>
+                            <button onclick="deletePraktik(${p.id})" class="text-slate-400 hover:text-rose-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <h3 class="font-extrabold text-slate-900 text-base leading-snug">${p.title}</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">${p.desc}</p>
+                        <div class="pt-2 border-t border-slate-100 text-[11px] font-semibold text-emerald-700 flex items-center space-x-1.5">
+                            <i class="fa-solid fa-user-pen"></i>
+                            <span>${p.author}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openPraktikModal() { document.getElementById('praktik-modal').classList.remove('hidden'); }
+        function closePraktikModal() { document.getElementById('praktik-modal').classList.add('hidden'); }
+
+        function savePraktik() {
+            const title = document.getElementById('input-praktik-title').value;
+            const author = document.getElementById('input-praktik-author').value;
+            const desc = document.getElementById('input-praktik-desc').value;
+
+            if(!title || !author || !desc) return alert("Mohon lengkapi semua isian!");
+
+            appData.praktik.push({ id: Date.now(), title, author, desc });
+            saveData();
+            renderPraktikBaik();
+            closePraktikModal();
+
+            document.getElementById('input-praktik-title').value = '';
+            document.getElementById('input-praktik-author').value = '';
+            document.getElementById('input-praktik-desc').value = '';
+        }
+
+        function deletePraktik(id) {
+            if(confirm("Hapus praktik baik ini?")) {
+                appData.praktik = appData.praktik.filter(p => p.id !== id);
+                saveData();
+                renderPraktikBaik();
+            }
+        }
+
+        function initCharts() {
+            // Target Chart
+            const ctxTarget = document.getElementById('targetChart')?.getContext('2d');
+            if(ctxTarget) {
+                targetChartInstance = new Chart(ctxTarget, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Pendataan Guru', 'Praktik Baik', 'Media Center'],
+                        datasets: [
+                            {
+                                label: 'Target 2026',
+                                data: [50, 10, 5],
+                                backgroundColor: '#cbd5e1'
+                            },
+                            {
+                                label: 'Capaian Terkini',
+                                data: [appData.teachers.length, appData.praktik.length, appData.media.length],
+                                backgroundColor: '#1b365d'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom' } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+            }
+
+            // CEFR Chart
+            const ctxCefr = document.getElementById('cefrChart')?.getContext('2d');
+            if(ctxCefr) {
+                const cefrCounts = getCefrDistribution();
+                cefrChartInstance = new Chart(ctxCefr, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['A1 Basic', 'A2 Elementary', 'B1 Intermediate', 'B2 Upper', 'C1 Advanced'],
+                        datasets: [{
+                            data: cefrCounts,
+                            backgroundColor: ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom' } }
+                    }
+                });
+            }
+        }
+
+        function getCefrDistribution() {
+            const counts = [0, 0, 0, 0, 0];
+            appData.teachers.forEach(t => {
+                if(t.cefr.includes('A1')) counts[0]++;
+                else if(t.cefr.includes('A2')) counts[1]++;
+                else if(t.cefr.includes('B1')) counts[2]++;
+                else if(t.cefr.includes('B2')) counts[3]++;
+                else if(t.cefr.includes('C1')) counts[4]++;
+            });
+            return counts;
+        }
+
+        function updateCharts() {
+            if(targetChartInstance) {
+                targetChartInstance.data.datasets[1].data = [appData.teachers.length, appData.praktik.length, appData.media.length];
+                targetChartInstance.update();
+            }
+            if(cefrChartInstance) {
+                cefrChartInstance.data.datasets[0].data = getCefrDistribution();
+                cefrChartInstance.update();
+            }
         }
 
         function toggleAdminAuth() {
-            alert("Mode Admin Diaktifkan.");
+            alert("Mode Pengelola/Admin Aktif. Seluruh fitur input & hapus data dapat digunakan.");
         }
 
+        // Initialize application on page load
         window.onload = initApp;
     </script>
 </body>
