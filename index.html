@@ -1,521 +1,1286 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full bg-slate-50">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SBI HST 2026 - Data Guru & Media Center</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Leaflet CSS for Map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    body { font-family: 'Inter', sans-serif; }
-    .line-clamp-2 {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-  </style>
-</head>
-<body class="bg-slate-100 text-slate-800 antialiased min-h-screen">
-
-  <!-- TOP HEADER DASHBOARD -->
-  <header class="bg-slate-900 text-white px-6 py-4 shadow-lg flex flex-wrap items-center justify-between gap-4">
-    <div class="flex items-center space-x-3">
-      <div class="bg-indigo-600 text-white font-bold text-xl px-3 py-1.5 rounded-lg tracking-wider">96</div>
-      <div>
-        <h1 class="text-lg font-bold flex items-center gap-2">
-          SBI HST 2026 
-          <span class="bg-rose-600 text-[10px] uppercase px-2 py-0.5 rounded-full font-semibold">Data & Impact Hub</span>
-        </h1>
-        <p class="text-xs text-slate-400">Kab. Hulu Sungai Tengah • Kemitraan, Data Guru & Dokumentasi</p>
-      </div>
-    </div>
-    <div class="flex items-center gap-3 text-xs font-medium">
-      <span class="bg-emerald-500/20 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/30 flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Mode Admin (Aktif)
-      </span>
-      <button class="bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300">
-        <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Keluar Admin
-      </button>
-      <button onclick="bukaModalGuru()" class="bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 shadow-sm">
-        <i class="fa-solid fa-plus"></i> Input Data Guru
-      </button>
-    </div>
-  </header>
-
-  <!-- SUB NAVIGATION MENU -->
-  <nav class="bg-slate-800 text-slate-300 px-6 text-xs flex overflow-x-auto border-b border-slate-700 gap-6">
-    <button onclick="gantiTab('guru')" id="tabGuru" class="py-3 border-b-2 border-amber-400 text-amber-400 font-semibold focus:outline-none">
-      📍 Data Guru & Sebaran Maps
-    </button>
-    <button onclick="gantiTab('media')" id="tabMedia" class="py-3 text-slate-300 hover:text-white transition focus:outline-none">
-      📢 SBI Media Center
-    </button>
-    <a href="#" class="py-3 hover:text-white transition">★ SBI Story & Praktik Baik</a>
-    <a href="#" class="py-3 hover:text-white transition">📁 Digital Archive & Mitra</a>
-    <a href="#" class="py-3 hover:text-white transition">📊 Laporan Dampak</a>
-  </nav>
-
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto p-4 sm:p-6">
-
-    <!-- SEKSI 1: DATA GURU & SEBARAN GOOGLE MAPS -->
-    <div id="seksiGuru" class="space-y-6">
-      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-          <div>
-            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <i class="fa-solid fa-map-location-dot text-indigo-600"></i> Peta Sebaran Lokasi Sekolah Guru
-            </h2>
-            <p class="text-xs text-slate-500 mt-1">Pantau lokasi dan rute navigasi Google Maps langsung menuju sekolah masing-masing guru</p>
-          </div>
-        </div>
-        <!-- LEAFLET MAP DISPLAY -->
-        <div id="map" class="w-full h-80 rounded-xl mt-4 border border-slate-200 z-0"></div>
-      </div>
-
-      <!-- DAFTAR KARTU GURU -->
-      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-        <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-          <i class="fa-solid fa-users text-indigo-600"></i> Daftar Guru & Akses Google Maps
-        </h3>
-        <div id="gridGuru" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Diisi via JavaScript -->
-        </div>
-      </div>
-    </div>
-
-    <!-- SEKSI 2: SBI MEDIA CENTER & KALENDER KONTEN -->
-    <div id="seksiMedia" class="hidden">
-      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-          <div>
-            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <i class="fa-solid fa-bullhorn text-rose-600"></i> SBI Media Center & Kalender Konten
-            </h2>
-            <p class="text-xs text-slate-500 mt-1">Pusat informasi, berita kegiatan, posting media sosial, dan infografis SBI HST</p>
-          </div>
-          <div class="flex items-center gap-3">
-            <select id="filterKategori" onchange="filterKonten()" class="border border-slate-300 rounded-lg px-3 py-2 text-xs bg-slate-50 focus:outline-none">
-              <option value="Semua">Semua Jenis Konten</option>
-              <option value="Berita Kegiatan">Berita Kegiatan</option>
-              <option value="Reels / Media Sosial">Reels / Media Sosial</option>
-              <option value="Infografis">Infografis</option>
-            </select>
-            <button onclick="bukaModalKonten()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm transition">
-              <i class="fa-solid fa-plus"></i> Tambah Konten
-            </button>
-          </div>
-        </div>
-
-        <!-- GRID KONTEN MEDIA -->
-        <div id="gridKonten" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-          <!-- Diisi via JavaScript -->
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- MODAL: TAMBAH GURU BARU & LOKASI -->
-  <div id="modalGuru" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-      <button onclick="tutupModalGuru()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-user-plus text-indigo-600"></i> Tambah Data Guru & Lokasi Sekolah
-      </h3>
-      <form onsubmit="simpanGuru(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-semibold mb-1">Nama Lengkap Guru</label>
-          <input type="text" id="gNama" required placeholder="Contoh: Ahmad Sanusi, S.Pd" class="w-full border rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-indigo-500">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold mb-1">Mata Pelajaran</label>
-            <input type="text" id="gMapel" required placeholder="Bahasa Inggris" class="w-full border rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-indigo-500">
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Nama Sekolah / Intansi</label>
-            <input type="text" id="gSekolah" required placeholder="SDN 1 Barabai" class="w-full border rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-indigo-500">
-          </div>
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Upload Foto Guru</label>
-          <input type="file" id="gFoto" accept="image/*" onchange="previewFotoGuru(event)" class="w-full text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-600 cursor-pointer">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold mb-1">Latitude (G-Maps)</label>
-            <input type="text" id="gLat" required placeholder="-2.5833" class="w-full border rounded-lg p-2.5 outline-none">
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Longitude (G-Maps)</label>
-            <input type="text" id="gLng" required placeholder="115.3833" class="w-full border rounded-lg p-2.5 outline-none">
-          </div>
-        </div>
-        <div class="flex justify-end gap-2 pt-3 border-t">
-          <button type="button" onclick="tutupModalGuru()" class="px-4 py-2 text-slate-600">Batal</button>
-          <button type="submit" class="px-5 py-2 bg-indigo-600 text-white rounded-lg font-semibold">Simpan Data Guru</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: BACA KONTEN MEDIA (POP-UP DETAIL) -->
-  <div id="modalBaca" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-      <button onclick="tutupModalBaca()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100 rounded-full w-8 h-8 flex items-center justify-center">
-        <i class="fa-solid fa-xmark text-sm"></i>
-      </button>
-      <span id="bacaKategori" class="inline-block px-2.5 py-1 text-[11px] font-semibold rounded-md bg-slate-100 text-slate-700 mb-3">Kategori</span>
-      <h2 id="bacaJudul" class="text-xl font-bold text-slate-900 mb-2">Judul Berita</h2>
-      <div class="flex items-center gap-4 text-xs text-slate-400 mb-4 pb-3 border-b">
-        <span id="bacaPenulis"><i class="fa-regular fa-user mr-1"></i> Penulis</span>
-        <span id="bacaTanggal"><i class="fa-regular fa-calendar mr-1"></i> Tanggal</span>
-        <span id="bacaViews"><i class="fa-regular fa-eye mr-1"></i> Views</span>
-      </div>
-      <div class="rounded-xl overflow-hidden mb-4 max-h-80 border">
-        <img id="bacaFoto" src="" alt="Foto" class="w-full h-full object-cover">
-      </div>
-      <div id="bacaIsi" class="text-sm text-slate-700 leading-relaxed whitespace-pre-line"></div>
-      <div class="mt-6 pt-4 border-t flex justify-end">
-        <button onclick="tutupModalBaca()" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-medium">Tutup Halaman</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: TAMBAH KONTEN MEDIA CENTER -->
-  <div id="modalKonten" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-      <button onclick="tutupModalKonten()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-      <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-pen-to-square text-rose-600"></i> Tambah Konten Media Center
-      </h3>
-      <form onsubmit="simpanKonten(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-semibold mb-1">Judul Konten / Berita</label>
-          <input type="text" id="kJudul" required class="w-full border rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-rose-500">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold mb-1">Kategori Konten</label>
-            <select id="kKategori" class="w-full border rounded-lg p-2.5 outline-none">
-              <option value="Berita Kegiatan">Berita Kegiatan</option>
-              <option value="Reels / Media Sosial">Reels / Media Sosial</option>
-              <option value="Infografis">Infografis</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Penulis / Tim</label>
-            <input type="text" id="kPenulis" required placeholder="Tim Publikasi" class="w-full border rounded-lg p-2.5 outline-none">
-          </div>
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Upload Foto / Header</label>
-          <input type="file" id="kFoto" accept="image/*" onchange="previewFotoKonten(event)" class="w-full text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-rose-50 file:text-rose-600 cursor-pointer">
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Isi Lengkap Konten</label>
-          <textarea id="kIsi" rows="4" required class="w-full border rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-rose-500"></textarea>
-        </div>
-        <div class="flex justify-end gap-2 pt-3 border-t">
-          <button type="button" onclick="tutupModalKonten()" class="px-4 py-2 text-slate-600">Batal</button>
-          <button type="submit" class="px-5 py-2 bg-rose-600 text-white rounded-lg font-semibold">Simpan Konten</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Leaflet JS for Maps -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <script>
-    // DATA DEFAULT GURU & LOKASI GOOGLE MAPS
-    let dataGuru = [
-      {
-        id: 1,
-        nama: "Ahmad Sanusi, S.Pd",
-        mapel: "Bahasa Inggris",
-        sekolah: "SDN 1 Barabai",
-        lat: -2.5833,
-        lng: 115.3833,
-        foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80"
-      },
-      {
-        id: 2,
-        nama: "Siti Rahmah, M.Pd",
-        mapel: "Bahasa Inggris",
-        sekolah: "SDN 2 Haruyan",
-        lat: -2.6100,
-        lng: 115.3500,
-        foto: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80"
-      }
-    ];
-
-    // DATA DEFAULT MEDIA CENTER
-    let dataKonten = [
-      {
-        id: 1,
-        judul: "dfgsdfgs",
-        kategori: "Berita Kegiatan",
-        penulis: "Tim SBI HST",
-        tanggal: "Hari Ini",
-        views: "0 Views",
-        foto: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format&fit=crop&q=80",
-        isi: "gsfgsfgs"
-      },
-      {
-        id: 2,
-        judul: "Pengimbasan SBI SD Se-Kabupaten Hulu Sungai Tengah Resmi Dimulai",
-        kategori: "Berita Kegiatan",
-        penulis: "Tim Publikasi",
-        tanggal: "14 Feb 2026",
-        views: "1.2k Reads",
-        foto: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format&fit=crop&q=80",
-        isi: "Dinas Pendidikan HST menggelar koordinasi pengimbasan Bahasa Inggris untuk 24 SD sasaran guna memperkuat kompetensi guru dan siswa di wilayah Hulu Sungai Tengah."
-      },
-      {
-        id: 3,
-        judul: "Reels Inspirasi: How We Run 'English Friday' at SD Barabai",
-        kategori: "Reels / Media Sosial",
-        penulis: "Tim Medsos",
-        tanggal: "20 Feb 2026",
-        views: "4.8k Views",
-        foto: "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&auto=format&fit=crop&q=80",
-        isi: "Aktivitas seru para siswa SD Barabai mempraktikkan ungkapan sehari-hari Bahasa Inggris dengan senyuman dan antusiasme tinggi setiap hari Jumat."
-      }
-    ];
-
-    let map;
-    let markers = [];
-    let tempFotoGuru = "";
-    let tempFotoKonten = "";
-
-    // INITALIZE MAP & CARDS
-    window.onload = function() {
-      initMap();
-      tampilkanGuru();
-      tampilkanKonten(dataKonten);
-    };
-
-    function initMap() {
-      map = L.map('map').setView([-2.5833, 115.3833], 11);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap'
-      }).addTo(map);
-      updateMapMarkers();
-    }
-
-    function updateMapMarkers() {
-      markers.forEach(m => map.removeLayer(m));
-      markers = [];
-
-      dataGuru.forEach(guru => {
-        const m = L.marker([guru.lat, guru.lng]).addTo(map);
-        const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=${guru.lat},${guru.lng}`;
-        m.bindPopup(`
-          <div style="font-size:12px;">
-            <b>${guru.nama}</b><br>
-            ${guru.sekolah}<br>
-            <a href="${mapUrl}" target="_blank" style="color:#d97706; font-weight:bold;">📍 Buka Google Maps Navigasi</a>
-          </div>
-        `);
-        markers.push(m);
-      });
-    }
-
-    function tampilkanGuru() {
-      const container = document.getElementById('gridGuru');
-      container.innerHTML = "";
-
-      dataGuru.forEach(guru => {
-        const mapsPointUrl = `https://www.google.com/maps/search/?api=1&query=${guru.lat},${guru.lng}`;
-        const mapsDirUrl = `https://www.google.com/maps/dir/?api=1&destination=${guru.lat},${guru.lng}`;
-
-        container.innerHTML += `
-          <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center gap-3 mb-3">
-                <img src="${guru.foto}" class="w-12 h-12 rounded-full object-cover border border-slate-200">
-                <div>
-                  <h4 class="font-bold text-slate-900 text-sm">${guru.nama}</h4>
-                  <p class="text-xs text-slate-500">${guru.mapel} • ${guru.sekolah}</p>
-                </div>
-              </div>
-            </div>
-            <div class="pt-3 border-t border-slate-200 space-y-2">
-              <a href="${mapsDirUrl}" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 transition">
-                <i class="fa-solid fa-diamond-turn-right"></i> Rute Navigasi Google Maps
-              </a>
-              <a href="${mapsPointUrl}" target="_blank" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold py-1.5 px-3 rounded-lg flex items-center justify-center gap-1.5 transition">
-                <i class="fa-solid fa-location-dot text-rose-600"></i> Lihat Titik Peta
-              </a>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    function tampilkanKonten(list) {
-      const container = document.getElementById('gridKonten');
-      container.innerHTML = "";
-
-      list.forEach(item => {
-        container.innerHTML += `
-          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition flex flex-col justify-between">
-            <div>
-              <div class="relative h-44 bg-slate-100 overflow-hidden">
-                <img src="${item.foto}" class="w-full h-full object-cover">
-                <span class="absolute top-3 left-3 bg-slate-900/80 text-white text-[10px] font-semibold px-2.5 py-1 rounded-md">
-                  ${item.kategori}
-                </span>
-                <button onclick="hapusKonten(${item.id})" class="absolute top-3 right-3 bg-white/90 text-rose-600 hover:bg-rose-600 hover:text-white w-7 h-7 rounded-lg text-xs flex items-center justify-center">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </div>
-              <div class="p-4">
-                <div class="flex items-center justify-between text-[11px] text-slate-400 mb-2">
-                  <span><i class="fa-regular fa-clock mr-1"></i>${item.tanggal}</span>
-                  <span><i class="fa-regular fa-eye mr-1"></i>${item.views}</span>
-                </div>
-                <h3 class="font-bold text-slate-900 text-sm leading-snug line-clamp-2 mb-2">${item.judul}</h3>
-                <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${item.isi}</p>
-              </div>
-            </div>
-            <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
-              <span class="text-slate-400 font-medium">Oleh: ${item.penulis}</span>
-              <button onclick="bukaModalBaca(${item.id})" class="text-rose-600 font-semibold hover:text-rose-700 flex items-center gap-1">
-                Baca Konten →
-              </button>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    // TABS SWITCHING
-    function gantiTab(tab) {
-      if(tab === 'guru') {
-        document.getElementById('seksiGuru').classList.remove('hidden');
-        document.getElementById('seksiMedia').classList.add('hidden');
-        document.getElementById('tabGuru').className = "py-3 border-b-2 border-amber-400 text-amber-400 font-semibold focus:outline-none";
-        document.getElementById('tabMedia').className = "py-3 text-slate-300 hover:text-white transition focus:outline-none";
-      } else {
-        document.getElementById('seksiGuru').classList.add('hidden');
-        document.getElementById('seksiMedia').classList.remove('hidden');
-        document.getElementById('tabGuru').className = "py-3 text-slate-300 hover:text-white transition focus:outline-none";
-        document.getElementById('tabMedia').className = "py-3 border-b-2 border-amber-400 text-amber-400 font-semibold focus:outline-none";
-      }
-    }
-
-    // HANDLERS FOR GURU FORM
-    function bukaModalGuru() { document.getElementById('modalGuru').classList.remove('hidden'); document.getElementById('modalGuru').classList.add('flex'); }
-    function tutupModalGuru() { document.getElementById('modalGuru').classList.add('hidden'); document.getElementById('modalGuru').classList.remove('flex'); tempFotoGuru = ""; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBI HST 2026 - Communication, Media Center & Data Sebaran Guru Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet JS & CSS for Google Maps Integration -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    function previewFotoGuru(e) {
-      const file = e.target.files[0];
-      if(file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) { tempFotoGuru = evt.target.result; };
-        reader.readAsDataURL(file);
-      }
-    }
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        sbi: {
+                            50: '#f2f5f9',
+                            100: '#e1e8f2',
+                            200: '#c2d2e5',
+                            500: '#1b365d',
+                            600: '#152b4b',
+                            700: '#102038',
+                            800: '#0b1626',
+                            900: '#060b13',
+                        },
+                        sbired: {
+                            50: '#fdf2f3',
+                            100: '#fbe5e7',
+                            500: '#a61c2e',
+                            600: '#8c1625',
+                            700: '#72111d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        #leaflet-map {
+            z-index: 1;
+            height: 420px;
+            width: 100%;
+            border-radius: 0.75rem;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; }
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-sbi-500 selection:text-white">
 
-    function simpanGuru(e) {
-      e.preventDefault();
-      const nama = document.getElementById('gNama').value;
-      const mapel = document.getElementById('gMapel').value;
-      const sekolah = document.getElementById('gSekolah').value;
-      const lat = parseFloat(document.getElementById('gLat').value);
-      const lng = parseFloat(document.getElementById('gLng').value);
+    <!-- TOP NAVIGATION HEADER -->
+    <header class="bg-sbi-900 text-white shadow-lg sticky top-0 z-40 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-2.5 sm:py-3 min-h-[4.5rem]">
+                <!-- Brand & Logo -->
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white flex items-center justify-center p-1 sm:p-1.5 shadow-xl border-2 border-white/20 flex-shrink-0 transition-transform duration-200 hover:scale-105 overflow-hidden">
+                        <svg viewBox="160 260 680 480" class="w-full h-full drop-shadow-sm" xmlns="http://www.w3.org/2000/svg">
+                            <g fill="#18335D" fill-rule="evenodd">
+                                <path d="M 468 290 L 296 290 A 124 124 0 0 0 172 414 A 124 124 0 0 0 296 538 L 396 538 L 396 710 L 468 710 Z M 396 362 L 296 362 A 52 52 0 0 0 244 414 A 52 52 0 0 0 296 466 L 396 466 Z" />
+                                <path d="M 468 290 L 296 290 A 124 124 0 0 0 172 414 A 124 124 0 0 0 296 538 L 396 538 L 396 710 L 468 710 Z M 396 362 L 296 362 A 52 52 0 0 0 244 414 A 52 52 0 0 0 296 466 L 396 466 Z" transform="rotate(180 500 500)" />
+                            </g>
+                            <g fill="#B12035">
+                                <rect x="208" y="638" width="157" height="72" />
+                                <rect x="208" y="638" width="157" height="72" transform="rotate(180 500 500)" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-extrabold text-lg sm:text-xl tracking-tight text-white">SBI HST 2026</span>
+                            <span class="bg-sbired-500 text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">Media & Map Hub</span>
+                        </div>
+                        <p class="text-xs text-slate-300 hidden sm:block">Kab. Hulu Sungai Tengah • Kemitraan, Google Map Sebaran &amp; Media Center</p>
+                    </div>
+                </div>
 
-      dataGuru.push({
-        id: Date.now(),
-        nama, mapel, sekolah, lat, lng,
-        foto: tempFotoGuru || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80"
-      });
+                <!-- Access Status & Action Controls -->
+                <div class="flex items-center space-x-2">
+                    <div id="access-mode-badge" class="hidden sm:flex items-center space-x-1.5 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-xs">
+                        <span class="w-2 h-2 rounded-full bg-slate-400" id="access-dot"></span>
+                        <span class="text-slate-300 font-medium" id="access-text">Mode Publik (Read-Only)</span>
+                    </div>
 
-      tampilkanGuru();
-      updateMapMarkers();
-      tutupModalGuru();
-    }
+                    <button id="admin-auth-btn" onclick="toggleAdminAuth()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-lock text-amber-400" id="admin-auth-icon"></i>
+                        <span id="admin-auth-label">Login Admin</span>
+                    </button>
 
-    // HANDLERS FOR MEDIA KONTEN FORM
-    function bukaModalKonten() { document.getElementById('modalKonten').classList.remove('hidden'); document.getElementById('modalKonten').classList.add('flex'); }
-    function tutupModalKonten() { document.getElementById('modalKonten').classList.add('hidden'); document.getElementById('modalKonten').classList.remove('flex'); tempFotoKonten = ""; }
+                    <button onclick="openMediaModal()" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-plus"></i>
+                        <span class="hidden sm:inline">Tambah Media</span>
+                    </button>
 
-    function previewFotoKonten(e) {
-      const file = e.target.files[0];
-      if(file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) { tempFotoKonten = evt.target.result; };
-        reader.readAsDataURL(file);
-      }
-    }
+                    <button onclick="window.print()" class="bg-sbi-800 hover:bg-sbi-700 text-slate-200 text-xs sm:text-sm px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1">
+                        <i class="fa-solid fa-print"></i>
+                        <span class="hidden md:inline">Cetak</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    function simpanKonten(e) {
-      e.preventDefault();
-      const judul = document.getElementById('kJudul').value;
-      const kategori = document.getElementById('kKategori').value;
-      const penulis = document.getElementById('kPenulis').value;
-      const isi = document.getElementById('kIsi').value;
+        <!-- MAIN MENU TABS -->
+        <nav class="bg-sbi-800 border-t border-sbi-700/50 overflow-x-auto custom-scrollbar">
+            <div class="max-w-7xl mx-auto px-4 flex space-x-1 whitespace-nowrap text-sm font-medium">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn py-3 px-4 text-amber-300 border-b-2 border-amber-400 font-semibold flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard &amp; Target</span>
+                </button>
+                <button onclick="switchTab('teachers')" id="tab-teachers" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>Data Guru &amp; Google Map Sebaran</span>
+                </button>
+                <button onclick="switchTab('mediacenter')" id="tab-mediacenter" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <span>SBI Media Center</span>
+                </button>
+                <button onclick="switchTab('stories')" id="tab-stories" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-star"></i>
+                    <span>SBI Story &amp; Praktik Baik</span>
+                </button>
+                <button onclick="switchTab('archive')" id="tab-archive" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <span>Digital Archive &amp; Mitra</span>
+                </button>
+                <button onclick="switchTab('impact')" id="tab-impact" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <span>Laporan Dampak</span>
+                </button>
+                <button onclick="switchTab('team')" id="tab-team" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Tim &amp; Alur Kerja</span>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-      dataKonten.unshift({
-        id: Date.now(),
-        judul, kategori, penulis,
-        tanggal: "Hari Ini",
-        views: "0 Views",
-        foto: tempFotoKonten || "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format&fit=crop&q=80",
-        isi
-      });
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
-      tampilkanKonten(dataKonten);
-      tutupModalKonten();
-    }
+        <!-- TAB 1: DASHBOARD OVERVIEW & TARGET 2026 -->
+        <div id="page-dashboard" class="page-content space-y-6">
+            <div class="bg-gradient-to-r from-sbi-800 via-sbi-700 to-sbi-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border-l-4 border-sbired-500">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white pointer-events-none">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+                <div class="max-w-3xl space-y-3 relative z-10">
+                    <div class="inline-flex items-center space-x-2 bg-sbi-500/40 border border-sbi-200/20 px-3 py-1 rounded-full text-xs font-semibold text-amber-300">
+                        <i class="fa-solid fa-award"></i>
+                        <span>Tim Pengimbasan SD &amp; Penguatan Ekosistem SMP</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                        Hub Komunikasi, Sebaran Map Guru &amp; Media Center SBI HST 2026
+                    </h1>
+                    <p class="text-slate-200 text-sm leading-relaxed">
+                        Pusat integrasi peta lokasi guru SBI Kabupaten Hulu Sungai Tengah terkoneksi Google Maps, manajemen berita media center berfoto kustom, direktori guru, dan rekam jejak dampak program.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-user-tie text-amber-400"></i>
+                            <span><b id="dash-stat-teachers">72</b> Guru Terdata</span>
+                        </div>
+                        <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-school text-amber-400"></i>
+                            <span><b>24 SD</b> Pengimbasan</span>
+                        </div>
+                        <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-building-columns text-amber-400"></i>
+                            <span><b>12 SMP</b> Ekosistem</span>
+                        </div>
+                        <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-map-location-dot text-amber-400"></i>
+                            <span><b>11 Kecamatan</b> HST</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    function hapusKonten(id) {
-      if(confirm("Hapus konten ini?")) {
-        dataKonten = dataKonten.filter(k => k.id !== id);
-        tampilkanKonten(dataKonten);
-      }
-    }
+            <!-- KPI Summary Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-sbi-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Capaian Target 2026</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-target-pct">75%</h3>
+                        <p class="text-[11px] text-emerald-600 font-semibold"><i class="fa-solid fa-arrow-up"></i> 9/12 Target Terpenuhi</p>
+                    </div>
+                </div>
 
-    function filterKonten() {
-      const val = document.getElementById('filterKategori').value;
-      if(val === "Semua") tampilkanKonten(dataKonten);
-      else tampilkanKonten(dataKonten.filter(k => k.kategori === val));
-    }
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium font-semibold">Total Guru SBI</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-teacher-count">72</h3>
+                        <p class="text-[11px] text-indigo-600 font-semibold"><i class="fa-solid fa-map-pin"></i> Terkoneksi Google Map</p>
+                    </div>
+                </div>
 
-    // MODAL BACA KONTEN
-    function bukaModalBaca(id) {
-      const item = dataKonten.find(k => k.id === id);
-      if(item) {
-        document.getElementById('bacaKategori').innerText = item.kategori;
-        document.getElementById('bacaJudul').innerText = item.judul;
-        document.getElementById('bacaPenulis').innerHTML = `<i class="fa-regular fa-user mr-1"></i> Oleh: ${item.penulis}`;
-        document.getElementById('bacaTanggal').innerHTML = `<i class="fa-regular fa-calendar mr-1"></i> ${item.tanggal}`;
-        document.getElementById('bacaViews').innerHTML = `<i class="fa-regular fa-eye mr-1"></i> ${item.views}`;
-        document.getElementById('bacaFoto').src = item.foto;
-        document.getElementById('bacaIsi').innerText = item.isi;
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Artikel Media Center</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-media-count">4</h3>
+                        <p class="text-[11px] text-amber-600 font-semibold"><i class="fa-solid fa-image"></i> Media Berfoto &amp; Custom Link</p>
+                    </div>
+                </div>
 
-        document.getElementById('modalBaca').classList.remove('hidden');
-        document.getElementById('modalBaca').classList.add('flex');
-      }
-    }
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-photo-film"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Konten &amp; Arsip Digital</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-archive-count">86</h3>
+                        <p class="text-[11px] text-purple-600 font-semibold">Terdokumentasi 100%</p>
+                    </div>
+                </div>
+            </div>
 
-    function tutupModalBaca() {
-      document.getElementById('modalBaca').classList.add('hidden');
-      document.getElementById('modalBaca').classList.remove('flex');
-    }
-  </script>
+            <!-- Target Output & Strategic Concept -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                                <i class="fa-solid fa-list-check text-sbi-600"></i>
+                                <span>Target Output Program SBI HST 2026</span>
+                            </h2>
+                            <p class="text-xs text-slate-500">Progres pencapaian program kerja tingkat kabupaten</p>
+                        </div>
+                        <span class="text-xs bg-sbi-100 text-sbi-800 px-2.5 py-1 rounded-full font-bold">Tahun 2026</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-600 text-xs uppercase font-semibold">
+                                <tr>
+                                    <th class="p-3 rounded-l-lg">Output Program</th>
+                                    <th class="p-3">Target Doc</th>
+                                    <th class="p-3">Realisasi</th>
+                                    <th class="p-3 rounded-r-lg text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700" id="target-output-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-5">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-compass text-amber-500"></i>
+                            <span>Fitur Utama Portal</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">Panduan Penggunaan Sistem</p>
+                    </div>
+
+                    <div class="bg-sbi-50 rounded-xl p-4 border border-sbi-100 space-y-3 text-xs">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-sbi-600 text-white flex items-center justify-center font-bold flex-shrink-0">1</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Peta Sebaran &amp; Google Maps</h4>
+                                <p class="text-slate-600">Peta interaktif HST dengan pin lokasi sekolah dan tautan rute Google Maps langsung.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-sbired-500 text-white flex items-center justify-center font-bold flex-shrink-0">2</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Media Center Foto Kustom</h4>
+                                <p class="text-slate-600">Upload foto berita dari perangkat Anda dan atur tautan arah baca (URL tujuan).</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="w-6 h-6 rounded-full bg-sbi-600 text-white flex items-center justify-center font-bold flex-shrink-0">3</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Kelola Data &amp; Ekspor</h4>
+                                <p class="text-slate-600">Filter guru berdasarkan kecamatan, level CEFR, serta ekspor file CSV.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: DATA GURU SBI & SEBARAN GOOGLE MAPS -->
+        <div id="page-teachers" class="page-content space-y-6 hidden">
+            <!-- Header section for Map and Teachers -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 text-xs font-bold text-sbi-700 bg-sbi-50 px-2.5 py-1 rounded-md mb-1">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span>Sistem Informasi &amp; Pemetaan Guru Berbahasa Inggris</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900">Data Guru SBI &amp; Sebaran Wilayah HST (Google Maps Integration)</h2>
+                    <p class="text-xs text-slate-500">Klik lokasi pada peta atau tombol "Google Maps" untuk melihat petunjuk arah lokasi sekolah di Kabupaten Hulu Sungai Tengah.</p>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button onclick="openTeacherModal()" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3.5 py-2.5 rounded-lg transition font-bold flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Tambah Data Guru</span>
+                    </button>
+                    <button onclick="exportTeacherDataCSV()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs px-3 py-2.5 rounded-lg transition font-semibold flex items-center space-x-1 shadow">
+                        <i class="fa-solid fa-file-csv"></i>
+                        <span>Ekspor Data CSV</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE GOOGLE MAPS / LEAFLET CONTAINER -->
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-location-dot text-sbired-500 text-lg"></i>
+                        <h3 class="text-sm font-bold text-slate-800">Peta Sebaran Sekolah SBI Kab. Hulu Sungai Tengah</h3>
+                        <span class="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-medium">11 Kecamatan</span>
+                    </div>
+                    <div class="text-xs text-slate-500 flex items-center space-x-2">
+                        <span>Filter Peta Kecamatan:</span>
+                        <select id="map-district-filter" onchange="filterMapByDistrict(this.value)" class="bg-slate-50 border border-slate-300 rounded px-2 py-1 text-xs font-medium focus:ring-sbi-500">
+                            <option value="ALL">Semua Kecamatan</option>
+                            <option value="Barabai">Barabai (Pusat)</option>
+                            <option value="Batu Benawa">Batu Benawa</option>
+                            <option value="Pandawan">Pandawan</option>
+                            <option value="Labuan Amas Selatan">Labuan Amas Selatan</option>
+                            <option value="Labuan Amas Utara">Labuan Amas Utara</option>
+                            <option value="Haruyan">Haruyan</option>
+                            <option value="Hantakan">Hantakan</option>
+                            <option value="Batang Alai Selatan">Batang Alai Selatan</option>
+                            <option value="Batang Alai Utara">Batang Alai Utara</option>
+                            <option value="Batang Alai Timur">Batang Alai Timur</option>
+                            <option value="Limpasu">Limpasu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Map Container -->
+                <div id="leaflet-map" class="shadow-inner border border-slate-200"></div>
+
+                <div class="flex flex-wrap items-center justify-between text-xs text-slate-500 pt-1">
+                    <div class="flex items-center space-x-4">
+                        <span class="flex items-center space-x-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span><span>SD Pengimbasan</span></span>
+                        <span class="flex items-center space-x-1.5"><span class="w-3 h-3 rounded-full bg-red-600 inline-block"></span><span>SMP Ekosistem</span></span>
+                    </div>
+                    <p class="text-[11px] italic"><i class="fa-solid fa-circle-info text-sbi-500"></i> Klik marker sekolah pada peta untuk melihat detail guru &amp; rute Google Maps.</p>
+                </div>
+            </div>
+
+            <!-- District Filter & Search Controls for Teacher Directory -->
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Cari Nama Guru / NIP</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                            <input type="text" id="teacher-search-input" onkeyup="renderTeacherTable()" placeholder="Ketik nama atau sekolah..." class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Kecamatan</label>
+                        <select id="teacher-filter-district" onchange="renderTeacherTable()" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                            <option value="ALL">Semua Kecamatan (11)</option>
+                            <option value="Barabai">Barabai</option>
+                            <option value="Batu Benawa">Batu Benawa</option>
+                            <option value="Pandawan">Pandawan</option>
+                            <option value="Labuan Amas Selatan">Labuan Amas Selatan</option>
+                            <option value="Labuan Amas Utara">Labuan Amas Utara</option>
+                            <option value="Haruyan">Haruyan</option>
+                            <option value="Hantakan">Hantakan</option>
+                            <option value="Batang Alai Selatan">Batang Alai Selatan</option>
+                            <option value="Batang Alai Utara">Batang Alai Utara</option>
+                            <option value="Batang Alai Timur">Batang Alai Timur</option>
+                            <option value="Limpasu">Limpasu</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Jenjang Sekolah</label>
+                        <select id="teacher-filter-level" onchange="renderTeacherTable()" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                            <option value="ALL">Semua Jenjang</option>
+                            <option value="SD">SD (Sekolah Dasar)</option>
+                            <option value="SMP">SMP (Sekolah Menengah Pertama)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Kemahiran CEFR</label>
+                        <select id="teacher-filter-cefr" onchange="renderTeacherTable()" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                            <option value="ALL">Semua Kemahiran CEFR</option>
+                            <option value="B2">Level B2 (Upper Intermediate)</option>
+                            <option value="B1">Level B1 (Intermediate)</option>
+                            <option value="A2">Level A2 (Elementary)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Teacher Directory Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-sbi-800 text-white font-semibold">
+                            <tr>
+                                <th class="p-3 rounded-tl-lg">No</th>
+                                <th class="p-3">Nama Guru &amp; NIP</th>
+                                <th class="p-3">Unit Kerja Sekolah</th>
+                                <th class="p-3">Kecamatan</th>
+                                <th class="p-3">Level CEFR</th>
+                                <th class="p-3">Status Pengimbasan</th>
+                                <th class="p-3 text-center">Google Maps</th>
+                                <th class="p-3 rounded-tr-lg text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700 bg-white" id="teacher-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: SBI MEDIA CENTER (EDITABLE WITH PHOTO UPLOAD & DIRECT LINK) -->
+        <div id="page-mediacenter" class="page-content space-y-6 hidden">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center space-x-2 text-xs font-bold text-sbired-600 bg-sbired-50 px-2.5 py-1 rounded-md mb-1">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <span>Pusat Informasi &amp; Publikasi Berita SBI HST</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900">SBI Media Center</h2>
+                    <p class="text-xs text-slate-500">Kelola artikel liputan media, upload foto kustom dari galeri/HP Anda, dan arahkan tautan baca selengkapnya ke portal/sumber luar.</p>
+                </div>
+
+                <button onclick="openMediaModal()" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-4 py-2.5 rounded-lg transition font-bold flex items-center space-x-2 shadow">
+                    <i class="fa-solid fa-square-plus"></i>
+                    <span>Tambah / Edit Artikel Media</span>
+                </button>
+            </div>
+
+            <!-- Media Category Filters -->
+            <div class="flex items-center space-x-2 overflow-x-auto pb-1 text-xs">
+                <button onclick="filterMediaCategory('ALL')" class="media-cat-btn px-3 py-1.5 rounded-lg font-semibold bg-sbi-800 text-white shadow">Semua Artikel</button>
+                <button onclick="filterMediaCategory('Liputan Utama')" class="media-cat-btn px-3 py-1.5 rounded-lg font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">Liputan Utama</button>
+                <button onclick="filterMediaCategory('Press Release')" class="media-cat-btn px-3 py-1.5 rounded-lg font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">Press Release</button>
+                <button onclick="filterMediaCategory('Buletin')" class="media-cat-btn px-3 py-1.5 rounded-lg font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">Buletin &amp; Praktik Baik</button>
+            </div>
+
+            <!-- Media Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="media-cards-grid"></div>
+        </div>
+
+        <!-- TAB 4: SBI STORY & PRAKTIK BAIK -->
+        <div id="page-stories" class="page-content space-y-6 hidden">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900">SBI Story &amp; Praktik Baik Sekolah</h2>
+                <p class="text-xs text-slate-500">Kumpulan rekam jejak, inovasi pengajaran, dan kisah inspiratif guru SBI Hulu Sungai Tengah.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="stories-grid">
+                <!-- Sample Story 1 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-sbi-100 text-sbi-700 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-800">English Morning Assembly di SD Negeri Barabai 1</h3>
+                            <p class="text-xs text-slate-500">Ahmad Rizky, S.Pd. • Kecamatan Barabai</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        "Penerapan apel pagi berbahasa Inggris singkat selama 10 menit setiap hari Selasa berhasil meningkatkan keberanian siswa kelas 4-6 dalam mengucapkan kalimat dasar secara percaya diri."
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-semibold">Inovasi Pembiasaan</span>
+                        <span class="text-slate-400">Maret 2026</span>
+                    </div>
+                </div>
+
+                <!-- Sample Story 2 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-800">Pengimbasan Ranting Kelas Berbahasa Inggris di Pandawan</h3>
+                            <p class="text-xs text-slate-500">Siti Nurhaliza, S.Pd. • SD Negeri Pandawan</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        "Dengan melibatkan guru wali kelas lainnya, kosa kata instruksi kelas (Classroom Commands) kini rutin digunakan dalam aktivitas pembelajaran sehari-hari."
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">Pengimbasan Sejawat</span>
+                        <span class="text-slate-400">Februari 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: DIGITAL ARCHIVE & MITRA -->
+        <div id="page-archive" class="page-content space-y-6 hidden">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900">Digital Archive &amp; Mitra Strategis</h2>
+                <p class="text-xs text-slate-500">Dokumen panduan, modul pengimbasan, regulasi Dinas Pendidikan HST, dan tautan jejaring mitra.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-sbi-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800">Modul Pengimbasan SBI SD 2026</h3>
+                    <p class="text-xs text-slate-500">Panduan implementasi kelas berbahasa Inggris jenjang SD.</p>
+                    <a href="javascript:void(0)" onclick="notifyDemo('Mengunduh Modul Pengimbasan SBI SD...')" class="inline-block text-xs font-bold text-sbi-600 hover:underline"><i class="fa-solid fa-download"></i> Unduh Dokumen PDF</a>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-book-atlas"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800">Panduan Standardisasi CEFR Guru</h3>
+                    <p class="text-xs text-slate-500">Panduan evaluasi mandiri CEFR A2, B1, B2 untuk guru pendamping.</p>
+                    <a href="javascript:void(0)" onclick="notifyDemo('Mengunduh Panduan CEFR...')" class="inline-block text-xs font-bold text-amber-600 hover:underline"><i class="fa-solid fa-download"></i> Unduh Dokumen PDF</a>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800">Kerangka Kerja Mitra Disdik HST</h3>
+                    <p class="text-xs text-slate-500">Dokumen kesepahaman pengembangan ekosistem SBI HST 2026.</p>
+                    <a href="javascript:void(0)" onclick="notifyDemo('Mengunduh Kerangka Kerja...')" class="inline-block text-xs font-bold text-purple-600 hover:underline"><i class="fa-solid fa-download"></i> Unduh Dokumen PDF</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: LAPORAN DAMPAK -->
+        <div id="page-impact" class="page-content space-y-6 hidden">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900">Laporan Dampak Program SBI 2026</h2>
+                <p class="text-xs text-slate-500">Grafik distribusi guru per kecamatan dan tingkat kemahiran CEFR di Kabupaten Hulu Sungai Tengah.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <h3 class="font-bold text-sm text-slate-800">Sebaran Guru Per Kecamatan</h3>
+                    <canvas id="chart-district" class="w-full max-h-64"></canvas>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <h3 class="font-bold text-sm text-slate-800">Persentase Level CEFR Guru</h3>
+                    <canvas id="chart-cefr" class="w-full max-h-64"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 7: TIM & ALUR KERJA -->
+        <div id="page-team" class="page-content space-y-6 hidden">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900">Tim Kerja &amp; Alur Koordinasi SBI HST</h2>
+                <p class="text-xs text-slate-500">Struktur pengelola komunikasi, data guru, serta pendampingan sekolah.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm text-center space-y-2">
+                    <div class="w-16 h-16 rounded-full bg-sbi-800 text-white mx-auto flex items-center justify-center text-xl font-bold">
+                        HST
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800">Tim Humas &amp; Media Center</h3>
+                    <p class="text-xs text-slate-500">Pengelola Konten, Foto Kustom &amp; Publikasi</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm text-center space-y-2">
+                    <div class="w-16 h-16 rounded-full bg-sbired-500 text-white mx-auto flex items-center justify-center text-xl font-bold">
+                        MAP
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800">Tim Data &amp; Pemetaan GIS</h3>
+                    <p class="text-xs text-slate-500">Pengelola Google Maps &amp; Sebaran Guru</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm text-center space-y-2">
+                    <div class="w-16 h-16 rounded-full bg-sbi-600 text-white mx-auto flex items-center justify-center text-xl font-bold">
+                        SD
+                    </div>
+                    <h3 class="font-bold text-sm text-slate-800">Tim Pengimbasan SD &amp; SMP</h3>
+                    <p class="text-xs text-slate-500">Pendampingan Mutu &amp; Pembiasaan Bahasa</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL 1: ADD / EDIT SBI MEDIA CENTER ITEM (WITH PHOTO UPLOAD & DIRECT LINK) -->
+    <div id="modal-media" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-newspaper text-sbired-500 text-lg"></i>
+                    <h3 class="font-bold text-base text-slate-900" id="media-modal-title">Form Tambah Artikel Media Center</h3>
+                </div>
+                <button onclick="closeMediaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="media-form" onsubmit="saveMediaArticle(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="media-id" value="">
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Judul Berita / Artikel <span class="text-red-500">*</span></label>
+                    <input type="text" id="media-title" required placeholder="Contoh: Lokakarya Pembekalan Guru SBI HST 2026" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Kategori Liputan</label>
+                        <select id="media-category" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                            <option value="Liputan Utama">Liputan Utama</option>
+                            <option value="Press Release">Press Release</option>
+                            <option value="Buletin">Buletin &amp; Artikel</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Tanggal Publikasi</label>
+                        <input type="date" id="media-date" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sbi-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- PHOTO UPLOAD / PHOTO URL SELECTOR -->
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+                    <label class="block font-bold text-slate-800">
+                        <i class="fa-solid fa-image text-sbi-600"></i> Foto Artikel (Upload Foto Sendiri atau URL)
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <span class="block text-[11px] text-slate-500 mb-1">Option A: Upload Foto Sendiri</span>
+                            <input type="file" id="media-photo-file" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sbi-100 file:text-sbi-700 hover:file:bg-sbi-200">
+                        </div>
+                        <div>
+                            <span class="block text-[11px] text-slate-500 mb-1">Option B: Link/URL Foto</span>
+                            <input type="url" id="media-photo-url" oninput="updateImagePreview(this.value)" placeholder="https://..." class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs">
+                        </div>
+                    </div>
+                    <!-- Photo Preview Box -->
+                    <div class="mt-2">
+                        <p class="text-[11px] text-slate-500 mb-1">Preview Foto:</p>
+                        <div class="h-32 w-full rounded-lg overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center">
+                            <img id="media-photo-preview" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Preview Foto">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REDIRECT LINK / DESTINATION URL -->
+                <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 space-y-1">
+                    <label class="block font-bold text-amber-900">
+                        <i class="fa-solid fa-link text-amber-600"></i> Link Tujuan Arah Baca ("Baca Selengkapnya")
+                    </label>
+                    <p class="text-[11px] text-amber-700">Masukkan URL portal berita luar, Google Drive, atau PDF. Jika diisi, tombol 'Baca Selengkapnya' akan membuka link ini secara langsung di tab baru.</p>
+                    <input type="url" id="media-target-link" placeholder="https://disdik.hstkab.go.id/berita-sbi-2026 atau https://..." class="w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Ringkasan / Excerpt Berita</label>
+                    <textarea id="media-summary" rows="3" required placeholder="Tuliskan ringkasan singkat isi berita..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sbi-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeMediaModal()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-semibold">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-sbired-500 hover:bg-sbired-600 text-white rounded-lg font-bold shadow"><i class="fa-solid fa-floppy-disk"></i> Simpan Artikel Media</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD / EDIT TEACHER DATA -->
+    <div id="modal-teacher" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-user-plus text-sbi-600 text-lg"></i>
+                    <h3 class="font-bold text-base text-slate-900" id="teacher-modal-title">Form Data Guru SBI</h3>
+                </div>
+                <button onclick="closeTeacherModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="teacher-form" onsubmit="saveTeacherData(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="teacher-id" value="">
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Nama Lengkap Guru &amp; Gelar <span class="text-red-500">*</span></label>
+                    <input type="text" id="teacher-name" required placeholder="Ahmad Rizky, S.Pd." class="w-full px-3 py-2 border border-slate-300 rounded-lg">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">NIP / ID Guru</label>
+                        <input type="text" id="teacher-nip" placeholder="19850102 201001 1 003" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Level CEFR</label>
+                        <select id="teacher-cefr" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
+                            <option value="B2">B2 (Upper Intermediate)</option>
+                            <option value="B1">B1 (Intermediate)</option>
+                            <option value="A2">A2 (Elementary)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Unit Kerja Sekolah</label>
+                        <input type="text" id="teacher-school" required placeholder="SD Negeri 1 Barabai" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Kecamatan</label>
+                        <select id="teacher-district" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
+                            <option value="Barabai">Barabai</option>
+                            <option value="Batu Benawa">Batu Benawa</option>
+                            <option value="Pandawan">Pandawan</option>
+                            <option value="Labuan Amas Selatan">Labuan Amas Selatan</option>
+                            <option value="Labuan Amas Utara">Labuan Amas Utara</option>
+                            <option value="Haruyan">Haruyan</option>
+                            <option value="Hantakan">Hantakan</option>
+                            <option value="Batang Alai Selatan">Batang Alai Selatan</option>
+                            <option value="Batang Alai Utara">Batang Alai Utara</option>
+                            <option value="Batang Alai Timur">Batang Alai Timur</option>
+                            <option value="Limpasu">Limpasu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Status Tim Program</label>
+                    <select id="teacher-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg">
+                        <option value="SD Pengimbasan">SD Pengimbasan Utama</option>
+                        <option value="SMP Ekosistem">SMP Ekosistem</option>
+                        <option value="Guru Pendamping">Guru Pendamping Sejawat</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100">
+                    <button type="button" onclick="closeTeacherModal()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-semibold">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-sbi-600 hover:bg-sbi-700 text-white rounded-lg font-bold shadow"><i class="fa-solid fa-floppy-disk"></i> Simpan Data Guru</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // GLOBAL STATE & DATA
+        let isAdminLoggedIn = false;
+        let leafletMap = null;
+        let mapMarkers = [];
+
+        // HULU SUNGAI TENGAH DISTRICT MAP COORDINATES & SCHOOL DATA
+        const hstDistrictsMap = [
+            { id: 1, name: "SDN 1 Barabai", district: "Barabai", lat: -2.5833, lng: 115.3833, level: "SD", teachers: 4, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SDN+1+Barabai+Hulu+Sungai+Tengah" },
+            { id: 2, name: "SMPN 1 Barabai", district: "Barabai", lat: -2.5850, lng: 115.3850, level: "SMP", teachers: 6, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SMPN+1+Barabai+Hulu+Sungai+Tengah" },
+            { id: 3, name: "SDN Batu Benawa", district: "Batu Benawa", lat: -2.6210, lng: 115.3980, level: "SD", teachers: 3, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SDN+Batu+Benawa+Hulu+Sungai+Tengah" },
+            { id: 4, name: "SDN Pandawan 1", district: "Pandawan", lat: -2.5280, lng: 115.3210, level: "SD", teachers: 4, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SDN+Pandawan+Hulu+Sungai+Tengah" },
+            { id: 5, name: "SMPN 2 Labuan Amas Selatan", district: "Labuan Amas Selatan", lat: -2.6350, lng: 115.2890, level: "SMP", teachers: 5, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SMPN+2+Labuan+Amas+Selatan" },
+            { id: 6, name: "SDN Haruyan 2", district: "Haruyan", lat: -2.6780, lng: 115.3120, level: "SD", teachers: 3, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SDN+Haruyan+Hulu+Sungai+Tengah" },
+            { id: 7, name: "SDN Hantakan", district: "Hantakan", lat: -2.6850, lng: 115.4520, level: "SD", teachers: 3, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SDN+Hantakan+Hulu+Sungai+Tengah" },
+            { id: 8, name: "SMPN 1 Birayang", district: "Batang Alai Selatan", lat: -2.6100, lng: 115.4200, level: "SMP", teachers: 4, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SMPN+1+Birayang+Hulu+Sungai+Tengah" },
+            { id: 9, name: "SDN Limpasu 1", district: "Limpasu", lat: -2.4500, lng: 115.3500, level: "SD", teachers: 3, mapsUrl: "https://www.google.com/maps/search/?api=1&query=SDN+Limpasu+Hulu+Sungai+Tengah" }
+        ];
+
+        // INITIAL SBI MEDIA CENTER ARTICLES STORE
+        let mediaArticlesStore = [
+            {
+                id: 1,
+                title: "Perluasan Pengimbasan SBI SD & SMP Kabupaten Hulu Sungai Tengah 2026",
+                category: "Liputan Utama",
+                date: "2026-03-15",
+                image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop&q=80",
+                link: "https://disdik.hstkab.go.id/berita/sbi-2026-hst",
+                summary: "Dinas Pendidikan HST secara resmi meluncurkan perluasan pengimbasan Sekolah Berbahasa Inggris ke 24 SD dan 12 SMP di seluruh kecamatan."
+            },
+            {
+                id: 2,
+                title: "Lokakarya Penguatan Komunitas Belajar Guru Bahasa Inggris HST",
+                category: "Press Release",
+                date: "2026-02-28",
+                image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800&auto=format&fit=crop&q=80",
+                link: "",
+                summary: "Sebanyak 72 guru pendamping SBI berkumpul dalam lokakarya peningkatan modul CEFR dan metode pembelajaran interaktif berbasis kelas."
+            },
+            {
+                id: 3,
+                title: "Penerapan Pembiasaan 'English Day' di Sekolah Daerah Terpencil Hantakan",
+                category: "Buletin",
+                date: "2026-02-10",
+                image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&auto=format&fit=crop&q=80",
+                link: "",
+                summary: "Kisah inspiratif guru SD di Kecamatan Hantakan yang berhasil memotivasi siswa pegunungan Meratus menyukai percakapan dasar Inggris."
+            }
+        ];
+
+        // INITIAL TEACHER DATA STORE
+        let teachersStore = [
+            { id: 101, name: "Ahmad Rizky, S.Pd.", nip: "19880312 201201 1 002", school: "SDN 1 Barabai", district: "Barabai", cefr: "B2", level: "SD", status: "SD Pengimbasan" },
+            { id: 102, name: "Siti Nurhaliza, M.Pd.", nip: "19900514 201502 2 004", school: "SMPN 1 Barabai", district: "Barabai", cefr: "B2", level: "SMP", status: "SMP Ekosistem" },
+            { id: 103, name: "Budi Santoso, S.Pd.", nip: "19850720 201101 1 005", school: "SDN Batu Benawa", district: "Batu Benawa", cefr: "B1", level: "SD", status: "SD Pengimbasan" },
+            { id: 104, name: "Dewi Kartika, S.Pd.", nip: "19921102 201803 2 001", school: "SDN Pandawan 1", district: "Pandawan", cefr: "B1", level: "SD", status: "SD Pengimbasan" },
+            { id: 105, name: "Muhammad Fahmi, S.Pd.", nip: "19870911 201401 1 003", school: "SMPN 2 Labuan Amas Selatan", district: "Labuan Amas Selatan", cefr: "B2", level: "SMP", status: "SMP Ekosistem" },
+            { id: 106, name: "Laila Majnun, S.Pd.", nip: "19940405 202001 2 006", school: "SDN Haruyan 2", district: "Haruyan", cefr: "A2", level: "SD", status: "SD Pengimbasan" },
+            { id: 107, name: "Rahmat Hidayat, S.Pd.", nip: "19890218 201302 1 007", school: "SDN Hantakan", district: "Hantakan", cefr: "B1", level: "SD", status: "SD Pengimbasan" },
+            { id: 108, name: "Fitriani, S.Pd.", nip: "19910825 201701 2 002", school: "SMPN 1 Birayang", district: "Batang Alai Selatan", cefr: "B2", level: "SMP", status: "SMP Ekosistem" }
+        ];
+
+        window.onload = function() {
+            renderTargetOutputs();
+            renderMediaCards();
+            renderTeacherTable();
+            initCharts();
+            initLeafletMap();
+        };
+
+        // TAB SWITCHING LOGIC
+        function switchTab(tabId) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-amber-300', 'border-b-2', 'border-amber-400', 'font-semibold');
+                btn.classList.add('text-sbi-100');
+            });
+
+            const selectedPage = document.getElementById(`page-${tabId}`);
+            if (selectedPage) selectedPage.classList.remove('hidden');
+
+            const selectedTabBtn = document.getElementById(`tab-${tabId}`);
+            if (selectedTabBtn) {
+                selectedTabBtn.classList.remove('text-sbi-100');
+                selectedTabBtn.classList.add('text-amber-300', 'border-b-2', 'border-amber-400', 'font-semibold');
+            }
+
+            if (tabId === 'teachers' && leafletMap) {
+                setTimeout(() => { leafletMap.invalidateSize(); }, 300);
+            }
+        }
+
+        // ADMIN AUTH SIMULATION
+        function toggleAdminAuth() {
+            isAdminLoggedIn = !isAdminLoggedIn;
+            const badge = document.getElementById('access-text');
+            const dot = document.getElementById('access-dot');
+            const btnLabel = document.getElementById('admin-auth-label');
+            const btnIcon = document.getElementById('admin-auth-icon');
+
+            if (isAdminLoggedIn) {
+                badge.innerText = "Mode Admin (Full Edit)";
+                dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                btnLabel.innerText = "Logout Admin";
+                btnIcon.className = "fa-solid fa-unlock text-emerald-400";
+                notifyDemo("Anda sekarang dalam Mode Admin. Anda dapat menambah/edit/menghapus berita dan data guru.");
+            } else {
+                badge.innerText = "Mode Publik (Read-Only)";
+                dot.className = "w-2 h-2 rounded-full bg-slate-400";
+                btnLabel.innerText = "Login Admin";
+                btnIcon.className = "fa-solid fa-lock text-amber-400";
+                notifyDemo("Kembali ke Mode Publik.");
+            }
+            renderTeacherTable();
+            renderMediaCards();
+        }
+
+        function initLeafletMap() {
+            if (leafletMap) return;
+
+            // Hulu Sungai Tengah Center Coordinates
+            leafletMap = L.map('leaflet-map').setView([-2.5833, 115.3833], 11);
+
+            // OpenStreetMap tiles with custom style
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; OpenStreetMap & Google Maps Integration | SBI HST 2026'
+            }).addTo(leafletMap);
+
+            // Add school markers with Google Maps popup link
+            hstDistrictsMap.forEach(school => {
+                const markerColor = school.level === 'SD' ? '#2563eb' : '#dc2626';
+                const markerIcon = L.divIcon({
+                    className: 'custom-map-pin',
+                    html: `<div style="background-color: ${markerColor}; width: 18px; height: 18px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.4);"></div>`,
+                    iconSize: [18, 18],
+                    iconAnchor: [9, 9]
+                });
+
+                const marker = L.marker([school.lat, school.lng], { icon: markerIcon }).addTo(leafletMap);
+
+                const popupHtml = `
+                    <div class="p-1 font-sans text-xs space-y-1.5 min-w-[180px]">
+                        <span class="inline-block bg-slate-100 font-bold px-1.5 py-0.5 rounded text-[10px] text-slate-700">${school.district}</span>
+                        <h4 class="font-bold text-slate-900 text-sm leading-tight">${school.name}</h4>
+                        <p class="text-slate-600 text-[11px]"><i class="fa-solid fa-user-check text-sbi-600"></i> ${school.teachers} Guru SBI Terdaftar</p>
+                        <a href="${school.mapsUrl}" target="_blank" class="mt-2 inline-flex items-center space-x-1.5 bg-sbired-500 hover:bg-sbired-600 text-white font-bold px-2.5 py-1.5 rounded-lg text-[11px] shadow transition">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span>Buka di Google Maps</span>
+                        </a>
+                    </div>
+                `;
+
+                marker.bindPopup(popupHtml);
+                mapMarkers.push({ district: school.district, marker: marker });
+            });
+        }
+
+        function filterMapByDistrict(district) {
+            if (!leafletMap) return;
+            if (district === 'ALL') {
+                leafletMap.setView([-2.5833, 115.3833], 11);
+            } else {
+                const target = hstDistrictsMap.find(d => d.district === district);
+                if (target) {
+                    leafletMap.setView([target.lat, target.lng], 13);
+                    const foundMarker = mapMarkers.find(m => m.district === district);
+                    if (foundMarker) foundMarker.marker.openPopup();
+                }
+            }
+        }
+
+        function renderMediaCards(filterCategory = 'ALL') {
+            const grid = document.getElementById('media-cards-grid');
+            grid.innerHTML = '';
+
+            const filtered = mediaArticlesStore.filter(art => filterCategory === 'ALL' || art.category === filterCategory);
+
+            filtered.forEach(art => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between";
+
+                // Action link or modal
+                const hasLink = art.link && art.link.trim().length > 0;
+                const linkButtonHtml = hasLink
+                    ? `<a href="${art.link}" target="_blank" class="text-xs font-bold text-sbired-600 hover:text-sbired-700 flex items-center space-x-1">
+                         <span>Baca Selengkapnya</span>
+                         <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                       </a>`
+                    : `<button onclick="readMediaArticleModal(${art.id})" class="text-xs font-bold text-sbi-600 hover:text-sbi-700 flex items-center space-x-1">
+                         <span>Baca Selengkapnya</span>
+                         <i class="fa-solid fa-book-open text-[10px]"></i>
+                       </button>`;
+
+                const adminControlsHtml = isAdminLoggedIn
+                    ? `<div class="flex items-center space-x-1">
+                         <button onclick="editMediaArticle(${art.id})" class="text-slate-400 hover:text-sbi-600 p-1"><i class="fa-solid fa-pen-to-square"></i></button>
+                         <button onclick="deleteMediaArticle(${art.id})" class="text-slate-400 hover:text-red-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                       </div>`
+                    : '';
+
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 w-full bg-slate-100 overflow-hidden relative">
+                            <img src="${art.image}" class="w-full h-full object-cover transition duration-300 hover:scale-105" alt="${art.title}" onerror="this.src='https://placehold.co/600x400/1b365d/ffffff?text=SBI+Media+Center'">
+                            <span class="absolute top-3 left-3 bg-sbi-900/80 backdrop-blur-md text-white text-[10px] px-2.5 py-1 rounded-full font-bold shadow-sm">
+                                ${art.category}
+                            </span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <div class="flex items-center justify-between text-[11px] text-slate-400">
+                                <span><i class="fa-regular fa-calendar"></i> ${art.date}</span>
+                                ${adminControlsHtml}
+                            </div>
+                            <h3 class="font-bold text-slate-900 text-sm leading-snug hover:text-sbi-600 transition">${art.title}</h3>
+                            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">${art.summary}</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 border-t border-slate-100 flex items-center justify-between mt-3">
+                        ${linkButtonHtml}
+                        ${hasLink ? '<span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-medium"><i class="fa-solid fa-link"></i> External Link</span>' : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('stat-media-count').innerText = mediaArticlesStore.length;
+        }
+
+        function filterMediaCategory(cat) {
+            renderMediaCards(cat);
+        }
+
+        function openMediaModal() {
+            document.getElementById('media-form').reset();
+            document.getElementById('media-id').value = '';
+            document.getElementById('media-modal-title').innerText = "Form Tambah Artikel SBI Media Center";
+            document.getElementById('media-photo-preview').src = "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&auto=format&fit=crop&q=80";
+            document.getElementById('modal-media').classList.remove('hidden');
+        }
+
+        function closeMediaModal() {
+            document.getElementById('modal-media').classList.add('hidden');
+        }
+
+        // Image file picker handler (reads file as Data URL)
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const result = e.target.result;
+                    document.getElementById('media-photo-preview').src = result;
+                    document.getElementById('media-photo-url').value = ''; // clear url input if file uploaded
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateImagePreview(url) {
+            if (url && url.trim().length > 0) {
+                document.getElementById('media-photo-preview').src = url;
+            }
+        }
+
+        function saveMediaArticle(e) {
+            e.preventDefault();
+            const idVal = document.getElementById('media-id').value;
+            const title = document.getElementById('media-title').value;
+            const category = document.getElementById('media-category').value;
+            const date = document.getElementById('media-date').value;
+            const summary = document.getElementById('media-summary').value;
+            const link = document.getElementById('media-target-link').value;
+
+            // Get image from preview
+            const image = document.getElementById('media-photo-preview').src;
+
+            if (idVal) {
+                // Edit existing
+                const index = mediaArticlesStore.findIndex(a => a.id == idVal);
+                if (index !== -1) {
+                    mediaArticlesStore[index] = { id: parseInt(idVal), title, category, date, image, link, summary };
+                    notifyDemo("Artikel SBI Media Center berhasil diperbarui!");
+                }
+            } else {
+                // Add new
+                const newObj = {
+                    id: Date.now(),
+                    title,
+                    category,
+                    date,
+                    image,
+                    link,
+                    summary
+                };
+                mediaArticlesStore.unshift(newObj);
+                notifyDemo("Artikel SBI Media Center baru berhasil ditambahkan!");
+            }
+
+            closeMediaModal();
+            renderMediaCards();
+        }
+
+        function editMediaArticle(id) {
+            const art = mediaArticlesStore.find(a => a.id === id);
+            if (!art) return;
+
+            document.getElementById('media-id').value = art.id;
+            document.getElementById('media-title').value = art.title;
+            document.getElementById('media-category').value = art.category;
+            document.getElementById('media-date').value = art.date;
+            document.getElementById('media-summary').value = art.summary;
+            document.getElementById('media-target-link').value = art.link || '';
+            document.getElementById('media-photo-preview').src = art.image;
+            document.getElementById('media-modal-title').innerText = "Edit Artikel SBI Media Center";
+
+            document.getElementById('modal-media').classList.remove('hidden');
+        }
+
+        function deleteMediaArticle(id) {
+            mediaArticlesStore = mediaArticlesStore.filter(a => a.id !== id);
+            renderMediaCards();
+            notifyDemo("Artikel media berhasil dihapus.");
+        }
+
+        function readMediaArticleModal(id) {
+            const art = mediaArticlesStore.find(a => a.id === id);
+            if (!art) return;
+            notifyDemo(`Menampilkan rincian berita: "${art.title}"`);
+        }
+
+        function renderTeacherTable() {
+            const tbody = document.getElementById('teacher-table-body');
+            tbody.innerHTML = '';
+
+            const searchKey = document.getElementById('teacher-search-input').value.toLowerCase();
+            const districtFilter = document.getElementById('teacher-filter-district').value;
+            const levelFilter = document.getElementById('teacher-filter-level').value;
+            const cefrFilter = document.getElementById('teacher-filter-cefr').value;
+
+            const filtered = teachersStore.filter(t => {
+                const matchSearch = t.name.toLowerCase().includes(searchKey) || t.school.toLowerCase().includes(searchKey);
+                const matchDistrict = districtFilter === 'ALL' || t.district === districtFilter;
+                const matchLevel = levelFilter === 'ALL' || t.level === levelFilter;
+                const matchCefr = cefrFilter === 'ALL' || t.cefr === cefrFilter;
+                return matchSearch && matchDistrict && matchLevel && matchCefr;
+            });
+
+            filtered.forEach((t, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
+
+                const googleMapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(t.school + ' ' + t.district + ' Hulu Sungai Tengah')}`;
+
+                const cefrBadgeClass = t.cefr === 'B2' ? 'bg-emerald-100 text-emerald-800' : (t.cefr === 'B1' ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-800');
+
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-400">${idx + 1}</td>
+                    <td class="p-3 font-bold text-slate-900">${t.name} <div class="text-[10px] text-slate-400 font-normal">NIP: ${t.nip}</div></td>
+                    <td class="p-3 font-medium text-slate-700">${t.school}</td>
+                    <td class="p-3"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px] font-semibold">${t.district}</span></td>
+                    <td class="p-3"><span class="${cefrBadgeClass} px-2 py-0.5 rounded font-bold text-[10px]">${t.cefr}</span></td>
+                    <td class="p-3 text-slate-600">${t.status}</td>
+                    <td class="p-3 text-center">
+                        <a href="${googleMapsSearchUrl}" target="_blank" class="inline-flex items-center space-x-1 bg-red-50 hover:bg-red-100 text-red-600 px-2.5 py-1 rounded-lg font-bold text-[11px] border border-red-200 transition">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span>Google Map</span>
+                        </a>
+                    </td>
+                    <td class="p-3 text-right">
+                        ${isAdminLoggedIn ? `<button onclick="deleteTeacher(${t.id})" class="text-red-500 hover:text-red-700 font-semibold text-xs"><i class="fa-solid fa-trash"></i></button>` : '<span class="text-slate-300 text-[10px]">Read-Only</span>'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('stat-teacher-count').innerText = teachersStore.length;
+            document.getElementById('dash-stat-teachers').innerText = teachersStore.length;
+        }
+
+        function openTeacherModal() {
+            document.getElementById('teacher-form').reset();
+            document.getElementById('teacher-id').value = '';
+            document.getElementById('modal-teacher').classList.remove('hidden');
+        }
+
+        function closeTeacherModal() {
+            document.getElementById('modal-teacher').classList.add('hidden');
+        }
+
+        function saveTeacherData(e) {
+            e.preventDefault();
+            const name = document.getElementById('teacher-name').value;
+            const nip = document.getElementById('teacher-nip').value;
+            const cefr = document.getElementById('teacher-cefr').value;
+            const school = document.getElementById('teacher-school').value;
+            const district = document.getElementById('teacher-district').value;
+            const status = document.getElementById('teacher-status').value;
+            const level = school.toLowerCase().includes('smp') ? 'SMP' : 'SD';
+
+            teachersStore.push({
+                id: Date.now(),
+                name, nip, school, district, cefr, level, status
+            });
+
+            closeTeacherModal();
+            renderTeacherTable();
+            notifyDemo("Data Guru SBI baru berhasil ditambahkan!");
+        }
+
+        function deleteTeacher(id) {
+            teachersStore = teachersStore.filter(t => t.id !== id);
+            renderTeacherTable();
+            notifyDemo("Data guru berhasil dihapus.");
+        }
+
+        function exportTeacherDataCSV() {
+            let csv = "Nama,NIP,Sekolah,Kecamatan,CEFR,Status\n";
+            teachersStore.forEach(t => {
+                csv += `"${t.name}","${t.nip}","${t.school}","${t.district}","${t.cefr}","${t.status}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'Data_Guru_SBI_HST_2026.csv');
+            a.click();
+            notifyDemo("File CSV Data Guru SBI berhasil diunduh.");
+        }
+
+        function renderTargetOutputs() {
+            const list = [
+                { name: "Sistem Informasi & Map Sebaran Guru", target: "1 Hub", real: "1 Hub", status: "Selesai" },
+                { name: "SBI Media Center (Liputan Berita & Foto)", target: "12 Artikel", real: "4 Artikel", status: "Berjalan" },
+                { name: "Pendampingan SD Pengimbasan", target: "24 Sekolah", real: "24 Sekolah", status: "Selesai" },
+                { name: "Ekosistem SMP Penguatan", target: "12 Sekolah", real: "12 Sekolah", status: "Selesai" },
+                { name: "Dokumentasi Praktik Baik", target: "18 Video/Doc", real: "12 Doc", status: "Berjalan" }
+            ];
+
+            const tbody = document.getElementById('target-output-table');
+            tbody.innerHTML = '';
+            list.forEach(item => {
+                const tr = document.createElement('tr');
+                const badgeClass = item.status === 'Selesai' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-800">${item.name}</td>
+                    <td class="p-3 text-slate-500">${item.target}</td>
+                    <td class="p-3 font-bold text-slate-700">${item.real}</td>
+                    <td class="p-3 text-center"><span class="${badgeClass} px-2.5 py-1 rounded-full text-[11px] font-bold">${item.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function initCharts() {
+            // Chart 1: District Distribution
+            const ctxDistrict = document.getElementById('chart-district').getContext('2d');
+            new Chart(ctxDistrict, {
+                type: 'bar',
+                data: {
+                    labels: ['Barabai', 'Batu Benawa', 'Pandawan', 'L.A.S', 'Haruyan', 'Hantakan'],
+                    datasets: [{
+                        label: 'Jumlah Guru SBI',
+                        data: [18, 12, 10, 14, 10, 8],
+                        backgroundColor: '#1b365d',
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+
+            // Chart 2: CEFR Level
+            const ctxCefr = document.getElementById('chart-cefr').getContext('2d');
+            new Chart(ctxCefr, {
+                type: 'doughnut',
+                data: {
+                    labels: ['B2 (Upper Int)', 'B1 (Intermediate)', 'A2 (Elementary)'],
+                    datasets: [{
+                        data: [35, 45, 20],
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b']
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+
+        function handleProtectedAction(actionType) {
+            if (actionType === 'media' || actionType === 'add') {
+                openMediaModal();
+            } else if (actionType === 'teacher') {
+                openTeacherModal();
+            }
+        }
+
+        function notifyDemo(msg) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 bg-sbi-900 text-white px-4 py-3 rounded-xl shadow-2xl z-50 flex items-center space-x-3 text-xs border border-slate-700 animate-bounce";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i><span>${msg}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+    </script>
 </body>
 </html>
