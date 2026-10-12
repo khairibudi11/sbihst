@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBI HST 2026 - Communication & Data Guru Hub</title>
-    <!-- Tailwind CSS -->
+    <title>SBI HST 2026 - Communication, Data Guru & Sebaran Hub</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js for Visual Impact & Sebaran Analytics -->
+    <!-- Chart.js for Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS & JS for Interactive Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- SheetJS (xlsx) for Import Excel / Spreadsheet -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -57,6 +63,16 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        #teacherMap {
+            min-height: 380px;
+            height: 100%;
+            border-radius: 0.75rem;
+            z-index: 10;
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
@@ -89,7 +105,7 @@
                             <span class="font-extrabold text-lg sm:text-xl tracking-tight text-white">SBI HST 2026</span>
                             <span class="bg-sbired-500 text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">Data & Impact Hub</span>
                         </div>
-                        <p class="text-xs text-slate-300 hidden sm:block">Kab. Hulu Sungai Tengah • Kemitraan, Data Guru & Dokumentasi</p>
+                        <p class="text-xs text-slate-300 hidden sm:block">Kab. Hulu Sungai Tengah • Kemitraan, Data Guru, Pemetaan & Dokumentasi</p>
                     </div>
                 </div>
 
@@ -127,7 +143,7 @@
                 </button>
                 <button onclick="switchTab('teachers')" id="tab-teachers" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
                     <i class="fa-solid fa-chalkboard-user"></i>
-                    <span>Data Guru & Sebaran</span>
+                    <span>Data Guru & Sebaran Peta</span>
                 </button>
                 <button onclick="switchTab('mediacenter')" id="tab-mediacenter" class="tab-btn py-3 px-4 text-sbi-100 hover:text-white hover:bg-sbi-700/50 flex items-center space-x-2 transition">
                     <i class="fa-solid fa-bullhorn"></i>
@@ -156,8 +172,11 @@
     <!-- MAIN CONTENT CONTAINER -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
+        <!-- ========================================================= -->
         <!-- TAB 1: DASHBOARD OVERVIEW & TARGET 2026 -->
+        <!-- ========================================================= -->
         <div id="page-dashboard" class="page-content space-y-6">
+            <!-- Hero Banner -->
             <div class="bg-gradient-to-r from-sbi-800 via-sbi-700 to-sbi-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border-l-4 border-sbired-500">
                 <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white pointer-events-none">
                     <i class="fa-solid fa-comments"></i>
@@ -171,7 +190,7 @@
                         Hub Komunikasi, Data Guru & Rekam Jejak Dampak SBI HST 2026
                     </h1>
                     <p class="text-slate-200 text-sm leading-relaxed">
-                        Pusat pengelolaan kemitraan, direktori guru SBI, pemetaan sebaran wilayah, publikasi cerita inspiratif, dan laporan visual dampak keberhasilan Program Sekolah Berbahasa Inggris Kabupaten Hulu Sungai Tengah.
+                        Pusat pengelolaan kemitraan, direktori guru SBI, pemetaan sebaran wilayah berbasis spasial peta, publikasi cerita inspiratif, dan laporan visual dampak keberhasilan Program Sekolah Berbahasa Inggris Kabupaten Hulu Sungai Tengah.
                     </p>
                     <div class="pt-2 flex flex-wrap gap-3">
                         <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
@@ -250,7 +269,7 @@
                                 <i class="fa-solid fa-list-check text-sbi-600"></i>
                                 <span>Target Output Bidang Tahun 2026</span>
                             </h2>
-                            <p class="text-xs text-slate-500">Pencapaian berdasarkan Laporan Program Kerja</p>
+                            <p class="text-xs text-slate-500">Pencapaian berdasarkan Laporan Program Kerja Bidang Kemitraan & Publikasi</p>
                         </div>
                         <span class="text-xs bg-sbi-100 text-sbi-800 px-2.5 py-1 rounded-full font-bold">Tahun 2026</span>
                     </div>
@@ -310,23 +329,36 @@
             </div>
         </div>
 
-        <!-- TAB 2: DATA GURU SBI & SEBARANNYA -->
+        <!-- ========================================================= -->
+        <!-- TAB 2: DATA GURU SBI & SEBARANNYA (DENGAN PETA & IMPORT) -->
+        <!-- ========================================================= -->
         <div id="page-teachers" class="page-content space-y-6 hidden">
+            <!-- Header Section -->
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <div class="inline-flex items-center space-x-2 text-xs font-bold text-sbi-700 bg-sbi-50 px-2.5 py-1 rounded-md mb-1">
                         <i class="fa-solid fa-map-location-dot"></i>
-                        <span>Sistem Informasi & Pemetaan Guru Berbahasa Inggris</span>
+                        <span>Sistem Informasi & Pemetaan Spasial Guru SBI</span>
                     </div>
                     <h2 class="text-xl font-bold text-slate-900">Data Guru SBI & Sebaran Wilayah HST 2026</h2>
-                    <p class="text-xs text-slate-500">Direktori Guru Sasaran SD Pengimbasan, Ekosistem SMP, Level Kemahiran CEFR, dan Distribusi Kecamatan</p>
+                    <p class="text-xs text-slate-500">Peta Interaktif Sekolah, Direktori Guru Sasaran, Import Excel, dan Distribusi Sebaran Kecamatan</p>
                 </div>
 
-                <div class="flex items-center space-x-2">
+                <div class="flex flex-wrap items-center gap-2">
+                    <!-- Tombol Import Excel -->
+                    <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleExcelImport(event)">
+                    <button onclick="triggerExcelImport()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3.5 py-2.5 rounded-lg transition font-bold flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-file-excel"></i>
+                        <span>Import Excel</span>
+                    </button>
+
+                    <!-- Tombol Tambah Data Manual -->
                     <button onclick="handleProtectedAction('teacher')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3.5 py-2.5 rounded-lg transition font-bold flex items-center space-x-1.5 shadow">
                         <i class="fa-solid fa-user-plus"></i>
-                        <span>Tambah Data Guru</span>
+                        <span>Tambah Guru</span>
                     </button>
+
+                    <!-- Tombol Ekspor CSV -->
                     <button onclick="exportTeacherDataCSV()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs px-3 py-2.5 rounded-lg transition font-semibold flex items-center space-x-1 shadow">
                         <i class="fa-solid fa-file-csv"></i>
                         <span>Ekspor Data</span>
@@ -377,35 +409,53 @@
                 </div>
             </div>
 
-            <!-- Distribution Chart & District Cards Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+            <!-- PETA SEBARAN SEKOLAH & GRAFIK WILAYAH -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Peta Spasial Interaktif Sekolah Guru (7 Cols) -->
+                <div class="lg:col-span-7 bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-3 flex flex-col">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div>
                             <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
-                                <i class="fa-solid fa-chart-column text-sbi-600"></i>
-                                <span>Sebaran Guru SBI Menurut Kecamatan di HST</span>
+                                <i class="fa-solid fa-map-location-dot text-sbired-500"></i>
+                                <span>Peta Titik Sekolah Guru SBI (Hulu Sungai Tengah)</span>
                             </h3>
-                            <p class="text-xs text-slate-500">Jumlah pendidik SBI per-kecamatan di Hulu Sungai Tengah</p>
+                            <p class="text-xs text-slate-500">Klik pin pada peta untuk melihat profil guru & sekolah sasaran</p>
                         </div>
-                        <span class="text-xs font-bold text-sbi-700 bg-sbi-50 px-2.5 py-1 rounded-full">11 Kecamatan</span>
+                        <span class="text-xs font-bold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full border border-emerald-200">
+                            <i class="fa-solid fa-satellite mr-1"></i>Spasial GPS
+                        </span>
                     </div>
 
-                    <div class="h-64 relative">
-                        <canvas id="teacherDistChart"></canvas>
+                    <!-- Container Peta Leaflet -->
+                    <div class="w-full flex-1 min-h-[380px] relative rounded-xl overflow-hidden border border-slate-200">
+                        <div id="teacherMap" class="w-full h-full"></div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
-                    <div>
-                        <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
-                            <i class="fa-solid fa-location-dot text-sbired-500"></i>
-                            <span>Ringkasan Wilayah Sebaran</span>
-                        </h3>
-                        <p class="text-xs text-slate-500">Cakupan sekolah sasaran per kecamatan</p>
+                <!-- Grafik Batang & Ringkasan Sebaran (5 Cols) -->
+                <div class="lg:col-span-5 space-y-6 flex flex-col justify-between">
+                    <!-- Chart Bar -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                                <i class="fa-solid fa-chart-column text-sbi-600"></i>
+                                <span>Distribusi Guru Per-Kecamatan</span>
+                            </h3>
+                            <span class="text-[11px] font-bold text-sbi-700 bg-sbi-50 px-2 py-0.5 rounded">11 Kec</span>
+                        </div>
+                        <div class="h-44 relative">
+                            <canvas id="teacherDistChart"></canvas>
+                        </div>
                     </div>
 
-                    <div class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar pr-1" id="district-summary-list">
+                    <!-- District Mini Summary List -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-3 flex-1">
+                        <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-list-ol text-amber-500"></i>
+                            <span>Cakupan Wilayah Sebaran</span>
+                        </h3>
+                        <div class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1" id="district-summary-list">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -415,7 +465,7 @@
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900">Direktori Guru Berbahasa Inggris</h3>
-                        <p class="text-xs text-slate-500">Gunakan pencarian dan filter untuk mengelola profil guru SBI</p>
+                        <p class="text-xs text-slate-500">Kelola, edit, atau hapus profil guru SBI Hulu Sungai Tengah</p>
                     </div>
 
                     <!-- Filters -->
@@ -476,15 +526,17 @@
             </div>
         </div>
 
+        <!-- ========================================================= -->
         <!-- TAB 3: SBI MEDIA CENTER -->
+        <!-- ========================================================= -->
         <div id="page-mediacenter" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900 flex items-center space-x-2">
                         <i class="fa-solid fa-bullhorn text-sbi-500"></i>
-                        <span>SBI Media Center & Berita Kegiatan</span>
+                        <span>SBI Media Center & Publikasi Berita</span>
                     </h2>
-                    <p class="text-xs text-slate-500">Pusat informasi resmi, dokumentasi foto program, dan link portal liputan SBI HST</p>
+                    <p class="text-xs text-slate-500">Pusat informasi resmi, upload dokumentasi foto program, dan link baca berita lengkap</p>
                 </div>
 
                 <div class="flex items-center space-x-2">
@@ -507,7 +559,9 @@
             </div>
         </div>
 
+        <!-- ========================================================= -->
         <!-- TAB 4: SBI STORY & PRAKTIK BAIK -->
+        <!-- ========================================================= -->
         <div id="page-stories" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -546,7 +600,9 @@
             </div>
         </div>
 
+        <!-- ========================================================= -->
         <!-- TAB 5: DIGITAL ARCHIVE & KEMITRAAN -->
+        <!-- ========================================================= -->
         <div id="page-archive" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-4">
@@ -600,7 +656,9 @@
             </div>
         </div>
 
+        <!-- ========================================================= -->
         <!-- TAB 6: SBI IMPACT REPORT & ANALYTICS -->
+        <!-- ========================================================= -->
         <div id="page-impact" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
                 <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 gap-4">
@@ -653,7 +711,9 @@
             </div>
         </div>
 
+        <!-- ========================================================= -->
         <!-- TAB 7: TIM & ALUR KERJA -->
+        <!-- ========================================================= -->
         <div id="page-team" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-6">
                 <div>
@@ -683,7 +743,7 @@
                         </div>
                         <h4 class="font-bold text-slate-900 text-sm">Manajemen Data Guru & Sebaran</h4>
                         <p class="text-xs text-slate-600 leading-relaxed">
-                            Mendata profil guru SD/SMP, memetakan tingkat CEFR, memantau kemajuan pembekalan, serta memelihara direktori sebaran kecamatan.
+                            Mendata profil guru SD/SMP, memetakan tingkat CEFR, memantau kemajuan pembekalan, serta memelihara direktori sebaran spasial kecamatan.
                         </p>
                     </div>
 
@@ -711,14 +771,14 @@
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
                 <h3 class="font-extrabold text-slate-900 text-lg">Otentikasi Admin Bidang</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">Silakan masukkan kata sandi Admin/Tim Bidang untuk menginput, mengubah, atau menghapus data.</p>
+                <p class="text-xs text-slate-500 leading-relaxed">Silakan masukkan kata sandi Admin/Tim Bidang untuk menginput, mengubah, mengimpor, atau menghapus data.</p>
             </div>
 
             <form onsubmit="handleAdminLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi Admin</label>
                     <input type="password" id="admin-pass-input" placeholder="Masukkan kata sandi..." required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-center font-mono focus:ring-sbi-500 focus:border-sbi-500">
-                    <p class="text-[10px] text-slate-400 mt-1 text-center">Petunjuk sandi: <span class="font-mono text-sbi-500 font-bold">sbihst2026</span></p>
+                    <p class="text-[10px] text-slate-400 mt-1 text-center">Petunjuk sandi demo: <span class="font-mono text-sbi-500 font-bold">sbihst2026</span></p>
                 </div>
 
                 <div class="flex space-x-2">
@@ -776,24 +836,41 @@
 
     <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT -->
     <script>
-        let isAdminLoggedIn = false;
-        let uploadedImageBase64 = "";
+        /* Global State */
+        var isAdminLoggedIn = false;
+        var uploadedImageBase64 = "";
 
-        const appState = {
+        /* Koordinat Default Kecamatan di Kab. Hulu Sungai Tengah (Barabai & Sekitarnya) */
+        var districtCoordinates = {
+            "Barabai": [-2.5833, 115.3833],
+            "Pandawan": [-2.5400, 115.3400],
+            "Haruyan": [-2.6500, 115.3500],
+            "Batu Benawa": [-2.6300, 115.4200],
+            "Labuan Amas Selatan": [-2.6100, 115.2800],
+            "Labuan Amas Utara": [-2.5200, 115.2600],
+            "Batang Alai Selatan": [-2.6200, 115.4800],
+            "Batang Alai Utara": [-2.5000, 115.4200],
+            "Batang Alai Timur": [-2.5800, 115.5800],
+            "Hantakan": [-2.7000, 115.4500],
+            "Limpasu": [-2.4500, 115.4700]
+        };
+
+        /* State Storage Awal */
+        var appState = {
             teachers: [
-                { id: 1, name: "Ibu Rahmah, S.Pd.", nip: "19850412 201001 2 015", school: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", phone: "+62 812-5551-091" },
-                { id: 2, name: "Ahmad Fauzi, S.Pd., M.Pd.", nip: "19820815 200803 1 004", school: "SMPN 1 Pandawan", subdistrict: "Pandawan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 813-4442-882" },
-                { id: 3, name: "Siti Mariam, S.Pd.", nip: "19910320 201502 2 008", school: "SDN Haruyan", subdistrict: "Haruyan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 852-1100-334" },
-                { id: 4, name: "Muhammad Rizky, S.Pd.", nip: "19940211 201901 1 003", school: "SDN 2 Pagat", subdistrict: "Batu Benawa", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 821-9000-442" },
-                { id: 5, name: "Hj. Nurul Hidayah, S.Pd.", nip: "19791105 200501 2 006", school: "SMPN 1 Pantai Hambawang", subdistrict: "Labuan Amas Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 813-7788-990" },
-                { id: 6, name: "Supian Sauri, S.Pd.", nip: "19880614 201402 1 002", school: "SDN Ilung", subdistrict: "Batang Alai Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 853-2211-554" },
-                { id: 7, name: "Dewi Ratnasari, S.Pd.", nip: "19900928 201701 2 011", school: "SMPN 1 Birayang", subdistrict: "Batang Alai Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 812-9900-112" },
-                { id: 8, name: "Herman Susanto, S.Pd.", nip: "19860103 201101 1 005", school: "SDN Walatung", subdistrict: "Pandawan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 822-4455-667" },
-                { id: 9, name: "Laila Khairani, S.Pd.", nip: "19920719 201802 2 003", school: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", phone: "+62 813-6622-118" },
-                { id: 10, name: "Bambang Hermawan, S.Pd.", nip: "19830522 200902 1 007", school: "SMPN 2 Hantakan", subdistrict: "Hantakan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 852-9911-332" },
-                { id: 11, name: "Rina Astuti, S.Pd.", nip: "19951210 202001 2 009", school: "SDN Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 812-7711-223" },
-                { id: 12, name: "Khairul Anam, S.Pd.", nip: "19870408 201201 1 006", school: "SMPN 1 Limpasu", subdistrict: "Limpasu", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 821-3322-114" },
-                { id: 13, name: "Mulia Hastuti, S.Pd.", nip: "19930814 201903 2 004", school: "SDN Hinai Kiri", subdistrict: "Batang Alai Timur", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 853-8899-771" }
+                { id: 1, name: "Ibu Rahmah, S.Pd.", nip: "19850412 201001 2 015", school: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", phone: "+62 812-5551-091", lat: -2.5820, lng: 115.3850 },
+                { id: 2, name: "Ahmad Fauzi, S.Pd., M.Pd.", nip: "19820815 200803 1 004", school: "SMPN 1 Pandawan", subdistrict: "Pandawan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 813-4442-882", lat: -2.5410, lng: 115.3420 },
+                { id: 3, name: "Siti Mariam, S.Pd.", nip: "19910320 201502 2 008", school: "SDN Haruyan", subdistrict: "Haruyan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 852-1100-334", lat: -2.6520, lng: 115.3480 },
+                { id: 4, name: "Muhammad Rizky, S.Pd.", nip: "19940211 201901 1 003", school: "SDN 2 Pagat", subdistrict: "Batu Benawa", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 821-9000-442", lat: -2.6280, lng: 115.4230 },
+                { id: 5, name: "Hj. Nurul Hidayah, S.Pd.", nip: "19791105 200501 2 006", school: "SMPN 1 Pantai Hambawang", subdistrict: "Labuan Amas Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 813-7788-990", lat: -2.6080, lng: 115.2830 },
+                { id: 6, name: "Supian Sauri, S.Pd.", nip: "19880614 201402 1 002", school: "SDN Ilung", subdistrict: "Batang Alai Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 853-2211-554", lat: -2.4980, lng: 115.4220 },
+                { id: 7, name: "Dewi Ratnasari, S.Pd.", nip: "19900928 201701 2 011", school: "SMPN 1 Birayang", subdistrict: "Batang Alai Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 812-9900-112", lat: -2.6220, lng: 115.4820 },
+                { id: 8, name: "Herman Susanto, S.Pd.", nip: "19860103 201101 1 005", school: "SDN Walatung", subdistrict: "Pandawan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 822-4455-667", lat: -2.5380, lng: 115.3380 },
+                { id: 9, name: "Laila Khairani, S.Pd.", nip: "19920719 201802 2 003", school: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", phone: "+62 813-6622-118", lat: -2.5850, lng: 115.3810 },
+                { id: 10, name: "Bambang Hermawan, S.Pd.", nip: "19830522 200902 1 007", school: "SMPN 2 Hantakan", subdistrict: "Hantakan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 852-9911-332", lat: -2.7020, lng: 115.4520 },
+                { id: 11, name: "Rina Astuti, S.Pd.", nip: "19951210 202001 2 009", school: "SDN Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 812-7711-223", lat: -2.5220, lng: 115.2580 },
+                { id: 12, name: "Khairul Anam, S.Pd.", nip: "19870408 201201 1 006", school: "SMPN 1 Limpasu", subdistrict: "Limpasu", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 821-3322-114", lat: -2.4480, lng: 115.4720 },
+                { id: 13, name: "Mulia Hastuti, S.Pd.", nip: "19930814 201903 2 004", school: "SDN Hinai Kiri", subdistrict: "Batang Alai Timur", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 853-8899-771", lat: -2.5780, lng: 115.5820 }
             ],
             targetOutputs: [
                 { name: "Database guru SBI & pemetaan sebaran", target: 1, current: 1, status: "Selesai", unit: "database" },
@@ -918,78 +995,90 @@
             ]
         };
 
-        // AUTHENTICATION
         function toggleAdminAuth() {
             if (isAdminLoggedIn) {
                 isAdminLoggedIn = false;
                 updateAccessUI();
                 showToast("Anda telah keluar dari Mode Admin (Kembali ke Mode Publik)");
             } else {
-                document.getElementById('admin-pass-input').value = '';
-                document.getElementById('adminLoginModal').classList.remove('hidden');
+                var input = document.getElementById('admin-pass-input');
+                if (input) input.value = '';
+                var modal = document.getElementById('adminLoginModal');
+                if (modal) modal.classList.remove('hidden');
             }
         }
 
         function closeAdminLoginModal() {
-            document.getElementById('adminLoginModal').classList.add('hidden');
+            var modal = document.getElementById('adminLoginModal');
+            if (modal) modal.classList.add('hidden');
         }
 
         function handleAdminLogin(e) {
             e.preventDefault();
-            const pass = document.getElementById('admin-pass-input').value.trim();
+            var passEl = document.getElementById('admin-pass-input');
+            var pass = passEl ? passEl.value.trim() : '';
             if (pass === 'sbihst2026' || pass === 'admin2026' || pass === 'admin') {
                 isAdminLoggedIn = true;
                 closeAdminLoginModal();
                 updateAccessUI();
-                showToast("Login Admin Berhasil! Akses edit dan hapus telah terbuka.");
+                showToast("Login Admin Berhasil! Akses edit, hapus & import data aktif.");
             } else {
                 showToast("Kata sandi salah! Gunakan: sbihst2026", "error");
             }
         }
 
         function updateAccessUI() {
-            const dot = document.getElementById('access-dot');
-            const text = document.getElementById('access-text');
-            const label = document.getElementById('admin-auth-label');
-            const icon = document.getElementById('admin-auth-icon');
+            var dot = document.getElementById('access-dot');
+            var text = document.getElementById('access-text');
+            var label = document.getElementById('admin-auth-label');
+            var icon = document.getElementById('admin-auth-icon');
 
             if (isAdminLoggedIn) {
-                dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-                text.innerText = "Mode Admin (Aktif)";
-                text.className = "text-emerald-400 font-bold";
-                label.innerText = "Keluar Admin";
-                icon.className = "fa-solid fa-right-from-bracket text-rose-400";
+                if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                if (text) {
+                    text.innerText = "Mode Admin (Aktif)";
+                    text.className = "text-emerald-400 font-bold";
+                }
+                if (label) label.innerText = "Keluar Admin";
+                if (icon) icon.className = "fa-solid fa-right-from-bracket text-rose-400";
             } else {
-                dot.className = "w-2 h-2 rounded-full bg-slate-400";
-                text.innerText = "Mode Publik (Read-Only)";
-                text.className = "text-slate-300 font-medium";
-                label.innerText = "Login Admin";
-                icon.className = "fa-solid fa-lock text-amber-400";
+                if (dot) dot.className = "w-2 h-2 rounded-full bg-slate-400";
+                if (text) {
+                    text.innerText = "Mode Publik (Read-Only)";
+                    text.className = "text-slate-300 font-medium";
+                }
+                if (label) label.innerText = "Login Admin";
+                if (icon) icon.className = "fa-solid fa-lock text-amber-400";
             }
         }
 
-        function handleProtectedAction(defaultType = 'teacher') {
+        function handleProtectedAction(defaultType) {
+            if (!defaultType) defaultType = 'teacher';
             if (!isAdminLoggedIn) {
-                document.getElementById('admin-pass-input').value = '';
-                document.getElementById('adminLoginModal').classList.remove('hidden');
+                var input = document.getElementById('admin-pass-input');
+                if (input) input.value = '';
+                var modal = document.getElementById('adminLoginModal');
+                if (modal) modal.classList.remove('hidden');
                 showToast("Silakan Login Admin terlebih dahulu untuk mengelola data.", "warning");
                 return;
             }
             openAddModal(defaultType);
         }
 
-        // TAB SWITCHER
         function switchTab(tabId) {
-            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
+            var pages = document.querySelectorAll('.page-content');
+            pages.forEach(function(el) { el.classList.add('hidden'); });
+
+            var btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(function(btn) {
                 btn.classList.remove('text-amber-300', 'border-b-2', 'border-amber-400', 'font-semibold');
                 btn.classList.add('text-sbi-100');
             });
 
-            const activePage = document.getElementById(`page-${tabId}`);
+            var activePage = document.getElementById('page-' + tabId);
             if (activePage) activePage.classList.remove('hidden');
 
-            const activeTabBtn = document.getElementById(`tab-${tabId}`);
+            var activeTabBtn = document.getElementById('tab-' + tabId);
             if (activeTabBtn) {
                 activeTabBtn.classList.remove('text-sbi-100');
                 activeTabBtn.classList.add('text-amber-300', 'border-b-2', 'border-amber-400', 'font-semibold');
@@ -997,95 +1086,195 @@
 
             if (tabId === 'teachers') {
                 renderTeachersModule();
+                // Invalidate leaflet map size agar ubin peta termuat sempurna
+                setTimeout(function() {
+                    if (leafletMapInstance) {
+                        leafletMapInstance.invalidateSize();
+                    }
+                }, 200);
             } else if (tabId === 'impact') {
                 renderImpactCharts();
             }
         }
 
         function switchStorySubtab(sub) {
-            document.getElementById('subpage-practices').classList.add('hidden');
-            document.getElementById('subpage-humanstories').classList.add('hidden');
-            document.getElementById('subtab-practices').className = "px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900";
-            document.getElementById('subtab-humanstories').className = "px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900";
+            var pSection = document.getElementById('subpage-practices');
+            var hSection = document.getElementById('subpage-humanstories');
+            var btnP = document.getElementById('subtab-practices');
+            var btnH = document.getElementById('subtab-humanstories');
+
+            if (pSection) pSection.classList.add('hidden');
+            if (hSection) hSection.classList.add('hidden');
+            if (btnP) btnP.className = "px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900";
+            if (btnH) btnH.className = "px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900";
 
             if (sub === 'practices') {
-                document.getElementById('subpage-practices').classList.remove('hidden');
-                document.getElementById('subtab-practices').className = "px-4 py-2 rounded-lg bg-white shadow-sm text-sbi-800 font-bold";
+                if (pSection) pSection.classList.remove('hidden');
+                if (btnP) btnP.className = "px-4 py-2 rounded-lg bg-white shadow-sm text-sbi-800 font-bold";
             } else {
-                document.getElementById('subpage-humanstories').classList.remove('hidden');
-                document.getElementById('subtab-humanstories').className = "px-4 py-2 rounded-lg bg-white shadow-sm text-sbi-800 font-bold";
+                if (hSection) hSection.classList.remove('hidden');
+                if (btnH) btnH.className = "px-4 py-2 rounded-lg bg-white shadow-sm text-sbi-800 font-bold";
             }
         }
 
         function switchArchiveSubtab(sub) {
-            document.getElementById('arch-sub-mitra').classList.add('hidden');
-            document.getElementById('arch-sub-docs').classList.add('hidden');
-            document.getElementById('arch-tab-mitra').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600";
-            document.getElementById('arch-tab-docs').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600";
+            var sMitra = document.getElementById('arch-sub-mitra');
+            var sDocs = document.getElementById('arch-sub-docs');
+            var bMitra = document.getElementById('arch-tab-mitra');
+            var bDocs = document.getElementById('arch-tab-docs');
+
+            if (sMitra) sMitra.classList.add('hidden');
+            if (sDocs) sDocs.classList.add('hidden');
+            if (bMitra) bMitra.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600";
+            if (bDocs) bDocs.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600";
 
             if (sub === 'mitra') {
-                document.getElementById('arch-sub-mitra').classList.remove('hidden');
-                document.getElementById('arch-tab-mitra').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-sbi-100 text-sbi-800";
+                if (sMitra) sMitra.classList.remove('hidden');
+                if (bMitra) bMitra.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-sbi-100 text-sbi-800";
             } else {
-                document.getElementById('arch-sub-docs').classList.remove('hidden');
-                document.getElementById('arch-tab-docs').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-sbi-100 text-sbi-800";
+                if (sDocs) sDocs.classList.remove('hidden');
+                if (bDocs) bDocs.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-sbi-100 text-sbi-800";
             }
         }
 
-        // DATA GURU & SEBARAN LOGIC
-        let teacherChartInstance = null;
+        var teacherChartInstance = null;
+        var leafletMapInstance = null;
+        var mapMarkersLayer = null;
 
         function renderTeachersModule() {
             updateTeacherMetrics();
             renderTeacherDistributionChart();
             renderDistrictSummaryList();
+            renderTeacherMap();
             renderTeachersTable();
         }
 
         function updateTeacherMetrics() {
-            const total = appState.teachers.length;
-            const sdCount = appState.teachers.filter(t => t.level === 'SD').length;
-            const smpCount = appState.teachers.filter(t => t.level === 'SMP').length;
-            const masterCount = appState.teachers.filter(t => t.role === 'Master Trainer' || t.role === 'Guru Inti').length;
+            var total = appState.teachers.length;
+            var sdCount = appState.teachers.filter(function(t) { return t.level === 'SD'; }).length;
+            var smpCount = appState.teachers.filter(function(t) { return t.level === 'SMP'; }).length;
+            var masterCount = appState.teachers.filter(function(t) { return t.role === 'Master Trainer' || t.role === 'Guru Inti'; }).length;
 
-            document.getElementById('count-total-teachers').innerText = total;
-            document.getElementById('count-sd-teachers').innerText = sdCount;
-            document.getElementById('count-smp-teachers').innerText = smpCount;
-            document.getElementById('count-master-teachers').innerText = masterCount;
+            var elTotal = document.getElementById('count-total-teachers');
+            var elSd = document.getElementById('count-sd-teachers');
+            var elSmp = document.getElementById('count-smp-teachers');
+            var elMaster = document.getElementById('count-master-teachers');
 
-            const dashElem = document.getElementById('stat-teacher-count');
+            if (elTotal) elTotal.innerText = total;
+            if (elSd) elSd.innerText = sdCount;
+            if (elSmp) elSmp.innerText = smpCount;
+            if (elMaster) elMaster.innerText = masterCount;
+
+            var dashElem = document.getElementById('stat-teacher-count');
             if (dashElem) dashElem.innerText = total;
-            const dashHeader = document.getElementById('dash-stat-teachers');
+            var dashHeader = document.getElementById('dash-stat-teachers');
             if (dashHeader) dashHeader.innerText = total;
         }
 
         function getDistrictDistribution() {
-            const districts = [
+            var districts = [
                 "Barabai", "Pandawan", "Haruyan", "Batu Benawa", 
                 "Labuan Amas Selatan", "Labuan Amas Utara", "Batang Alai Selatan", 
                 "Batang Alai Utara", "Batang Alai Timur", "Hantakan", "Limpasu"
             ];
+            var counts = {};
+            districts.forEach(function(d) { counts[d] = 0; });
 
-            const counts = {};
-            districts.forEach(d => counts[d] = 0);
-
-            appState.teachers.forEach(t => {
+            appState.teachers.forEach(function(t) {
                 if (counts[t.subdistrict] !== undefined) {
                     counts[t.subdistrict]++;
                 } else {
                     counts[t.subdistrict] = 1;
                 }
             });
+            return { districts: districts, counts: counts };
+        }
 
-            return { districts, counts };
+        /* Inisialisasi & Pembaharuan Peta Leaflet HST */
+        function renderTeacherMap() {
+            var mapContainer = document.getElementById('teacherMap');
+            if (!mapContainer) return;
+
+            // Inisialisasi Map jika belum ada
+            if (!leafletMapInstance) {
+                leafletMapInstance = L.map('teacherMap').setView([-2.5833, 115.3833], 11);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    attribution: '&copy; OpenStreetMap contributors | SBI HST 2026'
+                }).addTo(leafletMapInstance);
+
+                mapMarkersLayer = L.layerGroup().addTo(leafletMapInstance);
+            }
+
+            // Bersihkan marker sebelumnya
+            if (mapMarkersLayer) {
+                mapMarkersLayer.clearLayers();
+            }
+
+            // Tambahkan marker guru
+            appState.teachers.forEach(function(t) {
+                var lat = t.lat;
+                var lng = t.lng;
+
+                // Jika koordinat belum ada, ambil dari perkiraan kecamatan
+                if (!lat || !lng) {
+                    var base = districtCoordinates[t.subdistrict] || [-2.5833, 115.3833];
+                    // Sedikit variasi agar pin tidak saling menumpuk persis di satu titik
+                    var jitterLat = (Math.random() - 0.5) * 0.02;
+                    var jitterLng = (Math.random() - 0.5) * 0.02;
+                    lat = base[0] + jitterLat;
+                    lng = base[1] + jitterLng;
+                    t.lat = lat;
+                    t.lng = lng;
+                }
+
+                var isMaster = t.role === 'Master Trainer';
+                var isInti = t.role === 'Guru Inti';
+                var markerColor = isMaster ? '#f59e0b' : (isInti ? '#1b365d' : '#10b981');
+
+                // Custom SVG Circle Marker
+                var customIcon = L.divIcon({
+                    className: 'custom-map-pin',
+                    html: `
+                        <div style="background-color: ${markerColor}; width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">
+                            <i class="fa-solid ${t.level === 'SD' ? 'fa-school' : 'fa-graduation-cap'}"></i>
+                        </div>
+                    `,
+                    iconSize: [22, 22],
+                    iconAnchor: [11, 11]
+                });
+
+                var marker = L.marker([lat, lng], { icon: customIcon });
+
+                var popupContent = `
+                    <div class="p-2 space-y-1.5 font-sans" style="min-width: 200px;">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[9px] font-bold px-2 py-0.5 rounded ${t.level === 'SD' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800'}">${t.level} Pengimbasan</span>
+                            <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">${t.cefr}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-xs">${t.school}</h4>
+                        <p class="text-[11px] text-slate-700 font-semibold"><i class="fa-solid fa-user mr-1 text-slate-400"></i>${t.name}</p>
+                        <p class="text-[10px] text-slate-500"><i class="fa-solid fa-location-dot mr-1 text-sbired-500"></i>Kecamatan ${t.subdistrict}</p>
+                        <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-[10px] text-slate-400">Peran: <b>${t.role}</b></span>
+                            <a href="https://wa.me/${(t.phone || '').replace(/[^0-9]/g, '')}" target="_blank" class="text-emerald-600 hover:text-emerald-800 text-[10px] font-bold inline-flex items-center">
+                                <i class="fa-brands fa-whatsapp mr-1"></i>Chat
+                            </a>
+                        </div>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent);
+                mapMarkersLayer.addLayer(marker);
+            });
         }
 
         function renderTeacherDistributionChart() {
-            const ctx = document.getElementById('teacherDistChart');
+            var ctx = document.getElementById('teacherDistChart');
             if (!ctx) return;
 
-            const { districts, counts } = getDistrictDistribution();
-            const dataValues = districts.map(d => counts[d]);
+            var dist = getDistrictDistribution();
+            var dataValues = dist.districts.map(function(d) { return dist.counts[d]; });
 
             if (teacherChartInstance) {
                 teacherChartInstance.destroy();
@@ -1094,7 +1283,7 @@
             teacherChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: districts,
+                    labels: dist.districts,
                     datasets: [{
                         label: 'Jumlah Guru SBI',
                         data: dataValues,
@@ -1111,7 +1300,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return ` ${context.raw} Guru Terdata`;
+                                    return ' ' + context.raw + ' Guru Terdata';
                                 }
                             }
                         }
@@ -1122,7 +1311,7 @@
                             ticks: { stepSize: 1, font: { size: 10 } }
                         },
                         x: {
-                            ticks: { font: { size: 9 }, maxRotation: 45, minRotation: 45 }
+                            ticks: { font: { size: 8 }, maxRotation: 45, minRotation: 45 }
                         }
                     }
                 }
@@ -1130,47 +1319,53 @@
         }
 
         function renderDistrictSummaryList() {
-            const container = document.getElementById('district-summary-list');
+            var container = document.getElementById('district-summary-list');
             if (!container) return;
 
-            const { districts, counts } = getDistrictDistribution();
-            const total = appState.teachers.length || 1;
+            var dist = getDistrictDistribution();
+            var total = appState.teachers.length || 1;
 
-            container.innerHTML = districts.map(d => {
-                const cnt = counts[d] || 0;
-                const pct = Math.round((cnt / total) * 100);
+            container.innerHTML = dist.districts.map(function(d) {
+                var cnt = dist.counts[d] || 0;
+                var pct = Math.round((cnt / total) * 100);
                 return `
-                    <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-100 text-xs">
+                    <div class="flex items-center justify-between p-1.5 rounded-lg bg-slate-50 border border-slate-100 text-xs">
                         <div class="flex items-center space-x-2">
                             <span class="w-2 h-2 rounded-full ${cnt > 0 ? 'bg-sbi-500' : 'bg-slate-300'}"></span>
-                            <span class="font-bold text-slate-800">Kec. ${d}</span>
+                            <span class="font-bold text-slate-800 text-[11px]">Kec. ${d}</span>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <span class="font-extrabold text-sbi-700">${cnt} Guru</span>
-                            <span class="text-[10px] text-slate-400 bg-slate-200 px-1.5 py-0.5 rounded font-mono">${pct}%</span>
+                            <span class="font-extrabold text-sbi-700 text-xs">${cnt} Guru</span>
+                            <span class="text-[9px] text-slate-400 bg-slate-200 px-1 py-0.5 rounded font-mono">${pct}%</span>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // RENDER TEACHERS TABLE WITH EDIT & DELETE BUTTONS
         function renderTeachersTable() {
-            const tbody = document.getElementById('teacher-table-body');
+            var tbody = document.getElementById('teacher-table-body');
             if (!tbody) return;
 
-            const kecFilter = document.getElementById('filter-teacher-kec')?.value || 'ALL';
-            const jenjangFilter = document.getElementById('filter-teacher-jenjang')?.value || 'ALL';
-            const roleFilter = document.getElementById('filter-teacher-role')?.value || 'ALL';
-            const keyword = (document.getElementById('search-teacher-keyword')?.value || '').toLowerCase();
+            var kecElem = document.getElementById('filter-teacher-kec');
+            var kecFilter = kecElem ? kecElem.value : 'ALL';
 
-            const filtered = appState.teachers.filter(t => {
-                const matchKec = kecFilter === 'ALL' || t.subdistrict === kecFilter;
-                const matchJenjang = jenjangFilter === 'ALL' || t.level === jenjangFilter;
-                const matchRole = roleFilter === 'ALL' || t.role === roleFilter;
-                const matchKey = t.name.toLowerCase().includes(keyword) || 
-                                 t.school.toLowerCase().includes(keyword) || 
-                                 t.nip.toLowerCase().includes(keyword);
+            var jenjangElem = document.getElementById('filter-teacher-jenjang');
+            var jenjangFilter = jenjangElem ? jenjangElem.value : 'ALL';
+
+            var roleElem = document.getElementById('filter-teacher-role');
+            var roleFilter = roleElem ? roleElem.value : 'ALL';
+
+            var keyElem = document.getElementById('search-teacher-keyword');
+            var keyword = (keyElem && keyElem.value ? keyElem.value : '').toLowerCase();
+
+            var filtered = appState.teachers.filter(function(t) {
+                var matchKec = kecFilter === 'ALL' || t.subdistrict === kecFilter;
+                var matchJenjang = jenjangFilter === 'ALL' || t.level === jenjangFilter;
+                var matchRole = roleFilter === 'ALL' || t.role === roleFilter;
+                var matchKey = (t.name || '').toLowerCase().indexOf(keyword) !== -1 || 
+                               (t.school || '').toLowerCase().indexOf(keyword) !== -1 || 
+                               (t.nip || '').toLowerCase().indexOf(keyword) !== -1;
                 return matchKec && matchJenjang && matchRole && matchKey;
             });
 
@@ -1185,11 +1380,12 @@
                 return;
             }
 
-            tbody.innerHTML = filtered.map(t => {
-                const isMaster = t.role === 'Master Trainer';
-                const isInti = t.role === 'Guru Inti';
-                const badgeClass = isMaster ? 'bg-amber-100 text-amber-800 border-amber-300' : (isInti ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-slate-100 text-slate-700 border-slate-300');
-                const levelBadge = t.level === 'SD' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800';
+            tbody.innerHTML = filtered.map(function(t) {
+                var isMaster = t.role === 'Master Trainer';
+                var isInti = t.role === 'Guru Inti';
+                var badgeClass = isMaster ? 'bg-amber-100 text-amber-800 border-amber-300' : (isInti ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-slate-100 text-slate-700 border-slate-300');
+                var levelBadge = t.level === 'SD' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800';
+                var sanitizedPhone = (t.phone || '').replace(/[^0-9]/g, '');
 
                 return `
                     <tr class="hover:bg-slate-50 transition">
@@ -1214,7 +1410,7 @@
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">${t.role}</span>
                         </td>
                         <td class="p-3 font-mono text-[11px] text-slate-600">
-                            <a href="https://wa.me/${t.phone.replace(/[^0-9]/g, '')}" target="_blank" class="hover:text-emerald-600 inline-flex items-center space-x-1">
+                            <a href="https://wa.me/${sanitizedPhone}" target="_blank" class="hover:text-emerald-600 inline-flex items-center space-x-1">
                                 <i class="fa-brands fa-whatsapp text-emerald-600"></i>
                                 <span>${t.phone}</span>
                             </a>
@@ -1234,23 +1430,113 @@
             }).join('');
         }
 
-        // EDIT & DELETE ACTIONS FOR TEACHERS
+        /* FITUR IMPORT EXCEL / SPREADSHEET */
+        function triggerExcelImport() {
+            if (!isAdminLoggedIn) {
+                var input = document.getElementById('admin-pass-input');
+                if (input) input.value = '';
+                var modal = document.getElementById('adminLoginModal');
+                if (modal) modal.classList.remove('hidden');
+                showToast("Silakan Login Admin untuk mengimpor file Excel data guru.", "warning");
+                return;
+            }
+            var fileInput = document.getElementById('excel-file-input');
+            if (fileInput) fileInput.click();
+        }
+
+        function handleExcelImport(event) {
+            var file = event.target.files[0];
+            if (!file) return;
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    var data = new Uint8Array(e.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                    if (json.length < 2) {
+                        showToast("File Excel kosong atau tidak memiliki baris data!", "error");
+                        return;
+                    }
+
+                    var header = json[0].map(function(h) { return (h || '').toString().toLowerCase(); });
+                    var importedCount = 0;
+
+                    for (var i = 1; i < json.length; i++) {
+                        var row = json[i];
+                        if (!row || row.length === 0) continue;
+
+                        var name = row[0] ? row[0].toString() : '';
+                        if (!name) continue;
+
+                        var nip = row[1] ? row[1].toString() : '-';
+                        var school = row[2] ? row[2].toString() : 'Sekolah Sasaran SBI';
+                        var subdistrict = row[3] ? row[3].toString() : 'Barabai';
+                        var level = row[4] ? row[4].toString().toUpperCase() : 'SD';
+                        if (level !== 'SD' && level !== 'SMP') level = 'SD';
+
+                        var cefr = row[5] ? row[5].toString() : 'B1 Intermediate';
+                        var role = row[6] ? row[6].toString() : 'Guru Sasaran';
+                        var phone = row[7] ? row[7].toString() : '+62 812-0000-000';
+
+                        // Koordinat
+                        var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
+                        var lat = base[0] + (Math.random() - 0.5) * 0.02;
+                        var lng = base[1] + (Math.random() - 0.5) * 0.02;
+
+                        appState.teachers.unshift({
+                            id: Date.now() + i,
+                            name: name,
+                            nip: nip,
+                            school: school,
+                            subdistrict: subdistrict,
+                            level: level,
+                            cefr: cefr,
+                            role: role,
+                            phone: phone,
+                            lat: lat,
+                            lng: lng
+                        });
+                        importedCount++;
+                    }
+
+                    renderTeachersModule();
+                    showToast(`Berhasil mengimpor ${importedCount} data guru dari file Excel/Spreadsheet!`);
+                } catch (err) {
+                    console.error(err);
+                    showToast("Gagal memproses file Excel. Pastikan format tabel sesuai.", "error");
+                }
+                event.target.value = "";
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
         function editTeacher(id) {
             if (!isAdminLoggedIn) {
-                document.getElementById('admin-pass-input').value = '';
-                document.getElementById('adminLoginModal').classList.remove('hidden');
+                var input = document.getElementById('admin-pass-input');
+                if (input) input.value = '';
+                var modal = document.getElementById('adminLoginModal');
+                if (modal) modal.classList.remove('hidden');
                 showToast("Silakan Login Admin untuk mengedit data guru.", "warning");
                 return;
             }
 
-            const teacher = appState.teachers.find(t => t.id === id);
+            var teacher = appState.teachers.find(function(t) { return t.id === id; });
             if (!teacher) return;
 
-            document.getElementById('modal-type').value = 'teacher';
-            document.getElementById('modal-type-wrapper').classList.add('hidden');
-            document.getElementById('modal-title').innerText = "Edit Data Guru SBI";
-            document.getElementById('edit-item-id').value = teacher.id;
-            document.getElementById('btn-submit-form').innerText = "Perbarui Data";
+            var mType = document.getElementById('modal-type');
+            if (mType) mType.value = 'teacher';
+            var mWrap = document.getElementById('modal-type-wrapper');
+            if (mWrap) mWrap.classList.add('hidden');
+            var mTitle = document.getElementById('modal-title');
+            if (mTitle) mTitle.innerText = "Edit Data Guru SBI";
+            var mId = document.getElementById('edit-item-id');
+            if (mId) mId.value = teacher.id;
+            var mBtn = document.getElementById('btn-submit-form');
+            if (mBtn) mBtn.innerText = "Perbarui Data";
 
             updateFormFields();
 
@@ -1263,21 +1549,24 @@
             document.getElementById('input-teacher-cefr').value = teacher.cefr;
             document.getElementById('input-teacher-role').value = teacher.role;
 
-            document.getElementById('addModal').classList.remove('hidden');
+            var addModal = document.getElementById('addModal');
+            if (addModal) addModal.classList.remove('hidden');
         }
 
         function deleteTeacher(id) {
             if (!isAdminLoggedIn) {
-                document.getElementById('admin-pass-input').value = '';
-                document.getElementById('adminLoginModal').classList.remove('hidden');
+                var input = document.getElementById('admin-pass-input');
+                if (input) input.value = '';
+                var modal = document.getElementById('adminLoginModal');
+                if (modal) modal.classList.remove('hidden');
                 showToast("Silakan Login Admin untuk menghapus data guru.", "warning");
                 return;
             }
 
-            const targetIndex = appState.teachers.findIndex(t => t.id === id);
+            var targetIndex = appState.teachers.findIndex(function(t) { return t.id === id; });
             if (targetIndex === -1) return;
 
-            const teacherName = appState.teachers[targetIndex].name;
+            var teacherName = appState.teachers[targetIndex].name;
             if (confirm(`Apakah Anda yakin ingin menghapus data "${teacherName}" dari direktori?`)) {
                 appState.teachers.splice(targetIndex, 1);
                 renderTeachersModule();
@@ -1286,29 +1575,28 @@
         }
 
         function exportTeacherDataCSV() {
-            let csv = "Nama Guru,NIP,Sekolah,Kecamatan,Jenjang,CEFR Level,Peran,No Kontak\n";
-            appState.teachers.forEach(t => {
+            var csv = "Nama Guru,NIP,Sekolah,Kecamatan,Jenjang,CEFR Level,Peran,No Kontak\n";
+            appState.teachers.forEach(function(t) {
                 csv += `"${t.name}","${t.nip}","${t.school}","${t.subdistrict}","${t.level}","${t.cefr}","${t.role}","${t.phone}"\n`;
             });
 
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
+            var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement("a");
+            var url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", `Data_Guru_SBI_HST_2026.csv`);
+            link.setAttribute("download", "Data_Guru_SBI_HST_2026.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             showToast("Ekspor CSV Data Guru berhasil diunduh!");
         }
 
-        // RENDER TARGET OUTPUTS
         function renderTargetOutputs() {
-            const table = document.getElementById('target-output-table');
+            var table = document.getElementById('target-output-table');
             if (!table) return;
-            table.innerHTML = appState.targetOutputs.map(item => {
-                const pct = Math.round((item.current / item.target) * 100);
-                const isComplete = pct >= 100;
+            table.innerHTML = appState.targetOutputs.map(function(item) {
+                var pct = Math.round((item.current / item.target) * 100);
+                var isComplete = pct >= 100;
                 return `
                     <tr class="hover:bg-slate-50 transition">
                         <td class="p-3 font-semibold text-slate-800">${item.name}</td>
@@ -1324,14 +1612,24 @@
             }).join('');
         }
 
-        // RENDER MEDIA CENTER (DENGAN TAUTAN BACA SELENGKAPNYA)
         function renderMediaCenter() {
-            const grid = document.getElementById('media-grid');
+            var grid = document.getElementById('media-grid');
             if (!grid) return;
-            const filter = document.getElementById('media-category-filter')?.value || 'ALL';
-            const filtered = filter === 'ALL' ? appState.mediaCenter : appState.mediaCenter.filter(m => m.category === filter);
+            var filterElem = document.getElementById('media-category-filter');
+            var filter = filterElem ? filterElem.value : 'ALL';
+            var filtered = filter === 'ALL' ? appState.mediaCenter : appState.mediaCenter.filter(function(m) { return m.category === filter; });
 
-            grid.innerHTML = filtered.map(item => `
+            grid.innerHTML = filtered.map(function(item) {
+                var buttonOrLink = item.url ? `
+                    <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 text-sbi-600 font-bold hover:text-sbired-500 hover:underline">
+                        <span>Baca Selengkapnya</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                ` : `
+                    <span class="text-slate-400 italic text-[11px]">Tidak ada link</span>
+                `;
+
+                return `
                 <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
                     <div class="h-44 overflow-hidden relative bg-slate-100">
                         <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/600x400/0284c7/white?text=SBI+HST+2026'">
@@ -1348,32 +1646,26 @@
                         </div>
                         <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                             <span>Oleh: <b class="text-slate-700">${item.author}</b></span>
-                            ${item.url ? `
-                                <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 text-sbi-600 font-bold hover:text-sbired-500 hover:underline">
-                                    <span>Baca Selengkapnya</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                                </a>
-                            ` : `
-                                <span class="text-slate-400 italic text-[11px]">Tidak ada link</span>
-                            `}
+                            ${buttonOrLink}
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
-        // RENDER PRACTICES & HUMAN STORIES
         function renderPractices() {
-            const grid = document.getElementById('practices-grid');
+            var grid = document.getElementById('practices-grid');
             if (!grid) return;
-            const search = (document.getElementById('practice-search')?.value || '').toLowerCase();
-            const filtered = appState.practices.filter(p => 
-                p.school.toLowerCase().includes(search) || 
-                p.title.toLowerCase().includes(search) ||
-                p.subdistrict.toLowerCase().includes(search)
-            );
+            var searchElem = document.getElementById('practice-search');
+            var search = (searchElem && searchElem.value ? searchElem.value : '').toLowerCase();
+            var filtered = appState.practices.filter(function(p) { 
+                return (p.school || '').toLowerCase().indexOf(search) !== -1 || 
+                       (p.title || '').toLowerCase().indexOf(search) !== -1 ||
+                       (p.subdistrict || '').toLowerCase().indexOf(search) !== -1;
+            });
 
-            grid.innerHTML = filtered.map(p => `
+            grid.innerHTML = filtered.map(function(p) { return `
                 <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3 hover:border-sbi-300 transition">
                     <div class="flex items-start justify-between">
                         <div>
@@ -1392,13 +1684,13 @@
                         <p class="text-emerald-700">${p.impact}</p>
                     </div>
                 </div>
-            `).join('');
+            `; }).join('');
         }
 
         function renderHumanStories() {
-            const grid = document.getElementById('stories-grid');
+            var grid = document.getElementById('stories-grid');
             if (!grid) return;
-            grid.innerHTML = appState.humanStories.map(s => `
+            grid.innerHTML = appState.humanStories.map(function(s) { return `
                 <div class="bg-gradient-to-br from-sbi-900 to-sbi-800 text-white rounded-2xl p-6 shadow-md space-y-4 relative overflow-hidden">
                     <div class="flex items-center space-x-3">
                         <div class="w-12 h-12 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center font-bold text-lg">
@@ -1415,13 +1707,13 @@
                         <i class="fa-solid fa-quote-left mr-1.5 opacity-60"></i>${s.quote}
                     </div>
                 </div>
-            `).join('');
+            `; }).join('');
         }
 
         function renderMitraTable() {
-            const tbody = document.getElementById('mitra-table-body');
+            var tbody = document.getElementById('mitra-table-body');
             if (!tbody) return;
-            tbody.innerHTML = appState.mitra.map(m => `
+            tbody.innerHTML = appState.mitra.map(function(m) { return `
                 <tr class="hover:bg-slate-50 transition">
                     <td class="p-3 font-bold text-slate-800">${m.name}</td>
                     <td class="p-3 text-slate-600"><span class="bg-slate-100 px-2 py-0.5 rounded text-[11px]">${m.category}</span></td>
@@ -1429,18 +1721,18 @@
                     <td class="p-3 text-slate-600">${m.role}</td>
                     <td class="p-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full text-[10px]">${m.status}</span></td>
                 </tr>
-            `).join('');
+            `; }).join('');
         }
 
         function renderArchiveGrid() {
-            const grid = document.getElementById('archive-files-grid');
+            var grid = document.getElementById('archive-files-grid');
             if (!grid) return;
-            const archives = [
+            var archives = [
                 { title: "Modul Sosialisasi Pengimbasan SD 2026", type: "PDF Document", size: "3.4 MB", date: "10 Feb 2026" },
                 { title: "Dokumentasi Foto Launching SBI HST", type: "ZIP Album", size: "45 MB", date: "14 Feb 2026" },
                 { title: "Database Guru & Pemetaan CEFR Level", type: "XLSX Archive", size: "2.1 MB", date: "28 Feb 2026" }
             ];
-            grid.innerHTML = archives.map(a => `
+            grid.innerHTML = archives.map(function(a) { return `
                 <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-2 flex items-center space-x-3">
                     <div class="w-10 h-10 rounded-lg bg-sbi-50 text-sbi-600 flex items-center justify-center font-bold text-lg">
                         <i class="fa-solid fa-file-lines"></i>
@@ -1451,13 +1743,13 @@
                     </div>
                     <button onclick="showToast('Unduhan arsip dimulai...')" class="text-sbi-600 hover:text-sbi-800 p-1.5"><i class="fa-solid fa-download"></i></button>
                 </div>
-            `).join('');
+            `; }).join('');
         }
 
         function renderTestimonials() {
-            const grid = document.getElementById('testimonials-grid');
+            var grid = document.getElementById('testimonials-grid');
             if (!grid) return;
-            grid.innerHTML = appState.testimonials.map(t => `
+            grid.innerHTML = appState.testimonials.map(function(t) { return `
                 <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3 flex flex-col justify-between">
                     <p class="text-xs text-slate-700 italic">"${t.text}"</p>
                     <div class="border-t border-slate-200 pt-2 flex items-center space-x-2">
@@ -1470,16 +1762,15 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `; }).join('');
         }
 
-        let chart1Instance = null;
-        let chart2Instance = null;
+        var chart1Instance = null;
+        var chart2Instance = null;
 
         function renderImpactCharts() {
-            const ctx1 = document.getElementById('impactChart1');
-            const ctx2 = document.getElementById('impactChart2');
-
+            var ctx1 = document.getElementById('impactChart1');
+            var ctx2 = document.getElementById('impactChart2');
             if (!ctx1 || !ctx2) return;
 
             if (chart1Instance) chart1Instance.destroy();
@@ -1533,35 +1824,43 @@
             });
         }
 
-        // MODAL MANAGEMENT & FORMS
-        function openAddModal(defaultType = 'teacher') {
-            document.getElementById('edit-item-id').value = "";
-            document.getElementById('modal-type-wrapper').classList.remove('hidden');
-            document.getElementById('modal-title').innerText = "Tambah Entri Baru";
-            document.getElementById('btn-submit-form').innerText = "Simpan Data";
-            document.getElementById('modal-type').value = defaultType;
+        /* MODAL AND FORM LOGIC */
+        function openAddModal(defaultType) {
+            if (!defaultType) defaultType = 'teacher';
+            var idEl = document.getElementById('edit-item-id');
+            if (idEl) idEl.value = "";
+            var wrapEl = document.getElementById('modal-type-wrapper');
+            if (wrapEl) wrapEl.classList.remove('hidden');
+            var titleEl = document.getElementById('modal-title');
+            if (titleEl) titleEl.innerText = "Tambah Entri Baru";
+            var btnEl = document.getElementById('btn-submit-form');
+            if (btnEl) btnEl.innerText = "Simpan Data";
+            var typeEl = document.getElementById('modal-type');
+            if (typeEl) typeEl.value = defaultType;
             uploadedImageBase64 = "";
             updateFormFields();
-            document.getElementById('addModal').classList.remove('hidden');
+            var modal = document.getElementById('addModal');
+            if (modal) modal.classList.remove('hidden');
         }
 
         function closeAddModal() {
-            document.getElementById('addModal').classList.add('hidden');
+            var modal = document.getElementById('addModal');
+            if (modal) modal.classList.add('hidden');
             uploadedImageBase64 = "";
         }
 
         function handleImageUpload(event) {
-            const file = event.target.files[0];
+            var file = event.target.files[0];
             if (file) {
                 if (file.size > 2 * 1024 * 1024) {
-                    showToast("Ukuran gambar terlalu besar (Maksimal 2MB)", "error");
+                    showToast("Ukuran foto maksimal 2MB", "error");
                     event.target.value = "";
                     return;
                 }
-                const reader = new FileReader();
+                var reader = new FileReader();
                 reader.onload = function(e) {
                     uploadedImageBase64 = e.target.result;
-                    const preview = document.getElementById('image-preview');
+                    var preview = document.getElementById('image-preview');
                     if (preview) {
                         preview.src = uploadedImageBase64;
                         preview.classList.remove('hidden');
@@ -1572,8 +1871,10 @@
         }
 
         function updateFormFields() {
-            const type = document.getElementById('modal-type').value;
-            const container = document.getElementById('dynamic-form-fields');
+            var typeEl = document.getElementById('modal-type');
+            var type = typeEl ? typeEl.value : 'teacher';
+            var container = document.getElementById('dynamic-form-fields');
+            if (!container) return;
 
             if (type === 'teacher') {
                 container.innerHTML = `
@@ -1641,7 +1942,7 @@
                 container.innerHTML = `
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Judul Berita / Konten Media</label>
-                        <input type="text" id="input-title" placeholder="e.g. Workshop Peningkatan Pedagogik Bahasa Inggris" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:ring-sbi-500">
+                        <input type="text" id="input-title" placeholder="e.g. Workshop Pengimbasan Bahasa Inggris SD 2026" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:ring-sbi-500">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
@@ -1659,24 +1960,24 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700">Link Berita Lengkap (URL Tujuan)</label>
+                        <label class="block text-xs font-semibold text-slate-700">Link Berita Lengkap (Tautan Eksternal/Website)</label>
                         <input type="url" id="input-media-url" placeholder="https://disdik.hulusungaitengahkab.go.id/berita-..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
-                        <p class="text-[10px] text-slate-400 mt-0.5">Tautan ini akan terbuka saat pengunjung mengklik 'Baca Selengkapnya'.</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Link ini akan dituju saat pengunjung mengklik 'Baca Selengkapnya'.</p>
                     </div>
                     <div class="space-y-1">
-                        <label class="block text-xs font-semibold text-slate-700">Upload Foto Kegiatan (Dari Komputer/HP)</label>
+                        <label class="block text-xs font-semibold text-slate-700">Upload Foto Kegiatan (Dari Galeri/Komputer)</label>
                         <input type="file" id="input-media-file" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sbi-100 file:text-sbi-700 hover:file:bg-sbi-200">
                         <div class="mt-2 text-center">
                             <img id="image-preview" src="" alt="Preview" class="h-28 mx-auto rounded-lg object-cover hidden border border-slate-300 shadow-sm">
                         </div>
                         <div class="mt-1">
-                            <label class="block text-[11px] text-slate-500 font-medium">Atau gunakan Link URL Foto Langsung:</label>
+                            <label class="block text-[11px] text-slate-500 font-medium">Atau Link URL Gambar Langsung:</label>
                             <input type="text" id="input-media-image-url" placeholder="https://images.unsplash.com/..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
                         </div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Ringkasan Berita</label>
-                        <textarea id="input-desc" required rows="2" placeholder="Tuliskan ringkasan 2-3 kalimat mengenai liputan ini..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
+                        <textarea id="input-desc" required rows="2" placeholder="Tuliskan ringkasan berita program..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
                     </div>
                 `;
             } else if (type === 'practice') {
@@ -1691,7 +1992,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Judul Praktik Baik</label>
-                        <input type="text" id="input-title" placeholder="e.g. English Day Routine" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                        <input type="text" id="input-title" placeholder="e.g. English Morning Greeting" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Deskripsi & Dampak</label>
@@ -1746,32 +2047,39 @@
             }
         }
 
-        // FORM SUBMIT DISPATCHER (TAMBAH & EDIT)
         function handleFormSubmit(e) {
             e.preventDefault();
-            const type = document.getElementById('modal-type').value;
-            const editId = document.getElementById('edit-item-id').value;
+            var type = document.getElementById('modal-type').value;
+            var editId = document.getElementById('edit-item-id').value;
 
             if (type === 'teacher') {
-                const name = document.getElementById('input-teacher-name').value;
-                const nip = document.getElementById('input-teacher-nip').value;
-                const phone = document.getElementById('input-teacher-phone').value;
-                const school = document.getElementById('input-teacher-school').value;
-                const subdistrict = document.getElementById('input-teacher-kec').value;
-                const level = document.getElementById('input-teacher-level').value;
-                const cefr = document.getElementById('input-teacher-cefr').value;
-                const role = document.getElementById('input-teacher-role').value;
+                var name = document.getElementById('input-teacher-name').value;
+                var nip = document.getElementById('input-teacher-nip').value;
+                var phone = document.getElementById('input-teacher-phone').value;
+                var school = document.getElementById('input-teacher-school').value;
+                var subdistrict = document.getElementById('input-teacher-kec').value;
+                var level = document.getElementById('input-teacher-level').value;
+                var cefr = document.getElementById('input-teacher-cefr').value;
+                var role = document.getElementById('input-teacher-role').value;
 
                 if (editId) {
-                    const idx = appState.teachers.findIndex(t => t.id == editId);
+                    var idx = appState.teachers.findIndex(function(t) { return t.id == editId; });
                     if (idx !== -1) {
-                        appState.teachers[idx] = {
-                            ...appState.teachers[idx],
-                            name, nip, phone, school, subdistrict, level, cefr, role
-                        };
+                        appState.teachers[idx].name = name;
+                        appState.teachers[idx].nip = nip;
+                        appState.teachers[idx].phone = phone;
+                        appState.teachers[idx].school = school;
+                        appState.teachers[idx].subdistrict = subdistrict;
+                        appState.teachers[idx].level = level;
+                        appState.teachers[idx].cefr = cefr;
+                        appState.teachers[idx].role = role;
                         showToast(`Data guru "${name}" berhasil diperbarui!`);
                     }
                 } else {
+                    var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
+                    var lat = base[0] + (Math.random() - 0.5) * 0.02;
+                    var lng = base[1] + (Math.random() - 0.5) * 0.02;
+
                     appState.teachers.unshift({
                         id: Date.now(),
                         name: name,
@@ -1781,21 +2089,25 @@
                         subdistrict: subdistrict,
                         level: level,
                         cefr: cefr,
-                        role: role
+                        role: role,
+                        lat: lat,
+                        lng: lng
                     });
                     showToast("Guru baru berhasil ditambahkan!");
                 }
-
                 renderTeachersModule();
             } else if (type === 'media') {
-                const title = document.getElementById('input-title').value;
-                const cat = document.getElementById('input-cat').value;
-                const desc = document.getElementById('input-desc').value;
-                const author = document.getElementById('input-media-author')?.value || 'Tim Publikasi SBI';
-                const url = document.getElementById('input-media-url')?.value || '#';
-                const directImageUrl = document.getElementById('input-media-image-url')?.value || '';
+                var title = document.getElementById('input-title').value;
+                var cat = document.getElementById('input-cat').value;
+                var desc = document.getElementById('input-desc').value;
+                var authorElem = document.getElementById('input-media-author');
+                var author = authorElem && authorElem.value ? authorElem.value : 'Tim Publikasi SBI';
+                var urlElem = document.getElementById('input-media-url');
+                var url = urlElem && urlElem.value ? urlElem.value : '#';
+                var imgUrlElem = document.getElementById('input-media-image-url');
+                var directImageUrl = imgUrlElem && imgUrlElem.value ? imgUrlElem.value : '';
 
-                const finalImage = uploadedImageBase64 || directImageUrl || 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80';
+                var finalImage = uploadedImageBase64 || directImageUrl || 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80';
 
                 appState.mediaCenter.unshift({
                     id: Date.now(),
@@ -1811,59 +2123,60 @@
                 renderMediaCenter();
                 showToast("Berita & foto media center berhasil dipublikasikan!");
             } else if (type === 'practice') {
-                const school = document.getElementById('input-school').value;
-                const subdistrict = document.getElementById('input-subdistrict').value;
-                const title = document.getElementById('input-title').value;
-                const desc = document.getElementById('input-desc').value;
+                var schoolP = document.getElementById('input-school').value;
+                var subP = document.getElementById('input-subdistrict').value;
+                var titleP = document.getElementById('input-title').value;
+                var descP = document.getElementById('input-desc').value;
                 appState.practices.unshift({
                     id: Date.now(),
-                    school: school,
-                    subdistrict: subdistrict,
-                    title: title,
+                    school: schoolP,
+                    subdistrict: subP,
+                    title: titleP,
                     type: "Praktik Baik Baru",
-                    description: desc,
+                    description: descP,
                     impact: "Terimbal balik positif pada ekosistem sekolah."
                 });
                 renderPractices();
-                document.getElementById('stat-practice-count').innerText = appState.practices.length;
+                var pCount = document.getElementById('stat-practice-count');
+                if (pCount) pCount.innerText = appState.practices.length;
                 showToast("Praktik baik sekolah berhasil ditambahkan!");
             } else if (type === 'story') {
-                const name = document.getElementById('input-title').value;
-                const school = document.getElementById('input-school').value;
-                const desc = document.getElementById('input-desc').value;
+                var nameS = document.getElementById('input-title').value;
+                var schoolS = document.getElementById('input-school').value;
+                var descS = document.getElementById('input-desc').value;
                 appState.humanStories.unshift({
                     id: Date.now(),
                     role: "Human Story",
-                    name: name,
-                    school: school,
-                    story: desc,
-                    quote: desc.substring(0, 50) + "..."
+                    name: nameS,
+                    school: schoolS,
+                    story: descS,
+                    quote: descS.substring(0, 50) + "..."
                 });
                 renderHumanStories();
                 showToast("Cerita inspiratif berhasil ditambahkan!");
             } else if (type === 'mitra') {
-                const name = document.getElementById('input-title').value;
-                const pic = document.getElementById('input-school').value;
-                const role = document.getElementById('input-desc').value;
+                var nameM = document.getElementById('input-title').value;
+                var picM = document.getElementById('input-school').value;
+                var roleM = document.getElementById('input-desc').value;
                 appState.mitra.unshift({
                     id: Date.now(),
-                    name: name,
+                    name: nameM,
                     category: "Mitra Pelaksana",
-                    pic: pic,
-                    role: role,
+                    pic: picM,
+                    role: roleM,
                     status: "Aktif"
                 });
                 renderMitraTable();
                 showToast("Mitra berhasil ditambahkan!");
             } else if (type === 'testimony') {
-                const name = document.getElementById('input-title').value;
-                const role = document.getElementById('input-school').value;
-                const text = document.getElementById('input-desc').value;
+                var nameT = document.getElementById('input-title').value;
+                var roleT = document.getElementById('input-school').value;
+                var textT = document.getElementById('input-desc').value;
                 appState.testimonials.unshift({
                     id: Date.now(),
-                    name: name,
-                    role: role,
-                    text: text
+                    name: nameT,
+                    role: roleT,
+                    text: textT
                 });
                 renderTestimonials();
                 showToast("Testimoni baru berhasil ditambahkan!");
@@ -1872,11 +2185,14 @@
             closeAddModal();
         }
 
-        // TOAST NOTIFICATION HELPER
-        function showToast(msg, type = 'success') {
-            const toast = document.getElementById('toast');
-            const icon = document.getElementById('toast-icon');
-            document.getElementById('toast-message').innerText = msg;
+        function showToast(msg, type) {
+            if (!type) type = 'success';
+            var toast = document.getElementById('toast');
+            var icon = document.getElementById('toast-icon');
+            var msgEl = document.getElementById('toast-message');
+
+            if (!toast || !icon || !msgEl) return;
+            msgEl.innerText = msg;
 
             if (type === 'error') {
                 icon.className = "fa-solid fa-triangle-exclamation text-rose-400 text-base";
@@ -1887,12 +2203,12 @@
             }
 
             toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
+            setTimeout(function() {
                 toast.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
         }
 
-        // INITIAL LOAD
+        /* ONLOAD INITIALIZER */
         window.onload = function() {
             updateAccessUI();
             renderTargetOutputs();
