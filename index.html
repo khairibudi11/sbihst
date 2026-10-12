@@ -87,25 +87,31 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between py-2.5 sm:py-3 min-h-[4.5rem]">
                 <!-- Brand & Logo -->
-                <div class="flex items-center space-x-3.5">
-                    <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white flex items-center justify-center p-1 sm:p-1.5 shadow-xl border-2 border-white/20 flex-shrink-0 transition-transform duration-200 hover:scale-105 overflow-hidden">
-                        <svg viewBox="160 260 680 480" class="w-full h-full drop-shadow-sm" xmlns="http://www.w3.org/2000/svg">
-                            <g fill="#18335D" fill-rule="evenodd">
-                                <path d="M 468 290 L 296 290 A 124 124 0 0 0 172 414 A 124 124 0 0 0 296 538 L 396 538 L 396 710 L 468 710 Z M 396 362 L 296 362 A 52 52 0 0 0 244 414 A 52 52 0 0 0 296 466 L 396 466 Z" />
-                                <path d="M 468 290 L 296 290 A 124 124 0 0 0 172 414 A 124 124 0 0 0 296 538 L 396 538 L 396 710 L 468 710 Z M 396 362 L 296 362 A 52 52 0 0 0 244 414 A 52 52 0 0 0 296 466 L 396 466 Z" transform="rotate(180 500 500)" />
+                <div class="flex items-center space-x-3 sm:space-x-3.5">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white flex items-center justify-center p-1 sm:p-1.5 shadow-md border border-white/20 flex-shrink-0 transition-transform duration-200 hover:scale-105 overflow-hidden">
+                        <svg viewBox="120 215 560 370" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Glyph Navy Smart SBI -->
+                            <g fill="#17345b">
+                                <!-- Sayap Kiri Navy -->
+                                <path d="M 374,235 L 374,565 L 316,565 L 316,435 L 240,435 A 100,100 0 0,1 140,335 A 100,100 0 0,1 240,235 L 316,235 Z M 316,293 L 240,293 A 42,42 0 0,0 198,335 A 42,42 0 0,0 240,377 L 316,377 Z" />
+                                <!-- Sayap Kanan Navy (Simetri Rotasi 180 Derajat) -->
+                                <path d="M 374,235 L 374,565 L 316,565 L 316,435 L 240,435 A 100,100 0 0,1 140,335 A 100,100 0 0,1 240,235 L 316,235 Z M 316,293 L 240,293 A 42,42 0 0,0 198,335 A 42,42 0 0,0 240,377 L 316,377 Z" transform="rotate(180 400 400)" />
                             </g>
-                            <g fill="#B12035">
-                                <rect x="208" y="638" width="157" height="72" />
-                                <rect x="208" y="638" width="157" height="72" transform="rotate(180 500 500)" />
+                            <!-- Aksen Merah Smart SBI -->
+                            <g fill="#a82035">
+                                <!-- Balok Merah Kiri Bawah -->
+                                <rect x="166" y="507" width="128" height="58" />
+                                <!-- Balok Merah Kanan Atas -->
+                                <rect x="166" y="507" width="128" height="58" transform="rotate(180 400 400)" />
                             </g>
                         </svg>
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <span class="font-extrabold text-lg sm:text-xl tracking-tight text-white">SBI HST 2026</span>
-                            <span class="bg-sbired-500 text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">Data & Impact Hub</span>
+                            <span class="font-extrabold text-base sm:text-xl tracking-tight text-white leading-tight">SBI HST 2026</span>
+                            <span class="bg-sbired-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">Data & Impact Hub</span>
                         </div>
-                        <p class="text-xs text-slate-300 hidden sm:block">Kab. Hulu Sungai Tengah • Kemitraan, Data Guru, Pemetaan & Dokumentasi</p>
+                        <p class="text-[11px] sm:text-xs text-slate-300 hidden sm:block leading-normal">Kab. Hulu Sungai Tengah • Kemitraan, Data Guru, Pemetaan & Dokumentasi</p>
                     </div>
                 </div>
 
@@ -358,10 +364,16 @@
                         <span>Tambah Guru</span>
                     </button>
 
-                    <!-- Tombol Ekspor CSV -->
-                    <button onclick="exportTeacherDataCSV()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs px-3 py-2.5 rounded-lg transition font-semibold flex items-center space-x-1 shadow">
-                        <i class="fa-solid fa-file-csv"></i>
-                        <span>Ekspor Data</span>
+                    <!-- Tombol Ekspor Excel (.xlsx) -->
+                    <button onclick="exportTeacherDataExcel()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs px-3 py-2.5 rounded-lg transition font-semibold flex items-center space-x-1 shadow" title="Unduh data saat ini dalam format Excel (.xlsx)">
+                        <i class="fa-solid fa-file-excel text-emerald-400"></i>
+                        <span>Ekspor Excel</span>
+                    </button>
+
+                    <!-- Tombol Unduh Template Kosong (.xlsx) -->
+                    <button onclick="downloadTeacherTemplateExcel()" class="bg-slate-700 hover:bg-slate-800 text-slate-200 text-xs px-2.5 py-2.5 rounded-lg transition font-medium flex items-center space-x-1 shadow" title="Unduh template kosong untuk diisi data baru">
+                        <i class="fa-solid fa-download"></i>
+                        <span class="hidden sm:inline">Template</span>
                     </button>
                 </div>
             </div>
@@ -1574,21 +1586,76 @@
             }
         }
 
-        function exportTeacherDataCSV() {
-            var csv = "Nama Guru,NIP,Sekolah,Kecamatan,Jenjang,CEFR Level,Peran,No Kontak\n";
-            appState.teachers.forEach(function(t) {
-                csv += `"${t.name}","${t.nip}","${t.school}","${t.subdistrict}","${t.level}","${t.cefr}","${t.role}","${t.phone}"\n`;
-            });
+        /* EKSPOR DATA KE FORMAT EXCEL ASLI (.XLSX) */
+        function exportTeacherDataExcel() {
+            try {
+                var dataForExcel = appState.teachers.map(function(t) {
+                    return {
+                        "Nama Guru": t.name,
+                        "NIP": t.nip,
+                        "Sekolah": t.school,
+                        "Kecamatan": t.subdistrict,
+                        "Jenjang": t.level,
+                        "CEFR Level": t.cefr,
+                        "Peran SBI": t.role,
+                        "No Kontak": t.phone
+                    };
+                });
 
-            var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            var link = document.createElement("a");
-            var url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "Data_Guru_SBI_HST_2026.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast("Ekspor CSV Data Guru berhasil diunduh!");
+                var ws = XLSX.utils.json_to_sheet(dataForExcel);
+                // Atur lebar kolom otomatis agar rapi di Microsoft Excel
+                ws['!cols'] = [
+                    { wch: 26 }, // Nama Guru
+                    { wch: 24 }, // NIP
+                    { wch: 28 }, // Sekolah
+                    { wch: 20 }, // Kecamatan
+                    { wch: 10 }, // Jenjang
+                    { wch: 18 }, // CEFR Level
+                    { wch: 16 }, // Peran SBI
+                    { wch: 18 }  // No Kontak
+                ];
+
+                var wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Data Guru SBI HST 2026");
+                XLSX.writeFile(wb, "Data_Guru_SBI_HST_2026.xlsx");
+                showToast("File Excel (.xlsx) berhasil diunduh dan siap diedit!");
+            } catch (err) {
+                console.error(err);
+                showToast("Gagal membuat file Excel. Silakan coba kembali.", "error");
+            }
+        }
+
+        /* UNDUH TEMPLATE KOSONG UNTUK INPUT DATA BARU (.XLSX) */
+        function downloadTeacherTemplateExcel() {
+            try {
+                var templateRows = [
+                    {
+                        "Nama Guru": "Contoh: Siti Aisyah, S.Pd.",
+                        "NIP": "19920101 201601 2 001",
+                        "Sekolah": "SDN 1 Barabai",
+                        "Kecamatan": "Barabai",
+                        "Jenjang": "SD",
+                        "CEFR Level": "B1 Intermediate",
+                        "Peran SBI": "Guru Sasaran",
+                        "No Kontak": "+62 812-3456-7890"
+                    }
+                ];
+
+                var ws = XLSX.utils.json_to_sheet(templateRows);
+                ws['!cols'] = [
+                    { wch: 26 }, { wch: 24 }, { wch: 28 },
+                    { wch: 20 }, { wch: 10 }, { wch: 18 },
+                    { wch: 16 }, { wch: 18 }
+                ];
+
+                var wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Template Guru SBI");
+                XLSX.writeFile(wb, "Template_Data_Guru_SBI_HST.xlsx");
+                showToast("Template Excel (.xlsx) berhasil diunduh!");
+            } catch (err) {
+                console.error(err);
+                showToast("Gagal mengunduh template Excel.", "error");
+            }
         }
 
         function renderTargetOutputs() {
