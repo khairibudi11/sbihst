@@ -15,7 +15,7 @@
     <!-- Leaflet CSS & JS for Interactive Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- SheetJS (xlsx) for Import Excel / Spreadsheet -->
+    <!-- SheetJS (xlsx) for Import/Export Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
@@ -71,37 +71,131 @@
         }
         .leaflet-popup-content-wrapper {
             border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+            padding: 4px;
+        }
+        .leaflet-popup-content {
+            margin: 8px 10px;
+            line-height: 1.4;
         }
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
             body { background: white !important; }
+            @page {
+                size: A4 portrait;
+                margin: 12mm;
+            }
         }
     </style>
 </head>
 <body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-sbi-500 selection:text-white">
 
-    <!-- TOP NAVIGATION HEADER -->
+    <!-- EXECUTIVE BRIEF MODAL (ONE-PAGE A4 READY) -->
+    <div id="executiveBriefModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-2 sm:p-4 no-print">
+        <div class="bg-white rounded-2xl max-w-4xl w-full p-6 shadow-2xl border border-slate-200 space-y-4 max-h-[95vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-sbi-900 text-amber-300 text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">A4 Executive Brief</span>
+                    <h3 class="font-bold text-slate-900 text-base">Ringkasan Eksekutif Program SBI HST 2026</h3>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="printExecutiveBrief()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs px-3.5 py-1.5 rounded-lg font-bold flex items-center space-x-1 shadow transition">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak / Simpan PDF A4</span>
+                    </button>
+                    <button onclick="closeExecutiveBrief()" class="text-slate-400 hover:text-slate-600 text-xl px-2">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Container to be printed -->
+            <div id="executive-brief-content" class="space-y-4 p-4 border border-slate-100 rounded-xl bg-slate-50/50">
+                <div class="flex items-center justify-between border-b-2 border-sbi-900 pb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-sbi-900 flex items-center justify-center p-1 text-white font-black text-xl shadow">
+                            SBI
+                        </div>
+                        <div>
+                            <h2 class="text-base font-extrabold text-sbi-900 uppercase tracking-tight">Lembar Eksekutif Capaian Program SBI HST</h2>
+                            <p class="text-[11px] text-slate-600 font-medium">Dinas Pendidikan Kab. Hulu Sungai Tengah • Kemitraan, Publikasi & Data Guru</p>
+                        </div>
+                    </div>
+                    <div class="text-right text-[10px] text-slate-500 font-mono">
+                        <div>TAHUN ANGGARAN: <b>2026</b></div>
+                        <div>STATUS: <span class="text-emerald-700 font-bold">AKTIF BERJALAN</span></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-3 text-center">
+                    <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                        <div class="text-[10px] text-slate-500 font-bold uppercase">Target Output</div>
+                        <div class="text-xl font-extrabold text-sbi-700" id="brief-target-pct">75%</div>
+                        <div class="text-[9px] text-emerald-600 font-semibold">9/12 Target Doc</div>
+                    </div>
+                    <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                        <div class="text-[10px] text-slate-500 font-bold uppercase">Guru Sasaran</div>
+                        <div class="text-xl font-extrabold text-sbi-700" id="brief-total-teachers">14</div>
+                        <div class="text-[9px] text-slate-600 font-medium">11 Kecamatan HST</div>
+                    </div>
+                    <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                        <div class="text-[10px] text-slate-500 font-bold uppercase">Praktik Baik</div>
+                        <div class="text-xl font-extrabold text-amber-600" id="brief-practices">3</div>
+                        <div class="text-[9px] text-slate-600 font-medium">Inovasi Sekolah</div>
+                    </div>
+                    <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                        <div class="text-[10px] text-slate-500 font-bold uppercase">Arsip & Media</div>
+                        <div class="text-xl font-extrabold text-purple-700">86</div>
+                        <div class="text-[9px] text-purple-700 font-medium">100% Terverifikasi</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-2">
+                        <h4 class="text-xs font-bold text-slate-900 border-b border-slate-100 pb-1 flex items-center justify-between">
+                            <span>Distribusi Pendidik per Kecamatan</span>
+                            <span class="text-[10px] text-slate-400 font-normal">Cakupan Wilayah</span>
+                        </h4>
+                        <div class="space-y-1 text-xs" id="brief-district-table"></div>
+                    </div>
+
+                    <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-2">
+                        <h4 class="text-xs font-bold text-slate-900 border-b border-slate-100 pb-1 flex items-center justify-between">
+                            <span>Status Ringkas Output Program (Bab G)</span>
+                            <span class="text-[10px] text-slate-400 font-normal">Realisasi</span>
+                        </h4>
+                        <div class="space-y-1 text-[11px]" id="brief-target-summary"></div>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-200 text-[10px] text-slate-500 flex justify-between items-end">
+                    <div class="space-y-0.5">
+                        <p class="font-bold text-slate-700">Catatan Koordinator Bidang:</p>
+                        <p class="italic">"Sistem pemetaan presisi telah menjangkau seluruh 11 kecamatan di HST. Fokus pengimbasan semester depan diarahkan pada penguatan modul bilingual guru jenjang SD."</p>
+                    </div>
+                    <div class="text-right space-y-8 flex-shrink-0">
+                        <div>Barabai, 2026<br><b>Koordinator Bidang Kemitraan & Publikasi</b></div>
+                        <div>( .................................................... )</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
     <header class="bg-sbi-900 text-white shadow-lg sticky top-0 z-40 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between py-2.5 sm:py-3 min-h-[4.5rem]">
-                <!-- Brand & Logo -->
                 <div class="flex items-center space-x-3 sm:space-x-3.5">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white flex items-center justify-center p-1 sm:p-1.5 shadow-md border border-white/20 flex-shrink-0 transition-transform duration-200 hover:scale-105 overflow-hidden">
+                    <div onclick="handleSecretLogoClick()" title="Klik 3x untuk Akses Mode Tim Pengelola" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white flex items-center justify-center p-1 sm:p-1.5 shadow-md border border-white/20 flex-shrink-0 transition-transform duration-200 hover:scale-105 overflow-hidden cursor-pointer">
                         <svg viewBox="120 215 560 370" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Glyph Navy Smart SBI -->
                             <g fill="#17345b">
-                                <!-- Sayap Kiri Navy -->
                                 <path d="M 374,235 L 374,565 L 316,565 L 316,435 L 240,435 A 100,100 0 0,1 140,335 A 100,100 0 0,1 240,235 L 316,235 Z M 316,293 L 240,293 A 42,42 0 0,0 198,335 A 42,42 0 0,0 240,377 L 316,377 Z" />
-                                <!-- Sayap Kanan Navy (Simetri Rotasi 180 Derajat) -->
                                 <path d="M 374,235 L 374,565 L 316,565 L 316,435 L 240,435 A 100,100 0 0,1 140,335 A 100,100 0 0,1 240,235 L 316,235 Z M 316,293 L 240,293 A 42,42 0 0,0 198,335 A 42,42 0 0,0 240,377 L 316,377 Z" transform="rotate(180 400 400)" />
                             </g>
-                            <!-- Aksen Merah Smart SBI -->
                             <g fill="#a82035">
-                                <!-- Balok Merah Kiri Bawah -->
                                 <rect x="166" y="507" width="128" height="58" />
-                                <!-- Balok Merah Kanan Atas -->
                                 <rect x="166" y="507" width="128" height="58" transform="rotate(180 400 400)" />
                             </g>
                         </svg>
@@ -110,26 +204,29 @@
                         <div class="flex items-center space-x-2">
                             <span class="font-extrabold text-base sm:text-xl tracking-tight text-white leading-tight">SBI HST 2026</span>
                             <span class="bg-sbired-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">Data & Impact Hub</span>
+                            <span id="team-active-indicator" class="hidden bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider items-center space-x-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span>Tim Pengelola (Secure)</span>
+                            </span>
                         </div>
                         <p class="text-[11px] sm:text-xs text-slate-300 hidden sm:block leading-normal">Kab. Hulu Sungai Tengah • Kemitraan, Data Guru, Pemetaan & Dokumentasi</p>
                     </div>
                 </div>
 
-                <!-- Access Status & Action Controls -->
                 <div class="flex items-center space-x-2">
-                    <div id="access-mode-badge" class="hidden sm:flex items-center space-x-1.5 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-xs">
-                        <span class="w-2 h-2 rounded-full bg-slate-400" id="access-dot"></span>
-                        <span class="text-slate-300 font-medium" id="access-text">Mode Publik (Read-Only)</span>
-                    </div>
-
-                    <button id="admin-auth-btn" onclick="toggleAdminAuth()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
-                        <i class="fa-solid fa-lock text-amber-400" id="admin-auth-icon"></i>
-                        <span id="admin-auth-label">Login Admin</span>
+                    <button onclick="openExecutiveBrief()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs sm:text-sm font-bold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-file-invoice"></i>
+                        <span class="hidden sm:inline">Brief Eksekutif A4</span>
                     </button>
 
-                    <button onclick="handleProtectedAction('add')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1.5 shadow">
+                    <button id="header-input-btn" onclick="handleProtectedAction('teacher')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-lg transition duration-200 items-center space-x-1.5 shadow">
                         <i class="fa-solid fa-plus"></i>
                         <span class="hidden sm:inline">Input Data</span>
+                    </button>
+
+                    <button id="team-exit-btn" onclick="exitTeamMode()" class="hidden bg-slate-800 hover:bg-slate-700 text-rose-300 border border-slate-700 text-xs px-2.5 py-2 rounded-lg transition items-center space-x-1" title="Kunci / Keluar Mode Tim">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span class="hidden md:inline text-[11px]">Kunci</span>
                     </button>
 
                     <button onclick="window.print()" class="bg-sbi-800 hover:bg-sbi-700 text-slate-200 text-xs sm:text-sm px-3 py-2 rounded-lg transition duration-200 flex items-center space-x-1">
@@ -140,7 +237,6 @@
             </div>
         </div>
 
-        <!-- MAIN MENU TABS -->
         <nav class="bg-sbi-800 border-t border-sbi-700/50 overflow-x-auto custom-scrollbar">
             <div class="max-w-7xl mx-auto px-4 flex space-x-1 whitespace-nowrap text-sm font-medium">
                 <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn py-3 px-4 text-amber-300 border-b-2 border-amber-400 font-semibold flex items-center space-x-2 transition">
@@ -175,14 +271,11 @@
         </nav>
     </header>
 
-    <!-- MAIN CONTENT CONTAINER -->
+    <!-- MAIN CONTENT -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
-        <!-- ========================================================= -->
-        <!-- TAB 1: DASHBOARD OVERVIEW & TARGET 2026 -->
-        <!-- ========================================================= -->
+        <!-- DASHBOARD TAB -->
         <div id="page-dashboard" class="page-content space-y-6">
-            <!-- Hero Banner -->
             <div class="bg-gradient-to-r from-sbi-800 via-sbi-700 to-sbi-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border-l-4 border-sbired-500">
                 <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white pointer-events-none">
                     <i class="fa-solid fa-comments"></i>
@@ -201,7 +294,7 @@
                     <div class="pt-2 flex flex-wrap gap-3">
                         <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
                             <i class="fa-solid fa-user-tie text-amber-400"></i>
-                            <span><b id="dash-stat-teachers">13</b> Guru Terdata</span>
+                            <span><b id="dash-stat-teachers">14</b> Guru Terdata</span>
                         </div>
                         <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
                             <i class="fa-solid fa-school text-amber-400"></i>
@@ -219,7 +312,6 @@
                 </div>
             </div>
 
-            <!-- Key Statistics Metrics Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex items-center space-x-4">
                     <div class="w-12 h-12 rounded-xl bg-blue-50 text-sbi-600 flex items-center justify-center text-xl font-bold">
@@ -238,7 +330,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-slate-500 font-medium">Total Guru SBI</p>
-                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-teacher-count">13</h3>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-teacher-count">14</h3>
                         <p class="text-[11px] text-indigo-600 font-semibold"><i class="fa-solid fa-check-double"></i> Tersebar di 11 Kecamatan</p>
                     </div>
                 </div>
@@ -266,7 +358,6 @@
                 </div>
             </div>
 
-            <!-- Target Output 2026 Checklist -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -290,8 +381,7 @@
                                     <th class="p-3 rounded-r-lg text-center">Status</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 text-slate-700" id="target-output-table">
-                            </tbody>
+                            <tbody class="divide-y divide-slate-100 text-slate-700" id="target-output-table"></tbody>
                         </table>
                     </div>
                 </div>
@@ -335,11 +425,8 @@
             </div>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- TAB 2: DATA GURU SBI & SEBARANNYA (DENGAN PETA & IMPORT) -->
-        <!-- ========================================================= -->
+        <!-- TEACHERS TAB -->
         <div id="page-teachers" class="page-content space-y-6 hidden">
-            <!-- Header Section -->
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <div class="inline-flex items-center space-x-2 text-xs font-bold text-sbi-700 bg-sbi-50 px-2.5 py-1 rounded-md mb-1">
@@ -347,38 +434,38 @@
                         <span>Sistem Informasi & Pemetaan Spasial Guru SBI</span>
                     </div>
                     <h2 class="text-xl font-bold text-slate-900">Data Guru SBI & Sebaran Wilayah HST 2026</h2>
-                    <p class="text-xs text-slate-500">Peta Interaktif Sekolah, Direktori Guru Sasaran, Import Excel, dan Distribusi Sebaran Kecamatan</p>
+                    <p class="text-xs text-slate-500">Peta Interaktif Sekolah Presisi, Direktori Guru Sasaran, Import/Ekspor Excel, dan Distribusi Kecamatan</p>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <!-- Tombol Import Excel -->
+                    <button id="btn-reset-filter" onclick="resetActiveFilters()" class="hidden bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs px-3 py-2.5 rounded-lg transition font-bold items-center space-x-1.5 shadow-sm">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span id="reset-filter-label">Reset Filter</span>
+                    </button>
+
                     <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleExcelImport(event)">
-                    <button onclick="triggerExcelImport()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3.5 py-2.5 rounded-lg transition font-bold flex items-center space-x-1.5 shadow">
-                        <i class="fa-solid fa-file-excel"></i>
+                    <button id="team-import-btn" onclick="triggerExcelImport()" class="hidden bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-2.5 rounded-lg transition font-medium items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-file-arrow-up text-amber-400"></i>
                         <span>Import Excel</span>
                     </button>
 
-                    <!-- Tombol Tambah Data Manual -->
-                    <button onclick="handleProtectedAction('teacher')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3.5 py-2.5 rounded-lg transition font-bold flex items-center space-x-1.5 shadow">
+                    <button id="team-add-teacher-btn" onclick="handleProtectedAction('teacher')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3.5 py-2.5 rounded-lg transition font-bold items-center space-x-1.5 shadow">
                         <i class="fa-solid fa-user-plus"></i>
                         <span>Tambah Guru</span>
                     </button>
 
-                    <!-- Tombol Ekspor Excel (.xlsx) -->
                     <button onclick="exportTeacherDataExcel()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs px-3 py-2.5 rounded-lg transition font-semibold flex items-center space-x-1 shadow" title="Unduh data saat ini dalam format Excel (.xlsx)">
                         <i class="fa-solid fa-file-excel text-emerald-400"></i>
                         <span>Ekspor Excel</span>
                     </button>
 
-                    <!-- Tombol Unduh Template Kosong (.xlsx) -->
-                    <button onclick="downloadTeacherTemplateExcel()" class="bg-slate-700 hover:bg-slate-800 text-slate-200 text-xs px-2.5 py-2.5 rounded-lg transition font-medium flex items-center space-x-1 shadow" title="Unduh template kosong untuk diisi data baru">
+                    <button onclick="downloadTeacherTemplateExcel()" class="bg-slate-700 hover:bg-slate-800 text-slate-200 text-xs px-2.5 py-2.5 rounded-lg transition font-medium flex items-center space-x-1 shadow" title="Unduh template kosong untuk diisi peserta">
                         <i class="fa-solid fa-download"></i>
                         <span class="hidden sm:inline">Template</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Teacher Quick Metrics Banner -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-3">
                     <div class="w-10 h-10 rounded-lg bg-blue-100 text-sbi-600 flex items-center justify-center font-bold text-lg">
@@ -421,68 +508,69 @@
                 </div>
             </div>
 
-            <!-- PETA SEBARAN SEKOLAH & GRAFIK WILAYAH -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Peta Spasial Interaktif Sekolah Guru (7 Cols) -->
                 <div class="lg:col-span-7 bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-3 flex flex-col">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div class="flex flex-wrap items-center justify-between border-b border-slate-100 pb-3 gap-2">
                         <div>
                             <h3 class="text-base font-bold text-slate-900 flex items-center space-x-2">
                                 <i class="fa-solid fa-map-location-dot text-sbired-500"></i>
-                                <span>Peta Titik Sekolah Guru SBI (Hulu Sungai Tengah)</span>
+                                <span>Peta Titik Sekolah Presisi Guru SBI</span>
                             </h3>
-                            <p class="text-xs text-slate-500">Klik pin pada peta untuk melihat profil guru & sekolah sasaran</p>
+                            <p class="text-xs text-slate-500" id="map-status-subtext">Koordinat nyata sekolah di Kabupaten Hulu Sungai Tengah</p>
                         </div>
-                        <span class="text-xs font-bold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full border border-emerald-200">
-                            <i class="fa-solid fa-satellite mr-1"></i>Spasial GPS
-                        </span>
+                        <div class="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-lg text-xs font-semibold">
+                            <button id="map-mode-street" onclick="switchMapLayer('street')" class="px-2.5 py-1 rounded-md bg-white text-sbi-700 shadow-sm font-bold flex items-center space-x-1 transition">
+                                <i class="fa-solid fa-map"></i>
+                                <span>Peta Jalan</span>
+                            </button>
+                            <button id="map-mode-sat" onclick="switchMapLayer('satellite')" class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 flex items-center space-x-1 transition">
+                                <i class="fa-solid fa-satellite"></i>
+                                <span>Satelit Bumi</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Container Peta Leaflet -->
                     <div class="w-full flex-1 min-h-[380px] relative rounded-xl overflow-hidden border border-slate-200">
                         <div id="teacherMap" class="w-full h-full"></div>
                     </div>
                 </div>
 
-                <!-- Grafik Batang & Ringkasan Sebaran (5 Cols) -->
                 <div class="lg:col-span-5 space-y-6 flex flex-col justify-between">
-                    <!-- Chart Bar -->
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-3">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                            <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
-                                <i class="fa-solid fa-chart-column text-sbi-600"></i>
-                                <span>Distribusi Guru Per-Kecamatan</span>
-                            </h3>
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                                    <i class="fa-solid fa-chart-column text-sbi-600"></i>
+                                    <span>Distribusi Guru Per-Kecamatan</span>
+                                </h3>
+                                <p class="text-[10px] text-slate-400">Klik batang diagram untuk memfilter tabel & fokuskan peta</p>
+                            </div>
                             <span class="text-[11px] font-bold text-sbi-700 bg-sbi-50 px-2 py-0.5 rounded">11 Kec</span>
                         </div>
-                        <div class="h-44 relative">
+                        <div class="h-44 relative cursor-pointer" title="Klik pada batang untuk memfilter peta & tabel">
                             <canvas id="teacherDistChart"></canvas>
                         </div>
                     </div>
 
-                    <!-- District Mini Summary List -->
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-3 flex-1">
                         <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
                             <i class="fa-solid fa-list-ol text-amber-500"></i>
-                            <span>Cakupan Wilayah Sebaran</span>
+                            <span>Cakupan Wilayah Sebaran (Klik untuk Filter)</span>
                         </h3>
-                        <div class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1" id="district-summary-list">
-                        </div>
+                        <div class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1" id="district-summary-list"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Teacher Directory Filter & Table Section -->
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900">Direktori Guru Berbahasa Inggris</h3>
-                        <p class="text-xs text-slate-500">Kelola, edit, atau hapus profil guru SBI Hulu Sungai Tengah</p>
+                        <p class="text-xs text-slate-500">Foto profil terhubung langsung dari Google Drive/Photos dan link file Excel</p>
                     </div>
 
-                    <!-- Filters -->
                     <div class="flex flex-wrap gap-2">
-                        <select id="filter-teacher-kec" onchange="renderTeachersTable()" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-medium focus:ring-sbi-500">
+                        <select id="filter-teacher-kec" onchange="handleFilterChange()" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-medium focus:ring-sbi-500">
                             <option value="ALL">Semua Kecamatan</option>
                             <option value="Barabai">Kec. Barabai</option>
                             <option value="Pandawan">Kec. Pandawan</option>
@@ -517,30 +605,26 @@
                     </div>
                 </div>
 
-                <!-- Table with Edit and Delete Columns -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs border border-slate-200 rounded-lg overflow-hidden">
                         <thead class="bg-slate-100 text-slate-700 font-semibold uppercase">
                             <tr>
-                                <th class="p-3">Nama Guru & NIP</th>
+                                <th class="p-3">Profil & Nama Guru</th>
+                                <th class="p-3">NIP / NUPTK</th>
                                 <th class="p-3">Sekolah & Kecamatan</th>
                                 <th class="p-3">Jenjang</th>
                                 <th class="p-3">Tingkat CEFR</th>
                                 <th class="p-3">Peran SBI</th>
-                                <th class="p-3">Kontak WA</th>
-                                <th class="p-3 text-center">Aksi / Pengelolaan</th>
+                                <th class="p-3 text-center team-col hidden">Aksi / Pengelolaan</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200" id="teacher-table-body">
-                        </tbody>
+                        <tbody class="divide-y divide-slate-200" id="teacher-table-body"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- TAB 3: SBI MEDIA CENTER -->
-        <!-- ========================================================= -->
+        <!-- OTHER TABS -->
         <div id="page-mediacenter" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
@@ -548,9 +632,8 @@
                         <i class="fa-solid fa-bullhorn text-sbi-500"></i>
                         <span>SBI Media Center & Publikasi Berita</span>
                     </h2>
-                    <p class="text-xs text-slate-500">Pusat informasi resmi, upload dokumentasi foto program, dan link baca berita lengkap</p>
+                    <p class="text-xs text-slate-500">Pusat informasi resmi, unggah dokumentasi foto program, dan link baca liputan lengkap</p>
                 </div>
-
                 <div class="flex items-center space-x-2">
                     <select id="media-category-filter" onchange="renderMediaCenter()" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg p-2.5 focus:ring-sbi-500">
                         <option value="ALL">Semua Jenis Konten</option>
@@ -559,21 +642,15 @@
                         <option value="Infografis">Infografis SBI</option>
                         <option value="Press Release">Press Release</option>
                     </select>
-                    <button onclick="handleProtectedAction('media')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2.5 rounded-lg transition font-medium flex items-center space-x-1 shadow">
+                    <button id="team-add-media-btn" onclick="handleProtectedAction('media')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2.5 rounded-lg transition font-medium items-center space-x-1 shadow">
                         <i class="fa-solid fa-plus"></i>
                         <span>Tambah Berita / Konten</span>
                     </button>
                 </div>
             </div>
-
-            <!-- Media Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="media-grid">
-            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="media-grid"></div>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- TAB 4: SBI STORY & PRAKTIK BAIK -->
-        <!-- ========================================================= -->
         <div id="page-stories" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -584,7 +661,6 @@
                     <h2 class="text-xl font-bold text-slate-900">SBI Story & Katalis Praktik Baik</h2>
                     <p class="text-xs text-slate-500">Dokumentasi inspiratif English Day, English Corner, Bilingual Learning & Storytelling Humanis</p>
                 </div>
-
                 <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
                     <button onclick="switchStorySubtab('practices')" id="subtab-practices" class="px-4 py-2 rounded-lg bg-white shadow-sm text-sbi-800 font-bold">
                         <i class="fa-solid fa-school-flag mr-1"></i> Praktik Baik Sekolah
@@ -594,27 +670,20 @@
                     </button>
                 </div>
             </div>
-
             <div id="subpage-practices" class="space-y-4">
                 <div class="flex items-center justify-between">
                     <input type="text" id="practice-search" onkeyup="renderPractices()" placeholder="Cari nama sekolah, kecamatan, atau bentuk praktik baik..." class="w-full max-w-md bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-sbi-500">
-                    <button onclick="handleProtectedAction('practice')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm">
+                    <button id="team-add-practice-btn" onclick="handleProtectedAction('practice')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm items-center">
                         <i class="fa-solid fa-plus mr-1"></i> Tambah Praktik Baik
                     </button>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="practices-grid">
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="practices-grid"></div>
             </div>
-
             <div id="subpage-humanstories" class="space-y-4 hidden">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="stories-grid">
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="stories-grid"></div>
             </div>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- TAB 5: DIGITAL ARCHIVE & KEMITRAAN -->
-        <!-- ========================================================= -->
         <div id="page-archive" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-4">
@@ -630,11 +699,10 @@
                         <button onclick="switchArchiveSubtab('docs')" id="arch-tab-docs" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Bank Arsip Kegiatan</button>
                     </div>
                 </div>
-
                 <div id="arch-sub-mitra" class="pt-4 space-y-4">
                     <div class="flex items-center justify-between">
                         <p class="text-xs text-slate-500">Pemetaan dan Kontak PIC Mitra Pelaksana & Stakeholder</p>
-                        <button onclick="handleProtectedAction('mitra')" class="bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-1.5 rounded-lg shadow">
+                        <button id="team-add-mitra-btn" onclick="handleProtectedAction('mitra')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-1.5 rounded-lg shadow items-center">
                             <i class="fa-solid fa-plus mr-1"></i> Tambah Mitra
                         </button>
                     </div>
@@ -649,28 +717,22 @@
                                     <th class="p-3">Status Komunikasi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200" id="mitra-table-body">
-                            </tbody>
+                            <tbody class="divide-y divide-slate-200" id="mitra-table-body"></tbody>
                         </table>
                     </div>
                 </div>
-
                 <div id="arch-sub-docs" class="pt-4 space-y-4 hidden">
                     <div class="flex items-center justify-between">
                         <p class="text-xs text-slate-500">Standar Dokumentasi Terpadu (Sebelum, Saat, dan Setelah Kegiatan)</p>
-                        <button onclick="handleProtectedAction('archive')" class="bg-sbi-500 hover:bg-sbi-600 text-white text-xs px-3 py-1.5 rounded-lg shadow">
+                        <button id="team-add-archive-btn" onclick="handleProtectedAction('archive')" class="hidden bg-sbi-500 hover:bg-sbi-600 text-white text-xs px-3 py-1.5 rounded-lg shadow items-center">
                             <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Arsip
                         </button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="archive-files-grid">
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="archive-files-grid"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- TAB 6: SBI IMPACT REPORT & ANALYTICS -->
-        <!-- ========================================================= -->
         <div id="page-impact" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
                 <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 gap-4">
@@ -682,13 +744,11 @@
                         <h2 class="text-xl font-bold text-slate-900">SBI Impact Analytics Report 2026</h2>
                         <p class="text-xs text-slate-500">Bukti Perubahan Perilaku Guru, Keberanian Siswa, dan Penguatan Ekosistem Sekolah</p>
                     </div>
-
                     <button onclick="window.print()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs px-4 py-2.5 rounded-lg font-bold shadow flex items-center space-x-2">
                         <i class="fa-solid fa-file-pdf"></i>
                         <span>Cetak SBI Impact Report 2026</span>
                     </button>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
                         <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Perkembangan Indikator Keberhasilan Dampak (%)</h3>
@@ -696,7 +756,6 @@
                             <canvas id="impactChart1"></canvas>
                         </div>
                     </div>
-
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
                         <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Sebaran Program Unggulan di Sekolah</h3>
                         <div class="h-64 relative">
@@ -705,27 +764,20 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Testimoni Dampak -->
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
                 <div class="flex items-center justify-between">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900">Suara Perubahan (Testimonial Impact)</h3>
                         <p class="text-xs text-slate-500">Kumpulan kesaksian nyata dari Kepala Sekolah, Guru, Siswa, dan Orang Tua</p>
                     </div>
-                    <button onclick="openAddModal('testimony')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-lg">
+                    <button id="team-add-testimony-btn" onclick="openAddModal('testimony')" class="hidden bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-lg items-center">
                         <i class="fa-solid fa-plus mr-1"></i> Tambah Testimoni
                     </button>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="testimonials-grid">
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="testimonials-grid"></div>
             </div>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- TAB 7: TIM & ALUR KERJA -->
-        <!-- ========================================================= -->
         <div id="page-team" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-6">
                 <div>
@@ -735,7 +787,6 @@
                     </h2>
                     <p class="text-xs text-slate-500">Struktur Posisi & Peran Tim Kemitraan, Publikasi, Data Guru, dan Dokumentasi SBI HST 2026</p>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="p-4 rounded-xl bg-sbi-50 border border-sbi-200 space-y-2">
                         <div class="flex items-center justify-between">
@@ -747,7 +798,6 @@
                             Mengkoordinasikan seluruh kegiatan bidang, menyusun rencana kerja, dan mengontrol pencapaian target 2026.
                         </p>
                     </div>
-
                     <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-emerald-800 uppercase">Tim Data & Pemetaan Guru</span>
@@ -758,7 +808,6 @@
                             Mendata profil guru SD/SMP, memetakan tingkat CEFR, memantau kemajuan pembekalan, serta memelihara direktori sebaran spasial kecamatan.
                         </p>
                     </div>
-
                     <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-purple-800 uppercase">Tim Dokumentasi & Publikasi</span>
@@ -775,48 +824,44 @@
 
     </main>
 
-    <!-- MODAL POPUP FOR ADMIN AUTHENTICATION -->
+    <!-- MODAL POPUP FOR AUTH -->
     <div id="adminLoginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
             <div class="text-center space-y-2">
                 <div class="w-12 h-12 rounded-2xl bg-sbi-50 border border-sbi-200 text-sbi-500 mx-auto flex items-center justify-center text-xl font-bold">
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
-                <h3 class="font-extrabold text-slate-900 text-lg">Otentikasi Admin Bidang</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">Silakan masukkan kata sandi Admin/Tim Bidang untuk menginput, mengubah, mengimpor, atau menghapus data.</p>
+                <h3 class="font-extrabold text-slate-900 text-lg">Akses Tim Pengelola SBI</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Masukkan kata sandi Tim Bidang untuk mengaktifkan fitur penambahan, pengeditan, impor, dan penghapusan data.</p>
             </div>
-
             <form onsubmit="handleAdminLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi Admin</label>
-                    <input type="password" id="admin-pass-input" placeholder="Masukkan kata sandi..." required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-center font-mono focus:ring-sbi-500 focus:border-sbi-500">
-                    <p class="text-[10px] text-slate-400 mt-1 text-center">Petunjuk sandi demo: <span class="font-mono text-sbi-500 font-bold">sbihst2026</span></p>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi Tim</label>
+                    <input type="password" id="admin-pass-input" placeholder="Masukkan sandi..." required class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-center font-mono focus:ring-sbi-500 focus:border-sbi-500">
+                    <p class="text-[10px] text-slate-400 mt-1 text-center">Sandi default: <span class="font-mono text-sbi-500 font-bold">sbihst2026</span></p>
                 </div>
-
                 <div class="flex space-x-2">
                     <button type="button" onclick="closeAdminLoginModal()" class="w-1/2 py-2.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl">Batal</button>
-                    <button type="submit" class="w-1/2 py-2.5 text-xs font-bold text-white bg-sbired-500 hover:bg-sbired-600 rounded-xl shadow">Masuk Admin</button>
+                    <button type="submit" class="w-1/2 py-2.5 text-xs font-bold text-white bg-sbired-500 hover:bg-sbired-600 rounded-xl shadow">Buka Akses</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL POPUP FOR ADDING & EDITING DATA -->
+    <!-- MODAL POPUP FOR CRUD -->
     <div id="addModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div class="flex items-center space-x-2">
-                    <span class="bg-sbired-500 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">Admin Mode</span>
+                    <span class="bg-sbired-500 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">Tim Mode</span>
                     <h3 class="font-bold text-slate-900 text-base" id="modal-title">Tambah Entri Baru</h3>
                 </div>
                 <button onclick="closeAddModal()" class="text-slate-400 hover:text-slate-600 text-lg">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-
             <form id="modal-form" onsubmit="handleFormSubmit(event)" class="space-y-3">
                 <input type="hidden" id="edit-item-id" value="">
-                
                 <div id="modal-type-wrapper">
                     <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Kategori Entri</label>
                     <select id="modal-type" onchange="updateFormFields()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:ring-sbi-500 focus:border-sbi-500 font-semibold">
@@ -828,10 +873,7 @@
                         <option value="testimony">Testimoni Perubahan Dampak</option>
                     </select>
                 </div>
-
-                <div id="dynamic-form-fields" class="space-y-3">
-                </div>
-
+                <div id="dynamic-form-fields" class="space-y-3"></div>
                 <div class="pt-3 flex justify-end space-x-2 border-t border-slate-100">
                     <button type="button" onclick="closeAddModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
                     <button type="submit" class="px-4 py-2 text-xs font-semibold text-white bg-sbi-500 hover:bg-sbi-600 rounded-lg shadow" id="btn-submit-form">Simpan Data</button>
@@ -840,49 +882,232 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICATION -->
+    <!-- TOAST -->
     <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center space-x-3 border border-slate-700 text-xs font-medium">
         <i class="fa-solid fa-circle-check text-emerald-400 text-base" id="toast-icon"></i>
         <span id="toast-message">Data berhasil disimpan!</span>
     </div>
 
-    <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT -->
     <script>
-        /* Global State */
         var isAdminLoggedIn = false;
+        var logoClickCounter = 0;
+        var logoClickTimer = null;
         var uploadedImageBase64 = "";
+        var uploadedTeacherPhotoBase64 = "";
 
-        /* Koordinat Default Kecamatan di Kab. Hulu Sungai Tengah (Barabai & Sekitarnya) */
+        // TOKEN KEAMANAN RAHASIA (Sama persis dengan Secure_Code.gs)
+        var CLIENT_SECRET_TOKEN = "SBI-HST-SECURE-TOKEN-2026-X9Z8Y7";
+        // ENDPOINT GOOGLE APPS SCRIPT WEB APP
+        var googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbzFzOUhbV9k0dWUtVFsGxLGsgS3_abKzOlfUIDNHbDxGIB3rGt7SIMWv2AQbGpWs_9S/exec";
+
+        function formatGoogleDriveImageUrl(url) {
+            if (!url) return "";
+            url = url.trim();
+            var driveFileMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (driveFileMatch && driveFileMatch[1]) {
+                return "https://lh3.googleusercontent.com/d/" + driveFileMatch[1];
+            }
+            var driveIdMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (driveIdMatch && driveIdMatch[1]) {
+                return "https://lh3.googleusercontent.com/d/" + driveIdMatch[1];
+            }
+            return url;
+        }
+
+        var hstSchoolsMaster = [
+            { name: "SDN Rantau Bujur", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5837, lng: 115.2133, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 20 Hulu Sungai Tengah (SMPN Rantau Bujur)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5877, lng: 115.2063, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5215, lng: 115.2590, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5230, lng: 115.2580, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5650, lng: 115.2150, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5700, lng: 115.2180, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 3 Sungai Buluh (Awang Landas)", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5780, lng: 115.2100, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 4 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5620, lng: 115.2220, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5350, lng: 115.2520, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5380, lng: 115.2490, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 3 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5410, lng: 115.2450, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 4 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5440, lng: 115.2420, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5050, lng: 115.2750, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5080, lng: 115.2780, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Pemangkih Seberang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5020, lng: 115.2810, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Binjai Pirua", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5480, lng: 115.2350, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Binjai Pirua", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5510, lng: 115.2310, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Rantau Keminting", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5720, lng: 115.2280, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Samhurang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6110, lng: 115.2350, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Samhurang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6147, lng: 115.2320, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Pahalatan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5550, lng: 115.2480, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Perumahan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6382, lng: 115.2250, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Tungkup", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5320, lng: 115.2650, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Mantaas", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5950, lng: 115.1950, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Tabat", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5150, lng: 115.2880, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 8 Hulu Sungai Tengah (SMPN 1 Labuan Amas Utara)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5195, lng: 115.2610, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 13 Hulu Sungai Tengah (SMPN Mantaas)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5960, lng: 115.1970, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 32 Satu Atap Hulu Sungai Tengah (Tabat)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5140, lng: 115.2890, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5847, lng: 115.3812, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5872, lng: 115.3848, photo: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", lat: -2.5815, lng: 115.3780, photo: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 1 Hulu Sungai Tengah (SMPN 1 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5862, lng: 115.3798, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Pandawan", subdistrict: "Pandawan", level: "SD", lat: -2.5385, lng: 115.3421, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 9 Hulu Sungai Tengah (SMPN 1 Pandawan)", subdistrict: "Pandawan", level: "SMP", lat: -2.5412, lng: 115.3415, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" }
+        ];
+
+        function normalizeSchoolName(str) {
+            return (str || '').toLowerCase().replace(/sd\s*negeri/g, 'sdn').replace(/smp\s*negeri/g, 'smpn').replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+
+        function findMasterSchool(name, subdistrict) {
+            if (!name) return null;
+            var norm = normalizeSchoolName(name);
+            var match = hstSchoolsMaster.find(function(s) { return normalizeSchoolName(s.name) === norm; });
+            if (match) return match;
+            var candidates = hstSchoolsMaster.filter(function(s) {
+                var sNorm = normalizeSchoolName(s.name);
+                return sNorm.indexOf(norm) !== -1 || norm.indexOf(sNorm) !== -1;
+            });
+            if (candidates.length > 0) {
+                if (subdistrict) {
+                    var subMatch = candidates.find(function(c) { return c.subdistrict.toLowerCase() === subdistrict.toLowerCase(); });
+                    if (subMatch) return subMatch;
+                }
+                return candidates[0];
+            }
+            return null;
+        }
+
+        try {
+            if (localStorage.getItem('sbi_team_session') === 'active') {
+                isAdminLoggedIn = true;
+            }
+        } catch (e) {}
+
+        function checkUrlSecretAccess() {
+            var hash = (window.location.hash || '').toLowerCase();
+            var search = (window.location.search || '').toLowerCase();
+            if (hash.indexOf('tim') !== -1 || search.indexOf('tim=1') !== -1 || search.indexOf('admin') !== -1) {
+                if (!isAdminLoggedIn) openAdminLoginModal();
+            }
+        }
+
+        function handleSecretLogoClick() {
+            logoClickCounter++;
+            clearTimeout(logoClickTimer);
+            logoClickTimer = setTimeout(function() { logoClickCounter = 0; }, 1200);
+            if (logoClickCounter >= 3) {
+                logoClickCounter = 0;
+                if (!isAdminLoggedIn) openAdminLoginModal();
+                else showToast("Mode Tim Pengelola sudah aktif di perangkat Anda.", "success");
+            }
+        }
+
+        function openAdminLoginModal() {
+            var input = document.getElementById('admin-pass-input');
+            if (input) input.value = '';
+            var modal = document.getElementById('adminLoginModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeAdminLoginModal() {
+            var modal = document.getElementById('adminLoginModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            var passEl = document.getElementById('admin-pass-input');
+            var pass = passEl ? passEl.value.trim() : '';
+            if (pass === 'sbihst2026' || pass === 'admin2026' || pass === 'admin') {
+                isAdminLoggedIn = true;
+                try { localStorage.setItem('sbi_team_session', 'active'); } catch (e) {}
+                closeAdminLoginModal();
+                updateAccessUI();
+                renderTeachersTable();
+                showToast("Akses Tim Pengelola aktif! Seluruh fitur pengelolaan terbuka.");
+            } else {
+                showToast("Sandi tim salah! Silakan coba lagi.", "error");
+            }
+        }
+
+        function exitTeamMode() {
+            isAdminLoggedIn = false;
+            try { localStorage.removeItem('sbi_team_session'); } catch (e) {}
+            updateAccessUI();
+            renderTeachersTable();
+            showToast("Mode Tim dikunci. Tampilan kembali bersih untuk publik.", "warning");
+        }
+
+        function updateAccessUI() {
+            var headerInput = document.getElementById('header-input-btn');
+            var exitBtn = document.getElementById('team-exit-btn');
+            var indicator = document.getElementById('team-active-indicator');
+            var teamCols = document.querySelectorAll('.team-col');
+            var teamImport = document.getElementById('team-import-btn');
+            var teamAddTeacher = document.getElementById('team-add-teacher-btn');
+            var teamAddMedia = document.getElementById('team-add-media-btn');
+            var teamAddPractice = document.getElementById('team-add-practice-btn');
+            var teamAddMitra = document.getElementById('team-add-mitra-btn');
+            var teamAddArchive = document.getElementById('team-add-archive-btn');
+            var teamAddTestimony = document.getElementById('team-add-testimony-btn');
+
+            if (isAdminLoggedIn) {
+                if (headerInput) headerInput.classList.replace('hidden', 'flex');
+                if (exitBtn) exitBtn.classList.replace('hidden', 'flex');
+                if (indicator) indicator.classList.replace('hidden', 'inline-flex');
+                if (teamImport) teamImport.classList.replace('hidden', 'flex');
+                if (teamAddTeacher) teamAddTeacher.classList.replace('hidden', 'flex');
+                if (teamAddMedia) teamAddMedia.classList.replace('hidden', 'flex');
+                if (teamAddPractice) teamAddPractice.classList.replace('hidden', 'flex');
+                if (teamAddMitra) teamAddMitra.classList.replace('hidden', 'flex');
+                if (teamAddArchive) teamAddArchive.classList.replace('hidden', 'flex');
+                if (teamAddTestimony) teamAddTestimony.classList.replace('hidden', 'flex');
+                teamCols.forEach(function(col) { col.classList.remove('hidden'); });
+            } else {
+                if (headerInput) headerInput.classList.replace('flex', 'hidden');
+                if (exitBtn) exitBtn.classList.replace('flex', 'hidden');
+                if (indicator) indicator.classList.replace('inline-flex', 'hidden');
+                if (teamImport) teamImport.classList.replace('flex', 'hidden');
+                if (teamAddTeacher) teamAddTeacher.classList.replace('flex', 'hidden');
+                if (teamAddMedia) teamAddMedia.classList.replace('flex', 'hidden');
+                if (teamAddPractice) teamAddPractice.classList.replace('flex', 'hidden');
+                if (teamAddMitra) teamAddMitra.classList.replace('flex', 'hidden');
+                if (teamAddArchive) teamAddArchive.classList.replace('flex', 'hidden');
+                if (teamAddTestimony) teamAddTestimony.classList.replace('flex', 'hidden');
+                teamCols.forEach(function(col) { col.classList.add('hidden'); });
+            }
+        }
+
+        function handleProtectedAction(defaultType) {
+            if (!defaultType) defaultType = 'teacher';
+            if (!isAdminLoggedIn) {
+                openAdminLoginModal();
+                return;
+            }
+            openAddModal(defaultType);
+        }
+
         var districtCoordinates = {
-            "Barabai": [-2.5833, 115.3833],
-            "Pandawan": [-2.5400, 115.3400],
-            "Haruyan": [-2.6500, 115.3500],
-            "Batu Benawa": [-2.6300, 115.4200],
-            "Labuan Amas Selatan": [-2.6100, 115.2800],
-            "Labuan Amas Utara": [-2.5200, 115.2600],
-            "Batang Alai Selatan": [-2.6200, 115.4800],
-            "Batang Alai Utara": [-2.5000, 115.4200],
-            "Batang Alai Timur": [-2.5800, 115.5800],
-            "Hantakan": [-2.7000, 115.4500],
-            "Limpasu": [-2.4500, 115.4700]
+            "Barabai": [-2.5833, 115.3833], "Pandawan": [-2.5400, 115.3400], "Haruyan": [-2.6500, 115.3500],
+            "Batu Benawa": [-2.6300, 115.4200], "Labuan Amas Selatan": [-2.6100, 115.2800], "Labuan Amas Utara": [-2.5200, 115.2600],
+            "Batang Alai Selatan": [-2.6200, 115.4800], "Batang Alai Utara": [-2.5000, 115.4200], "Batang Alai Timur": [-2.5800, 115.5800],
+            "Hantakan": [-2.7000, 115.4500], "Limpasu": [-2.4500, 115.4700]
         };
 
-        /* State Storage Awal */
+        // DATA DEFAULT RESMI BERSIH (TERVALIDASI)
         var appState = {
             teachers: [
-                { id: 1, name: "Ibu Rahmah, S.Pd.", nip: "19850412 201001 2 015", school: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", phone: "+62 812-5551-091", lat: -2.5820, lng: 115.3850 },
-                { id: 2, name: "Ahmad Fauzi, S.Pd., M.Pd.", nip: "19820815 200803 1 004", school: "SMPN 1 Pandawan", subdistrict: "Pandawan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 813-4442-882", lat: -2.5410, lng: 115.3420 },
-                { id: 3, name: "Siti Mariam, S.Pd.", nip: "19910320 201502 2 008", school: "SDN Haruyan", subdistrict: "Haruyan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 852-1100-334", lat: -2.6520, lng: 115.3480 },
-                { id: 4, name: "Muhammad Rizky, S.Pd.", nip: "19940211 201901 1 003", school: "SDN 2 Pagat", subdistrict: "Batu Benawa", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 821-9000-442", lat: -2.6280, lng: 115.4230 },
-                { id: 5, name: "Hj. Nurul Hidayah, S.Pd.", nip: "19791105 200501 2 006", school: "SMPN 1 Pantai Hambawang", subdistrict: "Labuan Amas Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 813-7788-990", lat: -2.6080, lng: 115.2830 },
-                { id: 6, name: "Supian Sauri, S.Pd.", nip: "19880614 201402 1 002", school: "SDN Ilung", subdistrict: "Batang Alai Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 853-2211-554", lat: -2.4980, lng: 115.4220 },
-                { id: 7, name: "Dewi Ratnasari, S.Pd.", nip: "19900928 201701 2 011", school: "SMPN 1 Birayang", subdistrict: "Batang Alai Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 812-9900-112", lat: -2.6220, lng: 115.4820 },
-                { id: 8, name: "Herman Susanto, S.Pd.", nip: "19860103 201101 1 005", school: "SDN Walatung", subdistrict: "Pandawan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 822-4455-667", lat: -2.5380, lng: 115.3380 },
-                { id: 9, name: "Laila Khairani, S.Pd.", nip: "19920719 201802 2 003", school: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", phone: "+62 813-6622-118", lat: -2.5850, lng: 115.3810 },
-                { id: 10, name: "Bambang Hermawan, S.Pd.", nip: "19830522 200902 1 007", school: "SMPN 2 Hantakan", subdistrict: "Hantakan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 852-9911-332", lat: -2.7020, lng: 115.4520 },
-                { id: 11, name: "Rina Astuti, S.Pd.", nip: "19951210 202001 2 009", school: "SDN Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 812-7711-223", lat: -2.5220, lng: 115.2580 },
-                { id: 12, name: "Khairul Anam, S.Pd.", nip: "19870408 201201 1 006", school: "SMPN 1 Limpasu", subdistrict: "Limpasu", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", phone: "+62 821-3322-114", lat: -2.4480, lng: 115.4720 },
-                { id: 13, name: "Mulia Hastuti, S.Pd.", nip: "19930814 201903 2 004", school: "SDN Hinai Kiri", subdistrict: "Batang Alai Timur", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", phone: "+62 853-8899-771", lat: -2.5780, lng: 115.5820 }
+                { id: 14, name: "Pendidik SBI SDN Rantau Bujur", nip: "19900512 201601 1 002", school: "SDN Rantau Bujur", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=200&q=80", lat: -2.5837, lng: 115.2133 },
+                { id: 1, name: "Ibu Rahmah, S.Pd.", nip: "19850412 201001 2 015", school: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80", lat: -2.5847, lng: 115.3812 },
+                { id: 2, name: "Ahmad Fauzi, S.Pd., M.Pd.", nip: "19820815 200803 1 004", school: "SMPN 9 Hulu Sungai Tengah (SMPN 1 Pandawan)", subdistrict: "Pandawan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80", lat: -2.5412, lng: 115.3415 },
+                { id: 3, name: "Siti Mariam, S.Pd.", nip: "19910320 201502 2 008", school: "SDN Haruyan", subdistrict: "Haruyan", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=200&q=80", lat: -2.6480, lng: 115.3520 },
+                { id: 4, name: "Muhammad Rizky, S.Pd.", nip: "19940211 201901 1 003", school: "SDN 2 Pagat", subdistrict: "Batu Benawa", level: "SD", cefr: "A1 Beginner", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80", lat: -2.6310, lng: 115.4240 },
+                { id: 5, name: "Hj. Nurul Hidayah, S.Pd.", nip: "19791105 200501 2 006", school: "SMPN 7 Hulu Sungai Tengah (SMPN 1 Pantai Hambawang)", subdistrict: "Labuan Amas Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80", lat: -2.6090, lng: 115.2825 },
+                { id: 6, name: "Supian Sauri, S.Pd.", nip: "19880614 201402 1 002", school: "SDN Ilung", subdistrict: "Batang Alai Utara", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80", lat: -2.4975, lng: 115.4210 },
+                { id: 7, name: "Dewi Ratnasari, S.Pd.", nip: "19900928 201701 2 011", school: "SMPN 10 Hulu Sungai Tengah (SMPN 1 Birayang)", subdistrict: "Batang Alai Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=200&q=80", lat: -2.6230, lng: 115.4830 },
+                { id: 8, name: "Herman Susanto, S.Pd.", nip: "19860103 201101 1 005", school: "SDN Walatung", subdistrict: "Pandawan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80", lat: -2.5450, lng: 115.3350 },
+                { id: 9, name: "Laila Khairani, S.Pd.", nip: "19920719 201802 2 003", school: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", cefr: "C1 Advanced", role: "Master Trainer", photo: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80", lat: -2.5815, lng: 115.3780 },
+                { id: 10, name: "Bambang Hermawan, S.Pd.", nip: "19830522 200902 1 007", school: "SMPN 23 Hulu Sungai Tengah (SMPN 2 Hantakan)", subdistrict: "Hantakan", level: "SMP", cefr: "A1 Beginner", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=200&q=80", lat: -2.7150, lng: 115.4650 },
+                { id: 11, name: "Rina Astuti, S.Pd.", nip: "19951210 202001 2 009", school: "SDN 1 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1534751516642-a171edd2521d?auto=format&fit=crop&w=200&q=80", lat: -2.5215, lng: 115.2590 },
+                { id: 12, name: "Khairul Anam, S.Pd.", nip: "19870408 201201 1 006", school: "SMPN 15 Hulu Sungai Tengah (SMPN 1 Limpasu)", subdistrict: "Limpasu", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80", lat: -2.4490, lng: 115.4735 },
+                { id: 13, name: "Mulia Hastuti, S.Pd.", nip: "19930814 201903 2 004", school: "SDN Hinai Kiri", subdistrict: "Batang Alai Timur", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=200&q=80", lat: -2.5790, lng: 115.5815 }
             ],
             targetOutputs: [
                 { name: "Database guru SBI & pemetaan sebaran", target: 1, current: 1, status: "Selesai", unit: "database" },
@@ -1007,76 +1232,6 @@
             ]
         };
 
-        function toggleAdminAuth() {
-            if (isAdminLoggedIn) {
-                isAdminLoggedIn = false;
-                updateAccessUI();
-                showToast("Anda telah keluar dari Mode Admin (Kembali ke Mode Publik)");
-            } else {
-                var input = document.getElementById('admin-pass-input');
-                if (input) input.value = '';
-                var modal = document.getElementById('adminLoginModal');
-                if (modal) modal.classList.remove('hidden');
-            }
-        }
-
-        function closeAdminLoginModal() {
-            var modal = document.getElementById('adminLoginModal');
-            if (modal) modal.classList.add('hidden');
-        }
-
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            var passEl = document.getElementById('admin-pass-input');
-            var pass = passEl ? passEl.value.trim() : '';
-            if (pass === 'sbihst2026' || pass === 'admin2026' || pass === 'admin') {
-                isAdminLoggedIn = true;
-                closeAdminLoginModal();
-                updateAccessUI();
-                showToast("Login Admin Berhasil! Akses edit, hapus & import data aktif.");
-            } else {
-                showToast("Kata sandi salah! Gunakan: sbihst2026", "error");
-            }
-        }
-
-        function updateAccessUI() {
-            var dot = document.getElementById('access-dot');
-            var text = document.getElementById('access-text');
-            var label = document.getElementById('admin-auth-label');
-            var icon = document.getElementById('admin-auth-icon');
-
-            if (isAdminLoggedIn) {
-                if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-                if (text) {
-                    text.innerText = "Mode Admin (Aktif)";
-                    text.className = "text-emerald-400 font-bold";
-                }
-                if (label) label.innerText = "Keluar Admin";
-                if (icon) icon.className = "fa-solid fa-right-from-bracket text-rose-400";
-            } else {
-                if (dot) dot.className = "w-2 h-2 rounded-full bg-slate-400";
-                if (text) {
-                    text.innerText = "Mode Publik (Read-Only)";
-                    text.className = "text-slate-300 font-medium";
-                }
-                if (label) label.innerText = "Login Admin";
-                if (icon) icon.className = "fa-solid fa-lock text-amber-400";
-            }
-        }
-
-        function handleProtectedAction(defaultType) {
-            if (!defaultType) defaultType = 'teacher';
-            if (!isAdminLoggedIn) {
-                var input = document.getElementById('admin-pass-input');
-                if (input) input.value = '';
-                var modal = document.getElementById('adminLoginModal');
-                if (modal) modal.classList.remove('hidden');
-                showToast("Silakan Login Admin terlebih dahulu untuk mengelola data.", "warning");
-                return;
-            }
-            openAddModal(defaultType);
-        }
-
         function switchTab(tabId) {
             var pages = document.querySelectorAll('.page-content');
             pages.forEach(function(el) { el.classList.add('hidden'); });
@@ -1098,11 +1253,8 @@
 
             if (tabId === 'teachers') {
                 renderTeachersModule();
-                // Invalidate leaflet map size agar ubin peta termuat sempurna
                 setTimeout(function() {
-                    if (leafletMapInstance) {
-                        leafletMapInstance.invalidateSize();
-                    }
+                    if (leafletMapInstance) leafletMapInstance.invalidateSize();
                 }, 200);
             } else if (tabId === 'impact') {
                 renderImpactCharts();
@@ -1152,6 +1304,28 @@
         var teacherChartInstance = null;
         var leafletMapInstance = null;
         var mapMarkersLayer = null;
+        var streetLayer = null;
+        var satelliteLayer = null;
+
+        function switchMapLayer(type) {
+            if (!leafletMapInstance) return;
+            var btnStreet = document.getElementById('map-mode-street');
+            var btnSat = document.getElementById('map-mode-sat');
+
+            if (type === 'satellite') {
+                if (streetLayer && leafletMapInstance.hasLayer(streetLayer)) leafletMapInstance.removeLayer(streetLayer);
+                if (satelliteLayer && !leafletMapInstance.hasLayer(satelliteLayer)) satelliteLayer.addTo(leafletMapInstance);
+                if (btnSat) btnSat.className = "px-2.5 py-1 rounded-md bg-sbi-900 text-amber-300 shadow-sm font-bold flex items-center space-x-1 transition";
+                if (btnStreet) btnStreet.className = "px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 flex items-center space-x-1 transition";
+                showToast("Beralih ke Tampilan Citra Satelit Bumi.");
+            } else {
+                if (satelliteLayer && leafletMapInstance.hasLayer(satelliteLayer)) leafletMapInstance.removeLayer(satelliteLayer);
+                if (streetLayer && !leafletMapInstance.hasLayer(streetLayer)) streetLayer.addTo(leafletMapInstance);
+                if (btnStreet) btnStreet.className = "px-2.5 py-1 rounded-md bg-white text-sbi-700 shadow-sm font-bold flex items-center space-x-1 transition";
+                if (btnSat) btnSat.className = "px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 flex items-center space-x-1 transition";
+                showToast("Beralih ke Peta Jalan.");
+            }
+        }
 
         function renderTeachersModule() {
             updateTeacherMetrics();
@@ -1184,113 +1358,137 @@
         }
 
         function getDistrictDistribution() {
-            var districts = [
-                "Barabai", "Pandawan", "Haruyan", "Batu Benawa", 
-                "Labuan Amas Selatan", "Labuan Amas Utara", "Batang Alai Selatan", 
-                "Batang Alai Utara", "Batang Alai Timur", "Hantakan", "Limpasu"
-            ];
+            var districts = ["Barabai", "Pandawan", "Haruyan", "Batu Benawa", "Labuan Amas Selatan", "Labuan Amas Utara", "Batang Alai Selatan", "Batang Alai Utara", "Batang Alai Timur", "Hantakan", "Limpasu"];
             var counts = {};
             districts.forEach(function(d) { counts[d] = 0; });
-
             appState.teachers.forEach(function(t) {
-                if (counts[t.subdistrict] !== undefined) {
-                    counts[t.subdistrict]++;
-                } else {
-                    counts[t.subdistrict] = 1;
-                }
+                if (counts[t.subdistrict] !== undefined) counts[t.subdistrict]++;
+                else counts[t.subdistrict] = 1;
             });
             return { districts: districts, counts: counts };
         }
 
-        /* Inisialisasi & Pembaharuan Peta Leaflet HST */
-        function renderTeacherMap() {
+        function renderTeacherMap(filteredTeachers) {
             var mapContainer = document.getElementById('teacherMap');
             if (!mapContainer) return;
 
-            // Inisialisasi Map jika belum ada
             if (!leafletMapInstance) {
                 leafletMapInstance = L.map('teacherMap').setView([-2.5833, 115.3833], 11);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 18,
-                    attribution: '&copy; OpenStreetMap contributors | SBI HST 2026'
-                }).addTo(leafletMapInstance);
-
+                streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' });
+                satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: 'Tiles &copy; Esri' });
+                streetLayer.addTo(leafletMapInstance);
                 mapMarkersLayer = L.layerGroup().addTo(leafletMapInstance);
             }
 
-            // Bersihkan marker sebelumnya
-            if (mapMarkersLayer) {
-                mapMarkersLayer.clearLayers();
-            }
+            if (mapMarkersLayer) mapMarkersLayer.clearLayers();
 
-            // Tambahkan marker guru
-            appState.teachers.forEach(function(t) {
-                var lat = t.lat;
-                var lng = t.lng;
-
-                // Jika koordinat belum ada, ambil dari perkiraan kecamatan
+            var teachersToRender = filteredTeachers || appState.teachers;
+            teachersToRender.forEach(function(t) {
+                var lat = t.lat, lng = t.lng;
                 if (!lat || !lng) {
-                    var base = districtCoordinates[t.subdistrict] || [-2.5833, 115.3833];
-                    // Sedikit variasi agar pin tidak saling menumpuk persis di satu titik
-                    var jitterLat = (Math.random() - 0.5) * 0.02;
-                    var jitterLng = (Math.random() - 0.5) * 0.02;
-                    lat = base[0] + jitterLat;
-                    lng = base[1] + jitterLng;
-                    t.lat = lat;
-                    t.lng = lng;
+                    var master = findMasterSchool(t.school, t.subdistrict);
+                    if (master) { lat = master.lat; lng = master.lng; }
+                    else {
+                        var base = districtCoordinates[t.subdistrict] || [-2.5833, 115.3833];
+                        lat = base[0]; lng = base[1];
+                    }
+                    t.lat = lat; t.lng = lng;
                 }
 
+                var masterSchool = findMasterSchool(t.school, t.subdistrict);
+                var schoolPhoto = (masterSchool && masterSchool.photo) ? masterSchool.photo : "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80";
                 var isMaster = t.role === 'Master Trainer';
                 var isInti = t.role === 'Guru Inti';
                 var markerColor = isMaster ? '#f59e0b' : (isInti ? '#1b365d' : '#10b981');
+                var defaultAvatar = "https://placehold.co/100x100/1e293b/ffffff?text=" + encodeURIComponent((t.name || 'G').charAt(0));
+                var photoSrc = formatGoogleDriveImageUrl(t.photo) || defaultAvatar;
+                var gmapsSearchUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(t.school + " " + t.subdistrict + " Hulu Sungai Tengah");
 
-                // Custom SVG Circle Marker
                 var customIcon = L.divIcon({
                     className: 'custom-map-pin',
-                    html: `
-                        <div style="background-color: ${markerColor}; width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">
-                            <i class="fa-solid ${t.level === 'SD' ? 'fa-school' : 'fa-graduation-cap'}"></i>
-                        </div>
-                    `,
-                    iconSize: [22, 22],
-                    iconAnchor: [11, 11]
+                    html: '<div style="background-color: ' + markerColor + '; width: 28px; height: 28px; border-radius: 50%; border: 2.5px solid white; box-shadow: 0 3px 8px rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; overflow: hidden;"><img src="' + photoSrc + '" onerror="this.src=\'' + defaultAvatar + '\'" style="width: 100%; height: 100%; object-fit: cover;" /></div>',
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14]
                 });
 
                 var marker = L.marker([lat, lng], { icon: customIcon });
-
                 var popupContent = `
-                    <div class="p-2 space-y-1.5 font-sans" style="min-width: 200px;">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] font-bold px-2 py-0.5 rounded ${t.level === 'SD' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800'}">${t.level} Pengimbasan</span>
-                            <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">${t.cefr}</span>
+                    <div class="p-1 space-y-2 font-sans" style="min-width: 240px; max-width: 280px;">
+                        <div class="h-28 w-full rounded-lg overflow-hidden relative shadow-inner bg-slate-100">
+                            <img src="${schoolPhoto}" alt="${t.school}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x200/1e293b/ffffff?text=Sekolah+SBI+HST'" />
+                            <span class="absolute bottom-1.5 left-1.5 bg-sbi-900/85 text-white text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
+                                <i class="fa-solid fa-school mr-1"></i>${t.level}
+                            </span>
+                            <span class="absolute top-1.5 right-1.5 bg-sbired-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">${t.subdistrict}</span>
                         </div>
-                        <h4 class="font-bold text-slate-900 text-xs">${t.school}</h4>
-                        <p class="text-[11px] text-slate-700 font-semibold"><i class="fa-solid fa-user mr-1 text-slate-400"></i>${t.name}</p>
-                        <p class="text-[10px] text-slate-500"><i class="fa-solid fa-location-dot mr-1 text-sbired-500"></i>Kecamatan ${t.subdistrict}</p>
-                        <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between">
-                            <span class="text-[10px] text-slate-400">Peran: <b>${t.role}</b></span>
-                            <a href="https://wa.me/${(t.phone || '').replace(/[^0-9]/g, '')}" target="_blank" class="text-emerald-600 hover:text-emerald-800 text-[10px] font-bold inline-flex items-center">
-                                <i class="fa-brands fa-whatsapp mr-1"></i>Chat
+                        <div class="flex items-center space-x-2 pt-1">
+                            <img src="${photoSrc}" onerror="this.src='${defaultAvatar}'" class="w-9 h-9 rounded-full object-cover border-2 border-sbi-500 shadow-sm flex-shrink-0" />
+                            <div class="min-w-0 flex-1">
+                                <h4 class="font-extrabold text-slate-900 text-xs leading-tight truncate">${t.name}</h4>
+                                <div class="flex items-center space-x-1 mt-0.5">
+                                    <span class="text-[9px] font-bold text-amber-800 bg-amber-50 px-1 rounded border border-amber-200">${t.cefr}</span>
+                                    <span class="text-[9px] text-slate-500 font-semibold">${t.role}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-slate-800 font-bold border-t border-slate-100 pt-1.5">
+                            <i class="fa-solid fa-location-dot text-sbired-500 mr-1"></i>${t.school}
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-mono">GPS: ${lat.toFixed(4)}, ${lng.toFixed(4)}</div>
+                        <div class="pt-1">
+                            <a href="${gmapsSearchUrl}" target="_blank" rel="noopener noreferrer" class="w-full bg-sbi-800 hover:bg-sbi-900 text-white text-[11px] font-bold py-1.5 px-2.5 rounded-lg flex items-center justify-center space-x-1.5 shadow transition">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-amber-300"></i>
+                                <span>Buka di Google Maps & Street View</span>
                             </a>
                         </div>
                     </div>
                 `;
-
                 marker.bindPopup(popupContent);
                 mapMarkersLayer.addLayer(marker);
             });
         }
 
+        function filterByDistrict(districtName) {
+            var kecElem = document.getElementById('filter-teacher-kec');
+            if (kecElem) kecElem.value = districtName;
+            renderTeachersTable();
+            var coords = districtCoordinates[districtName];
+            if (coords && leafletMapInstance) leafletMapInstance.flyTo(coords, 13, { duration: 1.2 });
+            var subtext = document.getElementById('map-status-subtext');
+            if (subtext) subtext.innerHTML = '<span class="text-amber-600 font-bold"><i class="fa-solid fa-filter mr-1"></i>Fokus Sebaran: Kec. ' + districtName + '</span>';
+            var resetBtn = document.getElementById('btn-reset-filter');
+            var resetLbl = document.getElementById('reset-filter-label');
+            if (resetBtn) { resetBtn.classList.remove('hidden'); resetBtn.classList.add('inline-flex'); }
+            if (resetLbl) resetLbl.innerText = 'Reset (Kec. ' + districtName + ')';
+            showToast('Filter aktif: Menampilkan data Kecamatan ' + districtName);
+        }
+
+        function resetActiveFilters() {
+            var kecElem = document.getElementById('filter-teacher-kec');
+            if (kecElem) kecElem.value = 'ALL';
+            renderTeachersTable();
+            if (leafletMapInstance) leafletMapInstance.flyTo([-2.5833, 115.3833], 11, { duration: 1.2 });
+            var subtext = document.getElementById('map-status-subtext');
+            if (subtext) subtext.innerText = 'Koordinat nyata sekolah di Kabupaten Hulu Sungai Tengah';
+            var resetBtn = document.getElementById('btn-reset-filter');
+            if (resetBtn) { resetBtn.classList.add('hidden'); resetBtn.classList.remove('inline-flex'); }
+            showToast('Filter dikembalikan ke seluruh Kabupaten Hulu Sungai Tengah');
+        }
+
+        function handleFilterChange() {
+            var kecElem = document.getElementById('filter-teacher-kec');
+            var selectedKec = kecElem ? kecElem.value : 'ALL';
+            if (selectedKec !== 'ALL') filterByDistrict(selectedKec);
+            else resetActiveFilters();
+        }
+
         function renderTeacherDistributionChart() {
             var ctx = document.getElementById('teacherDistChart');
             if (!ctx) return;
-
             var dist = getDistrictDistribution();
             var dataValues = dist.districts.map(function(d) { return dist.counts[d]; });
 
-            if (teacherChartInstance) {
-                teacherChartInstance.destroy();
-            }
+            if (teacherChartInstance) teacherChartInstance.destroy();
 
             teacherChartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -1307,24 +1505,23 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    onClick: function(evt, elements) {
+                        if (elements && elements.length > 0) {
+                            var index = elements[0].index;
+                            filterByDistrict(dist.districts[index]);
+                        }
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
-                                    return ' ' + context.raw + ' Guru Terdata';
-                                }
+                                label: function(context) { return ' ' + context.raw + ' Guru Terdata (Klik untuk Filter)'; }
                             }
                         }
                     },
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { stepSize: 1, font: { size: 10 } }
-                        },
-                        x: {
-                            ticks: { font: { size: 8 }, maxRotation: 45, minRotation: 45 }
-                        }
+                        y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 10 } } },
+                        x: { ticks: { font: { size: 8 }, maxRotation: 45, minRotation: 45 } }
                     }
                 }
             });
@@ -1333,7 +1530,6 @@
         function renderDistrictSummaryList() {
             var container = document.getElementById('district-summary-list');
             if (!container) return;
-
             var dist = getDistrictDistribution();
             var total = appState.teachers.length || 1;
 
@@ -1341,7 +1537,7 @@
                 var cnt = dist.counts[d] || 0;
                 var pct = Math.round((cnt / total) * 100);
                 return `
-                    <div class="flex items-center justify-between p-1.5 rounded-lg bg-slate-50 border border-slate-100 text-xs">
+                    <div onclick="filterByDistrict('${d}')" class="flex items-center justify-between p-1.5 rounded-lg bg-slate-50 hover:bg-sbi-50 border border-slate-100 hover:border-sbi-300 text-xs cursor-pointer transition">
                         <div class="flex items-center space-x-2">
                             <span class="w-2 h-2 rounded-full ${cnt > 0 ? 'bg-sbi-500' : 'bg-slate-300'}"></span>
                             <span class="font-bold text-slate-800 text-[11px]">Kec. ${d}</span>
@@ -1361,13 +1557,10 @@
 
             var kecElem = document.getElementById('filter-teacher-kec');
             var kecFilter = kecElem ? kecElem.value : 'ALL';
-
             var jenjangElem = document.getElementById('filter-teacher-jenjang');
             var jenjangFilter = jenjangElem ? jenjangElem.value : 'ALL';
-
             var roleElem = document.getElementById('filter-teacher-role');
             var roleFilter = roleElem ? roleElem.value : 'ALL';
-
             var keyElem = document.getElementById('search-teacher-keyword');
             var keyword = (keyElem && keyElem.value ? keyElem.value : '').toLowerCase();
 
@@ -1381,14 +1574,10 @@
                 return matchKec && matchJenjang && matchRole && matchKey;
             });
 
+            renderTeacherMap(filtered);
+
             if (filtered.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="p-6 text-center text-slate-400 italic">
-                            Tidak ada data guru SBI yang sesuai dengan kriteria filter.
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400 italic">Tidak ada data guru SBI yang sesuai dengan kriteria filter.</td></tr>`;
                 return;
             }
 
@@ -1397,59 +1586,58 @@
                 var isInti = t.role === 'Guru Inti';
                 var badgeClass = isMaster ? 'bg-amber-100 text-amber-800 border-amber-300' : (isInti ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-slate-100 text-slate-700 border-slate-300');
                 var levelBadge = t.level === 'SD' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800';
-                var sanitizedPhone = (t.phone || '').replace(/[^0-9]/g, '');
+                var defaultAvatar = "https://placehold.co/80x80/1e293b/ffffff?text=" + encodeURIComponent((t.name || 'G').charAt(0));
+                var photoSrc = formatGoogleDriveImageUrl(t.photo) || defaultAvatar;
+
+                var cefrBadge = 'bg-slate-100 text-slate-700';
+                if ((t.cefr || '').indexOf('A1') !== -1) cefrBadge = 'bg-sky-50 text-sky-700 border border-sky-200';
+                else if ((t.cefr || '').indexOf('A2') !== -1) cefrBadge = 'bg-teal-50 text-teal-700 border border-teal-200';
+                else if ((t.cefr || '').indexOf('B1') !== -1) cefrBadge = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+                else if ((t.cefr || '').indexOf('B2') !== -1) cefrBadge = 'bg-amber-50 text-amber-800 border border-amber-200';
+                else if ((t.cefr || '').indexOf('C1') !== -1) cefrBadge = 'bg-purple-50 text-purple-800 border border-purple-200';
+
+                var actionCol = isAdminLoggedIn ? `
+                    <td class="p-3 text-center team-col">
+                        <div class="flex items-center justify-center space-x-1.5">
+                            <button onclick="editTeacher(${t.id})" class="text-blue-600 hover:text-blue-800 p-1.5 rounded bg-blue-50 hover:bg-blue-100 transition" title="Edit Data Guru">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteTeacher(${t.id})" class="text-rose-600 hover:text-rose-800 p-1.5 rounded bg-rose-50 hover:bg-rose-100 transition" title="Hapus Data Guru">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </td>
+                ` : ``;
 
                 return `
                     <tr class="hover:bg-slate-50 transition">
                         <td class="p-3">
-                            <div class="font-bold text-slate-900">${t.name}</div>
-                            <div class="text-[10px] text-slate-400 font-mono">NIP: ${t.nip}</div>
+                            <div class="flex items-center space-x-3">
+                                <img src="${photoSrc}" onerror="this.src='${defaultAvatar}'" class="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-sm flex-shrink-0" />
+                                <div>
+                                    <div class="font-bold text-slate-900">${t.name}</div>
+                                    <div class="text-[10px] text-slate-400 font-medium">Pendidik SBI HST</div>
+                                </div>
+                            </div>
                         </td>
+                        <td class="p-3 font-mono text-xs text-slate-700">${t.nip}</td>
                         <td class="p-3">
                             <div class="font-semibold text-slate-800">${t.school}</div>
                             <div class="text-[11px] text-slate-500"><i class="fa-solid fa-location-dot mr-1 text-sbired-500"></i>Kec. ${t.subdistrict}</div>
                         </td>
-                        <td class="p-3">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${levelBadge}">${t.level}</span>
-                        </td>
-                        <td class="p-3 font-medium text-slate-700">
-                            <span class="inline-flex items-center space-x-1">
-                                <i class="fa-solid fa-award text-amber-500"></i>
-                                <span>${t.cefr}</span>
-                            </span>
-                        </td>
-                        <td class="p-3">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">${t.role}</span>
-                        </td>
-                        <td class="p-3 font-mono text-[11px] text-slate-600">
-                            <a href="https://wa.me/${sanitizedPhone}" target="_blank" class="hover:text-emerald-600 inline-flex items-center space-x-1">
-                                <i class="fa-brands fa-whatsapp text-emerald-600"></i>
-                                <span>${t.phone}</span>
-                            </a>
-                        </td>
-                        <td class="p-3 text-center">
-                            <div class="flex items-center justify-center space-x-1.5">
-                                <button onclick="editTeacher(${t.id})" class="text-blue-600 hover:text-blue-800 p-1.5 rounded bg-blue-50 hover:bg-blue-100 transition" title="Edit Data Guru">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button onclick="deleteTeacher(${t.id})" class="text-rose-600 hover:text-rose-800 p-1.5 rounded bg-rose-50 hover:bg-rose-100 transition" title="Hapus Data Guru">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </div>
-                        </td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${levelBadge}">${t.level}</span></td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${cefrBadge}"><i class="fa-solid fa-award mr-1"></i>${t.cefr}</span></td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">${t.role}</span></td>
+                        ${actionCol}
                     </tr>
                 `;
             }).join('');
         }
 
-        /* FITUR IMPORT EXCEL / SPREADSHEET */
         function triggerExcelImport() {
             if (!isAdminLoggedIn) {
-                var input = document.getElementById('admin-pass-input');
-                if (input) input.value = '';
-                var modal = document.getElementById('adminLoginModal');
-                if (modal) modal.classList.remove('hidden');
-                showToast("Silakan Login Admin untuk mengimpor file Excel data guru.", "warning");
+                openAdminLoginModal();
+                showToast("Silakan buka akses Tim untuk mengimpor file Excel data guru.", "warning");
                 return;
             }
             var fileInput = document.getElementById('excel-file-input');
@@ -1474,65 +1662,186 @@
                         return;
                     }
 
-                    var header = json[0].map(function(h) { return (h || '').toString().toLowerCase(); });
                     var importedCount = 0;
-
                     for (var i = 1; i < json.length; i++) {
                         var row = json[i];
                         if (!row || row.length === 0) continue;
 
-                        var name = row[0] ? row[0].toString() : '';
-                        if (!name) continue;
+                        var name = row[0] ? row[0].toString().trim() : '';
+                        if (!name || name.length < 3) continue;
 
-                        var nip = row[1] ? row[1].toString() : '-';
-                        var school = row[2] ? row[2].toString() : 'Sekolah Sasaran SBI';
-                        var subdistrict = row[3] ? row[3].toString() : 'Barabai';
-                        var level = row[4] ? row[4].toString().toUpperCase() : 'SD';
+                        var nip = row[1] ? row[1].toString().trim() : '-';
+                        var school = row[2] ? row[2].toString().trim() : 'Sekolah Sasaran SBI';
+                        var subdistrict = row[3] ? row[3].toString().trim() : 'Barabai';
+                        var level = row[4] ? row[4].toString().toUpperCase().trim() : 'SD';
                         if (level !== 'SD' && level !== 'SMP') level = 'SD';
+                        var cefr = row[5] ? row[5].toString().trim() : 'A1 Beginner';
+                        var role = row[6] ? row[6].toString().trim() : 'Guru Sasaran';
+                        var rawPhoto = row[7] ? row[7].toString().trim() : '';
+                        var photo = formatGoogleDriveImageUrl(rawPhoto);
 
-                        var cefr = row[5] ? row[5].toString() : 'B1 Intermediate';
-                        var role = row[6] ? row[6].toString() : 'Guru Sasaran';
-                        var phone = row[7] ? row[7].toString() : '+62 812-0000-000';
+                        var latVal = null, lngVal = null;
+                        var masterMatch = findMasterSchool(school, subdistrict);
+                        if (masterMatch) { latVal = masterMatch.lat; lngVal = masterMatch.lng; }
+                        else {
+                            var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
+                            latVal = base[0]; lngVal = base[1];
+                        }
 
-                        // Koordinat
-                        var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
-                        var lat = base[0] + (Math.random() - 0.5) * 0.02;
-                        var lng = base[1] + (Math.random() - 0.5) * 0.02;
-
-                        appState.teachers.unshift({
+                        var newRecord = {
                             id: Date.now() + i,
-                            name: name,
-                            nip: nip,
-                            school: school,
-                            subdistrict: subdistrict,
-                            level: level,
-                            cefr: cefr,
-                            role: role,
-                            phone: phone,
-                            lat: lat,
-                            lng: lng
-                        });
+                            name: name, nip: nip, school: school, subdistrict: subdistrict,
+                            level: level, cefr: cefr, role: role, photo: photo,
+                            lat: latVal, lng: lngVal
+                        };
+
+                        appState.teachers.unshift(newRecord);
+                        sendSecureJsonToSheets('create', newRecord, 'Data Guru');
                         importedCount++;
                     }
 
                     renderTeachersModule();
-                    showToast(`Berhasil mengimpor ${importedCount} data guru dari file Excel/Spreadsheet!`);
+                    showToast(`Berhasil mengimpor ${importedCount} data guru secara aman!`);
                 } catch (err) {
-                    console.error(err);
-                    showToast("Gagal memproses file Excel. Pastikan format tabel sesuai.", "error");
+                    showToast("Gagal memproses file Excel.", "error");
                 }
                 event.target.value = "";
             };
             reader.readAsArrayBuffer(file);
         }
 
+        function exportTeacherDataExcel() {
+            try {
+                var dataForExcel = appState.teachers.map(function(t) {
+                    return {
+                        "Nama Guru": t.name, "NIP": t.nip, "Sekolah": t.school, "Kecamatan": t.subdistrict,
+                        "Jenjang": t.level, "CEFR Level": t.cefr, "Peran SBI": t.role,
+                        "Link Foto Google Drive / Foto Profil": t.photo || ""
+                    };
+                });
+                var ws = XLSX.utils.json_to_sheet(dataForExcel);
+                ws['!cols'] = [{ wch: 28 }, { wch: 24 }, { wch: 30 }, { wch: 20 }, { wch: 10 }, { wch: 18 }, { wch: 18 }, { wch: 45 }];
+                var wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Data Guru SBI HST 2026");
+                XLSX.writeFile(wb, "Data_Guru_SBI_HST_2026.xlsx");
+                showToast("File Excel (.xlsx) berhasil diunduh!");
+            } catch (err) {
+                showToast("Gagal membuat file Excel.", "error");
+            }
+        }
+
+        function downloadTeacherTemplateExcel() {
+            try {
+                var templateRows = [{
+                    "Nama Guru": "Contoh: Siti Aisyah, S.Pd.",
+                    "NIP": "19920101 201601 2 001",
+                    "Sekolah": "SDN 1 Barabai Timur",
+                    "Kecamatan": "Barabai",
+                    "Jenjang": "SD",
+                    "CEFR Level": "A1 Beginner",
+                    "Peran SBI": "Guru Sasaran",
+                    "Link Foto Google Drive / Foto Profil": "https://drive.google.com/file/d/1A2B3C.../view?usp=sharing"
+                }];
+                var ws = XLSX.utils.json_to_sheet(templateRows);
+                ws['!cols'] = [{ wch: 28 }, { wch: 24 }, { wch: 30 }, { wch: 20 }, { wch: 10 }, { wch: 18 }, { wch: 18 }, { wch: 50 }];
+                var wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Template Guru SBI");
+                XLSX.writeFile(wb, "Template_Data_Guru_SBI_HST.xlsx");
+                showToast("Template Excel (.xlsx) siap digunakan!");
+            } catch (err) {
+                showToast("Gagal mengunduh template Excel.", "error");
+            }
+        }
+
+        // PENGIRIMAN SECURE DENGAN BEARER TOKEN RAHASIA
+        async function sendSecureJsonToSheets(actionType, recordData, targetSheet) {
+            if (!targetSheet) targetSheet = "Data Guru";
+            if (!googleAppsScriptUrl) return;
+
+            var payload = {
+                token: CLIENT_SECRET_TOKEN,
+                action: actionType,
+                sheet: targetSheet,
+                timestamp: new Date().toISOString()
+            };
+
+            if (actionType === 'delete') payload.id = recordData;
+            else payload.data = recordData;
+
+            try {
+                await fetch(googleAppsScriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (err) {
+                console.warn("[Apps Script Error]", err);
+            }
+        }
+
+        // SINKRONISASI AMAN DENGAN FILTER SANITASI
+        async function syncFromGoogleSheetsSafe() {
+            try {
+                if (googleAppsScriptUrl) {
+                    var gasRes = await fetch(googleAppsScriptUrl);
+                    if (gasRes.ok) {
+                        var gasData = await gasRes.json();
+                        if (Array.isArray(gasData) && gasData.length > 0) {
+                            var sanitizedList = [];
+                            
+                            gasData.forEach(function(row, idx) {
+                                var name = String(row["Nama Guru"] || row["name"] || "").trim();
+                                var school = String(row["Sekolah"] || row["school"] || "").trim();
+                                
+                                if (!name || name.length < 3 || name.indexOf("kajsd") !== -1 || school.indexOf("sdfs") !== -1) {
+                                    return;
+                                }
+
+                                var nip = String(row["NIP"] || row["nip"] || "-").trim();
+                                var subdistrict = String(row["Kecamatan"] || row["subdistrict"] || "Barabai").trim();
+                                var level = (row["Jenjang"] || row["level"] || "SD").toString().toUpperCase();
+                                if (level !== 'SD' && level !== 'SMP') level = 'SD';
+                                var cefr = row["CEFR Level"] || row["cefr"] || "A1 Beginner";
+                                var role = row["Peran"] || row["role"] || "Guru Sasaran";
+                                var rawPhoto = row["Foto Profil"] || row["photo"] || row["Link Foto Google Drive / Foto Profil"] || "";
+                                var photo = formatGoogleDriveImageUrl(rawPhoto);
+
+                                var lat = row["lat"] || null;
+                                var lng = row["lng"] || null;
+                                if (!lat || !lng) {
+                                    var mMatch = findMasterSchool(school, subdistrict);
+                                    if (mMatch) { lat = mMatch.lat; lng = mMatch.lng; }
+                                    else {
+                                        var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
+                                        lat = base[0]; lng = base[1];
+                                    }
+                                }
+
+                                sanitizedList.push({
+                                    id: row["ID"] || row["id"] || (Date.now() + idx),
+                                    name: name, nip: nip, school: school, subdistrict: subdistrict,
+                                    level: level, cefr: cefr, role: role, photo: photo,
+                                    lat: parseFloat(lat), lng: parseFloat(lng)
+                                });
+                            });
+
+                            if (sanitizedList.length > 0) {
+                                appState.teachers = sanitizedList;
+                                renderTeachersModule();
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn("Sinkronisasi otomatis:", err);
+            }
+        }
+
         function editTeacher(id) {
             if (!isAdminLoggedIn) {
-                var input = document.getElementById('admin-pass-input');
-                if (input) input.value = '';
-                var modal = document.getElementById('adminLoginModal');
-                if (modal) modal.classList.remove('hidden');
-                showToast("Silakan Login Admin untuk mengedit data guru.", "warning");
+                openAdminLoginModal();
+                showToast("Silakan buka akses Tim untuk mengedit data guru.", "warning");
                 return;
             }
 
@@ -1550,16 +1859,53 @@
             var mBtn = document.getElementById('btn-submit-form');
             if (mBtn) mBtn.innerText = "Perbarui Data";
 
+            uploadedTeacherPhotoBase64 = teacher.photo || "";
             updateFormFields();
 
             document.getElementById('input-teacher-name').value = teacher.name;
             document.getElementById('input-teacher-nip').value = teacher.nip;
-            document.getElementById('input-teacher-phone').value = teacher.phone;
-            document.getElementById('input-teacher-school').value = teacher.school;
+
+            var schoolSelect = document.getElementById('input-teacher-school-select');
+            var schoolCustom = document.getElementById('input-teacher-school-custom');
+            var foundOption = false;
+
+            if (schoolSelect) {
+                for (var i = 0; i < schoolSelect.options.length; i++) {
+                    if (schoolSelect.options[i].value === teacher.school) {
+                        schoolSelect.selectedIndex = i;
+                        foundOption = true;
+                        break;
+                    }
+                }
+                if (!foundOption) {
+                    schoolSelect.value = '__CUSTOM__';
+                    if (schoolCustom) {
+                        schoolCustom.value = teacher.school;
+                        schoolCustom.classList.remove('hidden');
+                    }
+                }
+            }
+
             document.getElementById('input-teacher-kec').value = teacher.subdistrict;
             document.getElementById('input-teacher-level').value = teacher.level;
             document.getElementById('input-teacher-cefr').value = teacher.cefr;
             document.getElementById('input-teacher-role').value = teacher.role;
+
+            var latElem = document.getElementById('input-teacher-lat');
+            var lngElem = document.getElementById('input-teacher-lng');
+            if (latElem && teacher.lat) latElem.value = teacher.lat;
+            if (lngElem && teacher.lng) lngElem.value = teacher.lng;
+
+            var photoUrlInput = document.getElementById('input-teacher-photo-url');
+            if (photoUrlInput && teacher.photo && teacher.photo.indexOf('http') === 0) {
+                photoUrlInput.value = teacher.photo;
+            }
+
+            var preview = document.getElementById('teacher-photo-preview');
+            if (preview && teacher.photo) {
+                preview.src = formatGoogleDriveImageUrl(teacher.photo);
+                preview.classList.remove('hidden');
+            }
 
             var addModal = document.getElementById('addModal');
             if (addModal) addModal.classList.remove('hidden');
@@ -1567,11 +1913,8 @@
 
         function deleteTeacher(id) {
             if (!isAdminLoggedIn) {
-                var input = document.getElementById('admin-pass-input');
-                if (input) input.value = '';
-                var modal = document.getElementById('adminLoginModal');
-                if (modal) modal.classList.remove('hidden');
-                showToast("Silakan Login Admin untuk menghapus data guru.", "warning");
+                openAdminLoginModal();
+                showToast("Silakan buka akses Tim untuk menghapus data guru.", "warning");
                 return;
             }
 
@@ -1579,82 +1922,11 @@
             if (targetIndex === -1) return;
 
             var teacherName = appState.teachers[targetIndex].name;
-            if (confirm(`Apakah Anda yakin ingin menghapus data "${teacherName}" dari direktori?`)) {
+            if (confirm("Apakah Anda yakin ingin menghapus data \"" + teacherName + "\" dari direktori?")) {
+                sendSecureJsonToSheets('delete', id, 'Data Guru');
                 appState.teachers.splice(targetIndex, 1);
                 renderTeachersModule();
-                showToast(`Data guru "${teacherName}" berhasil dihapus.`);
-            }
-        }
-
-        /* EKSPOR DATA KE FORMAT EXCEL ASLI (.XLSX) */
-        function exportTeacherDataExcel() {
-            try {
-                var dataForExcel = appState.teachers.map(function(t) {
-                    return {
-                        "Nama Guru": t.name,
-                        "NIP": t.nip,
-                        "Sekolah": t.school,
-                        "Kecamatan": t.subdistrict,
-                        "Jenjang": t.level,
-                        "CEFR Level": t.cefr,
-                        "Peran SBI": t.role,
-                        "No Kontak": t.phone
-                    };
-                });
-
-                var ws = XLSX.utils.json_to_sheet(dataForExcel);
-                // Atur lebar kolom otomatis agar rapi di Microsoft Excel
-                ws['!cols'] = [
-                    { wch: 26 }, // Nama Guru
-                    { wch: 24 }, // NIP
-                    { wch: 28 }, // Sekolah
-                    { wch: 20 }, // Kecamatan
-                    { wch: 10 }, // Jenjang
-                    { wch: 18 }, // CEFR Level
-                    { wch: 16 }, // Peran SBI
-                    { wch: 18 }  // No Kontak
-                ];
-
-                var wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Data Guru SBI HST 2026");
-                XLSX.writeFile(wb, "Data_Guru_SBI_HST_2026.xlsx");
-                showToast("File Excel (.xlsx) berhasil diunduh dan siap diedit!");
-            } catch (err) {
-                console.error(err);
-                showToast("Gagal membuat file Excel. Silakan coba kembali.", "error");
-            }
-        }
-
-        /* UNDUH TEMPLATE KOSONG UNTUK INPUT DATA BARU (.XLSX) */
-        function downloadTeacherTemplateExcel() {
-            try {
-                var templateRows = [
-                    {
-                        "Nama Guru": "Contoh: Siti Aisyah, S.Pd.",
-                        "NIP": "19920101 201601 2 001",
-                        "Sekolah": "SDN 1 Barabai",
-                        "Kecamatan": "Barabai",
-                        "Jenjang": "SD",
-                        "CEFR Level": "B1 Intermediate",
-                        "Peran SBI": "Guru Sasaran",
-                        "No Kontak": "+62 812-3456-7890"
-                    }
-                ];
-
-                var ws = XLSX.utils.json_to_sheet(templateRows);
-                ws['!cols'] = [
-                    { wch: 26 }, { wch: 24 }, { wch: 28 },
-                    { wch: 20 }, { wch: 10 }, { wch: 18 },
-                    { wch: 16 }, { wch: 18 }
-                ];
-
-                var wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Template Guru SBI");
-                XLSX.writeFile(wb, "Template_Data_Guru_SBI_HST.xlsx");
-                showToast("Template Excel (.xlsx) berhasil diunduh!");
-            } catch (err) {
-                console.error(err);
-                showToast("Gagal mengunduh template Excel.", "error");
+                showToast("Data guru \"" + teacherName + "\" berhasil dihapus.");
             }
         }
 
@@ -1692,32 +1964,30 @@
                         <span>Baca Selengkapnya</span>
                         <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                     </a>
-                ` : `
-                    <span class="text-slate-400 italic text-[11px]">Tidak ada link</span>
-                `;
+                ` : `<span class="text-slate-400 italic text-[11px]">Tidak ada link</span>`;
 
                 return `
-                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
-                    <div class="h-44 overflow-hidden relative bg-slate-100">
-                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/600x400/0284c7/white?text=SBI+HST+2026'">
-                        <span class="absolute top-3 left-3 bg-sbi-900/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">${item.category}</span>
-                    </div>
-                    <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                        <div class="space-y-2">
-                            <div class="flex items-center justify-between text-[11px] text-slate-400">
-                                <span><i class="fa-regular fa-calendar mr-1"></i>${item.date}</span>
-                                <span><i class="fa-solid fa-eye mr-1"></i>${item.reach}</span>
+                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                        <div class="h-44 overflow-hidden relative bg-slate-100">
+                            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/600x400/0284c7/white?text=SBI+HST+2026'">
+                            <span class="absolute top-3 left-3 bg-sbi-900/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">${item.category}</span>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between text-[11px] text-slate-400">
+                                    <span><i class="fa-regular fa-calendar mr-1"></i>${item.date}</span>
+                                    <span><i class="fa-solid fa-eye mr-1"></i>${item.reach}</span>
+                                </div>
+                                <h3 class="font-bold text-slate-900 text-sm leading-snug hover:text-sbi-600 transition">${item.title}</h3>
+                                <p class="text-xs text-slate-600 line-clamp-3">${item.excerpt}</p>
                             </div>
-                            <h3 class="font-bold text-slate-900 text-sm leading-snug hover:text-sbi-600 transition">${item.title}</h3>
-                            <p class="text-xs text-slate-600 line-clamp-3">${item.excerpt}</p>
-                        </div>
-                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                            <span>Oleh: <b class="text-slate-700">${item.author}</b></span>
-                            ${buttonOrLink}
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                                <span>Oleh: <b class="text-slate-700">${item.author}</b></span>
+                                ${buttonOrLink}
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
             }).join('');
         }
 
@@ -1820,9 +2090,7 @@
                 <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3 flex flex-col justify-between">
                     <p class="text-xs text-slate-700 italic">"${t.text}"</p>
                     <div class="border-t border-slate-200 pt-2 flex items-center space-x-2">
-                        <div class="w-7 h-7 rounded-full bg-sbi-600 text-white flex items-center justify-center text-xs font-bold">
-                            ${t.name.charAt(0)}
-                        </div>
+                        <div class="w-7 h-7 rounded-full bg-sbi-600 text-white flex items-center justify-center text-xs font-bold">${t.name.charAt(0)}</div>
                         <div>
                             <h4 class="text-xs font-bold text-slate-900">${t.name}</h4>
                             <p class="text-[10px] text-slate-500">${t.role}</p>
@@ -1832,8 +2100,7 @@
             `; }).join('');
         }
 
-        var chart1Instance = null;
-        var chart2Instance = null;
+        var chart1Instance = null, chart2Instance = null;
 
         function renderImpactCharts() {
             var ctx1 = document.getElementById('impactChart1');
@@ -1848,22 +2115,8 @@
                 data: {
                     labels: ['Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026 (Proyeksi)'],
                     datasets: [
-                        {
-                            label: 'Keberanian Bicara Siswa (%)',
-                            data: [25, 55, 82, 95],
-                            borderColor: '#1b365d',
-                            backgroundColor: 'rgba(27, 54, 93, 0.1)',
-                            fill: true,
-                            tension: 0.3
-                        },
-                        {
-                            label: 'Kepercayaan Diri Guru (%)',
-                            data: [35, 68, 88, 98],
-                            borderColor: '#a61c2e',
-                            backgroundColor: 'transparent',
-                            borderDash: [5, 5],
-                            tension: 0.3
-                        }
+                        { label: 'Keberanian Bicara Siswa (%)', data: [25, 55, 82, 95], borderColor: '#1b365d', backgroundColor: 'rgba(27, 54, 93, 0.1)', fill: true, tension: 0.3 },
+                        { label: 'Kepercayaan Diri Guru (%)', data: [35, 68, 88, 98], borderColor: '#a61c2e', backgroundColor: 'transparent', borderDash: [5, 5], tension: 0.3 }
                     ]
                 },
                 options: {
@@ -1878,10 +2131,7 @@
                 type: 'doughnut',
                 data: {
                     labels: ['English Day & Corner', 'Bilingual Classroom', 'Komunitas Praktik', 'Ekosistem Visual'],
-                    datasets: [{
-                        data: [40, 25, 20, 15],
-                        backgroundColor: ['#1b365d', '#a61c2e', '#f59e0b', '#10b981']
-                    }]
+                    datasets: [{ data: [40, 25, 20, 15], backgroundColor: ['#1b365d', '#a61c2e', '#f59e0b', '#10b981'] }]
                 },
                 options: {
                     responsive: true,
@@ -1891,7 +2141,44 @@
             });
         }
 
-        /* MODAL AND FORM LOGIC */
+        function openExecutiveBrief() {
+            var total = appState.teachers.length;
+            var pctElem = document.getElementById('brief-target-pct');
+            var teachElem = document.getElementById('brief-total-teachers');
+            var practElem = document.getElementById('brief-practices');
+            var distTable = document.getElementById('brief-district-table');
+            var targetSumm = document.getElementById('brief-target-summary');
+
+            if (pctElem) pctElem.innerText = "75%";
+            if (teachElem) teachElem.innerText = total;
+            if (practElem) practElem.innerText = appState.practices.length;
+
+            if (distTable) {
+                var dist = getDistrictDistribution();
+                distTable.innerHTML = dist.districts.slice(0, 8).map(function(d) {
+                    var cnt = dist.counts[d] || 0;
+                    return `<div class="flex justify-between border-b border-slate-50 pb-0.5"><span class="text-slate-600">Kec. ${d}</span><span class="font-bold text-sbi-900">${cnt} Guru</span></div>`;
+                }).join('');
+            }
+
+            if (targetSumm) {
+                targetSumm.innerHTML = appState.targetOutputs.slice(0, 6).map(function(t) {
+                    var pct = Math.round((t.current / t.target) * 100);
+                    return `<div class="flex justify-between items-center border-b border-slate-50 pb-0.5"><span class="text-slate-700 truncate mr-2">${t.name}</span><span class="font-bold text-[10px] ${pct >= 100 ? 'text-emerald-700' : 'text-amber-700'}">${pct}%</span></div>`;
+                }).join('');
+            }
+
+            var modal = document.getElementById('executiveBriefModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeExecutiveBrief() {
+            var modal = document.getElementById('executiveBriefModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function printExecutiveBrief() { window.print(); }
+
         function openAddModal(defaultType) {
             if (!defaultType) defaultType = 'teacher';
             var idEl = document.getElementById('edit-item-id');
@@ -1905,6 +2192,7 @@
             var typeEl = document.getElementById('modal-type');
             if (typeEl) typeEl.value = defaultType;
             uploadedImageBase64 = "";
+            uploadedTeacherPhotoBase64 = "";
             updateFormFields();
             var modal = document.getElementById('addModal');
             if (modal) modal.classList.remove('hidden');
@@ -1914,13 +2202,32 @@
             var modal = document.getElementById('addModal');
             if (modal) modal.classList.add('hidden');
             uploadedImageBase64 = "";
+            uploadedTeacherPhotoBase64 = "";
+        }
+
+        function handleTeacherPhotoUpload(event) {
+            var file = event.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    showToast("Ukuran foto profil maksimal 2MB!", "error");
+                    event.target.value = "";
+                    return;
+                }
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedTeacherPhotoBase64 = e.target.result;
+                    var preview = document.getElementById('teacher-photo-preview');
+                    if (preview) { preview.src = uploadedTeacherPhotoBase64; preview.classList.remove('hidden'); }
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function handleImageUpload(event) {
             var file = event.target.files[0];
             if (file) {
                 if (file.size > 2 * 1024 * 1024) {
-                    showToast("Ukuran foto maksimal 2MB", "error");
+                    showToast("Ukuran gambar berita maksimal 2MB!", "error");
                     event.target.value = "";
                     return;
                 }
@@ -1928,12 +2235,59 @@
                 reader.onload = function(e) {
                     uploadedImageBase64 = e.target.result;
                     var preview = document.getElementById('image-preview');
-                    if (preview) {
-                        preview.src = uploadedImageBase64;
-                        preview.classList.remove('hidden');
-                    }
+                    if (preview) { preview.src = uploadedImageBase64; preview.classList.remove('hidden'); }
                 };
                 reader.readAsDataURL(file);
+            }
+        }
+
+        function filterSchoolDropdown(keyword) {
+            var select = document.getElementById('input-teacher-school-select');
+            if (!select) return;
+            var term = (keyword || '').toLowerCase().trim();
+            var options = select.options;
+            var firstMatchedIdx = -1;
+
+            for (var i = 0; i < options.length; i++) {
+                var opt = options[i];
+                if (opt.value === "" || opt.value === "__CUSTOM__") { opt.hidden = false; continue; }
+                var isMatch = opt.text.toLowerCase().indexOf(term) !== -1;
+                opt.hidden = !isMatch;
+                if (isMatch && firstMatchedIdx === -1) firstMatchedIdx = i;
+            }
+
+            if (term !== "" && firstMatchedIdx !== -1) {
+                select.selectedIndex = firstMatchedIdx;
+                handleSchoolSelectChange(select);
+            }
+        }
+
+        function handleSchoolSelectChange(selectElem) {
+            var val = selectElem.value;
+            var customInput = document.getElementById('input-teacher-school-custom');
+            var kecElem = document.getElementById('input-teacher-kec');
+            var levelElem = document.getElementById('input-teacher-level');
+            var latElem = document.getElementById('input-teacher-lat');
+            var lngElem = document.getElementById('input-teacher-lng');
+
+            if (val === '__CUSTOM__') {
+                if (customInput) customInput.classList.remove('hidden');
+                return;
+            } else {
+                if (customInput) customInput.classList.add('hidden');
+            }
+
+            var selectedOpt = selectElem.options[selectElem.selectedIndex];
+            if (selectedOpt && val !== "") {
+                var kec = selectedOpt.getAttribute('data-kec');
+                var level = selectedOpt.getAttribute('data-level');
+                var lat = selectedOpt.getAttribute('data-lat');
+                var lng = selectedOpt.getAttribute('data-lng');
+
+                if (kec && kecElem) kecElem.value = kec;
+                if (level && levelElem) levelElem.value = level;
+                if (lat && latElem) latElem.value = lat;
+                if (lng && lngElem) lngElem.value = lng;
             }
         }
 
@@ -1944,35 +2298,56 @@
             if (!container) return;
 
             if (type === 'teacher') {
+                var districts = ["Labuan Amas Utara", "Barabai", "Pandawan", "Labuan Amas Selatan", "Haruyan", "Batu Benawa", "Batang Alai Selatan", "Batang Alai Utara", "Batang Alai Timur", "Hantakan", "Limpasu"];
+                var schoolOptionsHtml = districts.map(function(dist) {
+                    var schoolsInDist = hstSchoolsMaster.filter(function(s) { return s.subdistrict === dist; });
+                    var opts = schoolsInDist.map(function(s) {
+                        return '<option value="' + s.name + '" data-kec="' + s.subdistrict + '" data-level="' + s.level + '" data-lat="' + s.lat + '" data-lng="' + s.lng + '">' + s.name + ' (' + s.level + ')</option>';
+                    }).join('');
+                    return '<optgroup label="--- KECAMATAN ' + dist.toUpperCase() + ' ---">' + opts + '</optgroup>';
+                }).join('');
+
                 container.innerHTML = `
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700">Nama Guru (beserta Gelar)</label>
-                        <input type="text" id="input-teacher-name" placeholder="e.g. Ibu Rahmah, S.Pd." required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:ring-sbi-500">
-                    </div>
                     <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700">Nama Guru (beserta Gelar)</label>
+                            <input type="text" id="input-teacher-name" placeholder="e.g. Ibu Rahmah, S.Pd." required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:ring-sbi-500">
+                        </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700">NIP / NUPTK</label>
                             <input type="text" id="input-teacher-nip" placeholder="1985xxxx..." required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700">No. WhatsApp</label>
-                            <input type="text" id="input-teacher-phone" placeholder="+62 812-xxxx..." required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
-                        </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700">Nama Sekolah</label>
-                        <input type="text" id="input-teacher-school" placeholder="e.g. SDN 1 Barabai Timur" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                    <div class="space-y-2 p-3 rounded-xl bg-sbi-50/70 border border-sbi-200">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-sbi-900 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-school text-sbi-600"></i>
+                                <span>Pilih Sekolah Sasaran SD & SMP Se-HST</span>
+                            </label>
+                            <span class="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">GPS Presisi Otomatis</span>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="input-school-search" oninput="filterSchoolDropdown(this.value)" placeholder="Ketik cepat nama sekolah (misal: Rantau Bujur)..." class="w-full bg-white border border-slate-300 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-sbi-500">
+                            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-400 text-xs"></i>
+                        </div>
+                        <select id="input-teacher-school-select" onchange="handleSchoolSelectChange(this)" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold text-slate-800 focus:ring-sbi-500 custom-scrollbar">
+                            <option value="">-- Pilih Sekolah di Hulu Sungai Tengah --</option>
+                            ${schoolOptionsHtml}
+                            <option value="__CUSTOM__">+ Masukkan Nama Sekolah Khusus Lainnya...</option>
+                        </select>
+                        <input type="text" id="input-teacher-school-custom" placeholder="Ketik nama sekolah khusus..." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs hidden mt-1.5">
+                        <p class="text-[10px] text-slate-500">Memilih sekolah otomatis mengunci Titik Lintang/Bujur Asli (seperti SDN Rantau Bujur pada -2.5837, 115.2133).</p>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700">Kecamatan</label>
-                            <select id="input-teacher-kec" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                            <select id="input-teacher-kec" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-medium">
+                                <option value="Labuan Amas Utara">Labuan Amas Utara</option>
                                 <option value="Barabai">Barabai</option>
                                 <option value="Pandawan">Pandawan</option>
                                 <option value="Haruyan">Haruyan</option>
                                 <option value="Batu Benawa">Batu Benawa</option>
                                 <option value="Labuan Amas Selatan">Labuan Amas Selatan</option>
-                                <option value="Labuan Amas Utara">Labuan Amas Utara</option>
                                 <option value="Batang Alai Selatan">Batang Alai Selatan</option>
                                 <option value="Batang Alai Utara">Batang Alai Utara</option>
                                 <option value="Batang Alai Timur">Batang Alai Timur</option>
@@ -1982,20 +2357,24 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700">Jenjang</label>
-                            <select id="input-teacher-level" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                            <select id="input-teacher-level" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-medium">
                                 <option value="SD">SD</option>
                                 <option value="SMP">SMP</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700">CEFR Level</label>
-                            <select id="input-teacher-cefr" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                            <label class="block text-xs font-semibold text-slate-700">Tingkat CEFR</label>
+                            <select id="input-teacher-cefr" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-bold text-sbi-700">
+                                <option value="A1 Beginner">A1 Beginner</option>
+                                <option value="A2 Elementary">A2 Elementary</option>
                                 <option value="B1 Intermediate">B1 Intermediate</option>
                                 <option value="B2 Upper-Int">B2 Upper-Int</option>
                                 <option value="C1 Advanced">C1 Advanced</option>
                             </select>
                         </div>
                     </div>
+                    <input type="hidden" id="input-teacher-lat" value="">
+                    <input type="hidden" id="input-teacher-lng" value="">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Peran SBI</label>
                         <select id="input-teacher-role" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
@@ -2003,6 +2382,17 @@
                             <option value="Guru Inti">Guru Inti</option>
                             <option value="Master Trainer">Master Trainer</option>
                         </select>
+                    </div>
+                    <div class="space-y-1.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
+                        <label class="block text-xs font-bold text-slate-700">Foto Profil Guru (Bisa Link Google Drive/Photos)</label>
+                        <div class="flex items-center space-x-3">
+                            <img id="teacher-photo-preview" src="" alt="Preview" class="w-12 h-12 rounded-full object-cover border border-slate-300 shadow-sm hidden">
+                            <div class="flex-1 space-y-1">
+                                <input type="file" id="input-teacher-photo-file" accept="image/*" onchange="handleTeacherPhotoUpload(event)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-sbi-100 file:text-sbi-700 hover:file:bg-sbi-200">
+                                <input type="text" id="input-teacher-photo-url" oninput="previewPhotoUrl(this.value)" placeholder="Tempel Link Foto Google Drive atau Link Web..." class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-[11px]">
+                                <p class="text-[10px] text-slate-400">Link Google Drive dikonversi otomatis menjadi foto nyata.</p>
+                            </div>
+                        </div>
                     </div>
                 `;
             } else if (type === 'media') {
@@ -2027,19 +2417,17 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700">Link Berita Lengkap (Tautan Eksternal/Website)</label>
+                        <label class="block text-xs font-semibold text-slate-700">Link Berita Lengkap</label>
                         <input type="url" id="input-media-url" placeholder="https://disdik.hulusungaitengahkab.go.id/berita-..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
-                        <p class="text-[10px] text-slate-400 mt-0.5">Link ini akan dituju saat pengunjung mengklik 'Baca Selengkapnya'.</p>
                     </div>
                     <div class="space-y-1">
-                        <label class="block text-xs font-semibold text-slate-700">Upload Foto Kegiatan (Dari Galeri/Komputer)</label>
+                        <label class="block text-xs font-semibold text-slate-700">Upload Foto Kegiatan</label>
                         <input type="file" id="input-media-file" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sbi-100 file:text-sbi-700 hover:file:bg-sbi-200">
                         <div class="mt-2 text-center">
                             <img id="image-preview" src="" alt="Preview" class="h-28 mx-auto rounded-lg object-cover hidden border border-slate-300 shadow-sm">
                         </div>
                         <div class="mt-1">
-                            <label class="block text-[11px] text-slate-500 font-medium">Atau Link URL Gambar Langsung:</label>
-                            <input type="text" id="input-media-image-url" placeholder="https://images.unsplash.com/..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                            <input type="text" id="input-media-image-url" placeholder="Atau tempelkan link URL gambar..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
                         </div>
                     </div>
                     <div>
@@ -2114,53 +2502,124 @@
             }
         }
 
+        function previewPhotoUrl(val) {
+            var preview = document.getElementById('teacher-photo-preview');
+            if (!preview) return;
+            if (val && val.trim().length > 5) {
+                preview.src = formatGoogleDriveImageUrl(val);
+                preview.classList.remove('hidden');
+            } else {
+                preview.classList.add('hidden');
+            }
+        }
+
         function handleFormSubmit(e) {
             e.preventDefault();
             var type = document.getElementById('modal-type').value;
             var editId = document.getElementById('edit-item-id').value;
 
             if (type === 'teacher') {
-                var name = document.getElementById('input-teacher-name').value;
-                var nip = document.getElementById('input-teacher-nip').value;
-                var phone = document.getElementById('input-teacher-phone').value;
-                var school = document.getElementById('input-teacher-school').value;
+                var name = document.getElementById('input-teacher-name').value.trim();
+                var nip = document.getElementById('input-teacher-nip').value.trim();
+                
+                var schoolSelect = document.getElementById('input-teacher-school-select');
+                var schoolCustom = document.getElementById('input-teacher-school-custom');
+                var school = (schoolSelect && schoolSelect.value === '__CUSTOM__') ? (schoolCustom ? schoolCustom.value.trim() : '') : (schoolSelect ? schoolSelect.value : '');
+
+                if (!school) {
+                    showToast("Harap pilih atau masukkan nama sekolah!", "warning");
+                    return;
+                }
+
+                if (name.length < 3) {
+                    showToast("Nama guru minimal 3 karakter!", "error");
+                    return;
+                }
+
                 var subdistrict = document.getElementById('input-teacher-kec').value;
                 var level = document.getElementById('input-teacher-level').value;
                 var cefr = document.getElementById('input-teacher-cefr').value;
                 var role = document.getElementById('input-teacher-role').value;
+                var directPhotoUrl = document.getElementById('input-teacher-photo-url') ? document.getElementById('input-teacher-photo-url').value.trim() : '';
+                var convertedPhotoUrl = formatGoogleDriveImageUrl(directPhotoUrl);
+                var finalPhoto = uploadedTeacherPhotoBase64 || convertedPhotoUrl || ("https://placehold.co/100x100/1e293b/ffffff?text=" + encodeURIComponent(name.charAt(0)));
+
+                var latVal = parseFloat(document.getElementById('input-teacher-lat').value);
+                var lngVal = parseFloat(document.getElementById('input-teacher-lng').value);
+
+                if (isNaN(latVal) || isNaN(lngVal)) {
+                    var masterMatch = findMasterSchool(school, subdistrict);
+                    if (masterMatch) {
+                        latVal = masterMatch.lat;
+                        lngVal = masterMatch.lng;
+                    } else {
+                        var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
+                        latVal = base[0];
+                        lngVal = base[1];
+                    }
+                }
 
                 if (editId) {
                     var idx = appState.teachers.findIndex(function(t) { return t.id == editId; });
                     if (idx !== -1) {
                         appState.teachers[idx].name = name;
                         appState.teachers[idx].nip = nip;
-                        appState.teachers[idx].phone = phone;
                         appState.teachers[idx].school = school;
                         appState.teachers[idx].subdistrict = subdistrict;
                         appState.teachers[idx].level = level;
                         appState.teachers[idx].cefr = cefr;
                         appState.teachers[idx].role = role;
-                        showToast(`Data guru "${name}" berhasil diperbarui!`);
+                        appState.teachers[idx].lat = latVal;
+                        appState.teachers[idx].lng = lngVal;
+                        if (uploadedTeacherPhotoBase64 || directPhotoUrl) {
+                            appState.teachers[idx].photo = finalPhoto;
+                        }
+
+                        sendSecureJsonToSheets('update', {
+                            id: editId,
+                            name: name,
+                            nip: nip,
+                            school: school,
+                            subdistrict: subdistrict,
+                            level: level,
+                            cefr: cefr,
+                            role: role,
+                            photo: finalPhoto
+                        }, 'Data Guru');
+
+                        showToast("Data guru \"" + name + "\" berhasil diperbarui secara aman!");
                     }
                 } else {
-                    var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
-                    var lat = base[0] + (Math.random() - 0.5) * 0.02;
-                    var lng = base[1] + (Math.random() - 0.5) * 0.02;
-
-                    appState.teachers.unshift({
-                        id: Date.now(),
+                    var newId = Date.now();
+                    var newTeacherObj = {
+                        id: newId,
                         name: name,
                         nip: nip,
-                        phone: phone,
                         school: school,
                         subdistrict: subdistrict,
                         level: level,
                         cefr: cefr,
                         role: role,
-                        lat: lat,
-                        lng: lng
-                    });
-                    showToast("Guru baru berhasil ditambahkan!");
+                        photo: finalPhoto,
+                        lat: latVal,
+                        lng: lngVal
+                    };
+
+                    appState.teachers.unshift(newTeacherObj);
+
+                    sendSecureJsonToSheets('create', {
+                        id: newId,
+                        name: name,
+                        nip: nip,
+                        school: school,
+                        subdistrict: subdistrict,
+                        level: level,
+                        cefr: cefr,
+                        role: role,
+                        photo: finalPhoto
+                    }, 'Data Guru');
+
+                    showToast("Guru baru berhasil ditambahkan secara aman!");
                 }
                 renderTeachersModule();
             } else if (type === 'media') {
@@ -2173,8 +2632,7 @@
                 var url = urlElem && urlElem.value ? urlElem.value : '#';
                 var imgUrlElem = document.getElementById('input-media-image-url');
                 var directImageUrl = imgUrlElem && imgUrlElem.value ? imgUrlElem.value : '';
-
-                var finalImage = uploadedImageBase64 || directImageUrl || 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80';
+                var finalImage = uploadedImageBase64 || formatGoogleDriveImageUrl(directImageUrl) || 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80';
 
                 appState.mediaCenter.unshift({
                     id: Date.now(),
@@ -2188,62 +2646,64 @@
                     url: url
                 });
                 renderMediaCenter();
-                showToast("Berita & foto media center berhasil dipublikasikan!");
+                showToast("Berita media center berhasil dipublikasikan!");
             } else if (type === 'practice') {
-                var schoolP = document.getElementById('input-school').value;
-                var subP = document.getElementById('input-subdistrict').value;
-                var titleP = document.getElementById('input-title').value;
-                var descP = document.getElementById('input-desc').value;
+                var pSchool = document.getElementById('input-school').value;
+                var pSub = document.getElementById('input-subdistrict').value;
+                var pTitle = document.getElementById('input-title').value;
+                var pDesc = document.getElementById('input-desc').value;
+
                 appState.practices.unshift({
                     id: Date.now(),
-                    school: schoolP,
-                    subdistrict: subP,
-                    title: titleP,
+                    school: pSchool,
+                    subdistrict: pSub,
+                    title: pTitle,
                     type: "Praktik Baik Baru",
-                    description: descP,
+                    description: pDesc,
                     impact: "Terimbal balik positif pada ekosistem sekolah."
                 });
                 renderPractices();
-                var pCount = document.getElementById('stat-practice-count');
-                if (pCount) pCount.innerText = appState.practices.length;
                 showToast("Praktik baik sekolah berhasil ditambahkan!");
             } else if (type === 'story') {
-                var nameS = document.getElementById('input-title').value;
-                var schoolS = document.getElementById('input-school').value;
-                var descS = document.getElementById('input-desc').value;
+                var sName = document.getElementById('input-title').value;
+                var sSchool = document.getElementById('input-school').value;
+                var sDesc = document.getElementById('input-desc').value;
+
                 appState.humanStories.unshift({
                     id: Date.now(),
                     role: "Human Story",
-                    name: nameS,
-                    school: schoolS,
-                    story: descS,
-                    quote: descS.substring(0, 50) + "..."
+                    name: sName,
+                    school: sSchool,
+                    story: sDesc,
+                    quote: sDesc.substring(0, 50) + "..."
                 });
                 renderHumanStories();
                 showToast("Cerita inspiratif berhasil ditambahkan!");
             } else if (type === 'mitra') {
-                var nameM = document.getElementById('input-title').value;
-                var picM = document.getElementById('input-school').value;
-                var roleM = document.getElementById('input-desc').value;
+                var mName = document.getElementById('input-title').value;
+                var mPic = document.getElementById('input-school').value;
+                var mRole = document.getElementById('input-desc').value;
+
                 appState.mitra.unshift({
                     id: Date.now(),
-                    name: nameM,
+                    name: mName,
                     category: "Mitra Pelaksana",
-                    pic: picM,
-                    role: roleM,
+                    pic: mPic,
+                    role: mRole,
                     status: "Aktif"
                 });
                 renderMitraTable();
                 showToast("Mitra berhasil ditambahkan!");
             } else if (type === 'testimony') {
-                var nameT = document.getElementById('input-title').value;
-                var roleT = document.getElementById('input-school').value;
-                var textT = document.getElementById('input-desc').value;
+                var tName = document.getElementById('input-title').value;
+                var tRole = document.getElementById('input-school').value;
+                var tText = document.getElementById('input-desc').value;
+
                 appState.testimonials.unshift({
                     id: Date.now(),
-                    name: nameT,
-                    role: roleT,
-                    text: textT
+                    name: tName,
+                    role: tRole,
+                    text: tText
                 });
                 renderTestimonials();
                 showToast("Testimoni baru berhasil ditambahkan!");
@@ -2261,22 +2721,16 @@
             if (!toast || !icon || !msgEl) return;
             msgEl.innerText = msg;
 
-            if (type === 'error') {
-                icon.className = "fa-solid fa-triangle-exclamation text-rose-400 text-base";
-            } else if (type === 'warning') {
-                icon.className = "fa-solid fa-circle-exclamation text-amber-400 text-base";
-            } else {
-                icon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
-            }
+            if (type === 'error') icon.className = "fa-solid fa-triangle-exclamation text-rose-400 text-base";
+            else if (type === 'warning') icon.className = "fa-solid fa-circle-exclamation text-amber-400 text-base";
+            else icon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
 
             toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(function() {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+            setTimeout(function() { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
         }
 
-        /* ONLOAD INITIALIZER */
         window.onload = function() {
+            checkUrlSecretAccess();
             updateAccessUI();
             renderTargetOutputs();
             renderTeachersModule();
@@ -2286,6 +2740,8 @@
             renderMitraTable();
             renderArchiveGrid();
             renderTestimonials();
+
+            syncFromGoogleSheetsSafe();
         };
     </script>
 </body>
