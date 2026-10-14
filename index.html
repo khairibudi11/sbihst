@@ -64,7 +64,7 @@
             background: #94a3b8;
         }
         #teacherMap {
-            min-height: 420px;
+            min-height: 380px;
             height: 100%;
             border-radius: 0.75rem;
             z-index: 10;
@@ -135,7 +135,7 @@
                         <div class="text-[9px] text-emerald-600 font-semibold">9/12 Target Doc</div>
                     </div>
                     <div class="p-2.5 bg-white rounded-lg border border-slate-200">
-                        <div class="text-[10px] text-slate-500 font-bold uppercase">Guru Terpetakan</div>
+                        <div class="text-[10px] text-slate-500 font-bold uppercase">Guru Sasaran</div>
                         <div class="text-xl font-extrabold text-sbi-700" id="brief-total-teachers">14</div>
                         <div class="text-[9px] text-slate-600 font-medium">11 Kecamatan HST</div>
                     </div>
@@ -172,7 +172,7 @@
                 <div class="pt-2 border-t border-slate-200 text-[10px] text-slate-500 flex justify-between items-end">
                     <div class="space-y-0.5">
                         <p class="font-bold text-slate-700">Catatan Koordinator Bidang:</p>
-                        <p class="italic">"Sistem pemetaan presisi telah menjangkau seluruh 11 kecamatan di HST. Terhubung langsung dengan Google Sheets resmi Dinas Pendidikan."</p>
+                        <p class="italic">"Sistem pemetaan presisi telah menjangkau seluruh 11 kecamatan di HST. Fokus pengimbasan semester depan diarahkan pada penguatan modul bilingual guru jenjang SD."</p>
                     </div>
                     <div class="text-right space-y-8 flex-shrink-0">
                         <div>Barabai, 2026<br><b>Koordinator Bidang Kemitraan & Publikasi</b></div>
@@ -204,16 +204,12 @@
                         <div class="flex items-center space-x-2">
                             <span class="font-extrabold text-base sm:text-xl tracking-tight text-white leading-tight">SBI HST 2026</span>
                             <span class="bg-sbired-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">Data & Impact Hub</span>
-                            <span id="sync-status-indicator" class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[9px] px-2 py-0.5 rounded-full font-semibold hidden sm:inline-flex items-center space-x-1">
+                            <span id="team-active-indicator" class="hidden bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider items-center space-x-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                <span id="sync-status-text">Sheets Terhubung</span>
-                            </span>
-                            <span id="team-active-indicator" class="hidden bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider items-center space-x-1">
-                                <i class="fa-solid fa-lock-open text-[8px]"></i>
-                                <span>Mode Tim Pengelola</span>
+                                <span>Tim Pengelola (Secure)</span>
                             </span>
                         </div>
-                        <p class="text-[11px] sm:text-xs text-slate-300 hidden sm:block leading-normal">Kab. Hulu Sungai Tengah • Kemitraan, Data Guru, Pemetaan Presisi & Dokumentasi</p>
+                        <p class="text-[11px] sm:text-xs text-slate-300 hidden sm:block leading-normal">Kab. Hulu Sungai Tengah • Kemitraan, Data Guru, Pemetaan & Dokumentasi</p>
                     </div>
                 </div>
 
@@ -293,20 +289,20 @@
                         Hub Komunikasi, Data Guru & Rekam Jejak Dampak SBI HST 2026
                     </h1>
                     <p class="text-slate-200 text-sm leading-relaxed">
-                        Pusat pengelolaan kemitraan, direktori guru SBI terintegrasi Google Sheets, pemetaan sebaran wilayah berbasis spasial peta presisi, publikasi cerita inspiratif, dan laporan visual dampak Program Sekolah Berbahasa Inggris Kabupaten Hulu Sungai Tengah.
+                        Pusat pengelolaan kemitraan, direktori guru SBI, pemetaan sebaran wilayah berbasis spasial peta, publikasi cerita inspiratif, dan laporan visual dampak keberhasilan Program Sekolah Berbahasa Inggris Kabupaten Hulu Sungai Tengah.
                     </p>
                     <div class="pt-2 flex flex-wrap gap-3">
                         <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
                             <i class="fa-solid fa-user-tie text-amber-400"></i>
-                            <span><b id="dash-stat-teachers">0</b> Guru Terpetakan</span>
+                            <span><b id="dash-stat-teachers">14</b> Guru Terdata</span>
                         </div>
                         <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
                             <i class="fa-solid fa-school text-amber-400"></i>
-                            <span><b id="dash-stat-sd">0</b> SD Pengimbasan</span>
+                            <span><b>24 SD</b> Pengimbasan</span>
                         </div>
                         <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
                             <i class="fa-solid fa-building-columns text-amber-400"></i>
-                            <span><b id="dash-stat-smp">0</b> SMP Ekosistem</span>
+                            <span><b>12 SMP</b> Ekosistem</span>
                         </div>
                         <div class="bg-sbi-900/60 border border-sbi-600/50 px-3 py-1.5 rounded-lg text-xs flex items-center space-x-2">
                             <i class="fa-solid fa-map-location-dot text-amber-400"></i>
@@ -333,9 +329,9 @@
                         <i class="fa-solid fa-chalkboard-user"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-500 font-medium">Total Guru SBI Terdata</p>
-                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-teacher-count">0</h3>
-                        <p class="text-[11px] text-indigo-600 font-semibold" id="stat-teacher-subtext"><i class="fa-solid fa-check-double"></i> Tersebar di 11 Kecamatan</p>
+                        <p class="text-xs text-slate-500 font-medium">Total Guru SBI</p>
+                        <h3 class="text-2xl font-extrabold text-slate-800" id="stat-teacher-count">14</h3>
+                        <p class="text-[11px] text-indigo-600 font-semibold"><i class="fa-solid fa-check-double"></i> Tersebar di 11 Kecamatan</p>
                     </div>
                 </div>
 
@@ -438,15 +434,10 @@
                         <span>Sistem Informasi & Pemetaan Spasial Guru SBI</span>
                     </div>
                     <h2 class="text-xl font-bold text-slate-900">Data Guru SBI & Sebaran Wilayah HST 2026</h2>
-                    <p class="text-xs text-slate-500">Peta Interaktif Sekolah Presisi, Terhubung Langsung dengan Google Sheets, Direktori Guru Sasaran, Import/Ekspor Excel</p>
+                    <p class="text-xs text-slate-500">Peta Interaktif Sekolah Presisi, Direktori Guru Sasaran, Import/Ekspor Excel, dan Distribusi Kecamatan</p>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="syncFromGoogleSheetsSafe(true)" id="btn-manual-sync" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2.5 rounded-lg transition font-semibold flex items-center space-x-1.5 shadow" title="Tarik pembaruan data langsung dari Google Sheets">
-                        <i class="fa-solid fa-arrows-rotate" id="sync-icon"></i>
-                        <span>Sinkron Sheets</span>
-                    </button>
-
                     <button id="btn-reset-filter" onclick="resetActiveFilters()" class="hidden bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs px-3 py-2.5 rounded-lg transition font-bold items-center space-x-1.5 shadow-sm">
                         <i class="fa-solid fa-rotate-left"></i>
                         <span id="reset-filter-label">Reset Filter</span>
@@ -525,7 +516,7 @@
                                 <i class="fa-solid fa-map-location-dot text-sbired-500"></i>
                                 <span>Peta Titik Sekolah Presisi Guru SBI</span>
                             </h3>
-                            <p class="text-xs text-slate-500" id="map-status-subtext">Koordinat presisi SD dan SMP se-Kabupaten Hulu Sungai Tengah</p>
+                            <p class="text-xs text-slate-500" id="map-status-subtext">Koordinat nyata sekolah di Kabupaten Hulu Sungai Tengah</p>
                         </div>
                         <div class="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-lg text-xs font-semibold">
                             <button id="map-mode-street" onclick="switchMapLayer('street')" class="px-2.5 py-1 rounded-md bg-white text-sbi-700 shadow-sm font-bold flex items-center space-x-1 transition">
@@ -539,7 +530,7 @@
                         </div>
                     </div>
 
-                    <div class="w-full flex-1 min-h-[420px] relative rounded-xl overflow-hidden border border-slate-200">
+                    <div class="w-full flex-1 min-h-[380px] relative rounded-xl overflow-hidden border border-slate-200">
                         <div id="teacherMap" class="w-full h-full"></div>
                     </div>
                 </div>
@@ -566,7 +557,7 @@
                             <i class="fa-solid fa-list-ol text-amber-500"></i>
                             <span>Cakupan Wilayah Sebaran (Klik untuk Filter)</span>
                         </h3>
-                        <div class="space-y-1.5 max-h-52 overflow-y-auto custom-scrollbar pr-1" id="district-summary-list"></div>
+                        <div class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1" id="district-summary-list"></div>
                     </div>
                 </div>
             </div>
@@ -575,7 +566,7 @@
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900">Direktori Guru Berbahasa Inggris</h3>
-                        <p class="text-xs text-slate-500">Foto profil terhubung langsung dari Google Drive/Photos dan tersinkron dengan Spreadsheets</p>
+                        <p class="text-xs text-slate-500">Foto profil terhubung langsung dari Google Drive/Photos dan link file Excel</p>
                     </div>
 
                     <div class="flex flex-wrap gap-2">
@@ -583,10 +574,10 @@
                             <option value="ALL">Semua Kecamatan</option>
                             <option value="Barabai">Kec. Barabai</option>
                             <option value="Pandawan">Kec. Pandawan</option>
-                            <option value="Labuan Amas Utara">Kec. Labuan Amas Utara</option>
-                            <option value="Labuan Amas Selatan">Kec. Labuan Amas Selatan</option>
-                            <option value="Batu Benawa">Kec. Batu Benawa</option>
                             <option value="Haruyan">Kec. Haruyan</option>
+                            <option value="Batu Benawa">Kec. Batu Benawa</option>
+                            <option value="Labuan Amas Selatan">Kec. Labuan Amas Selatan</option>
+                            <option value="Labuan Amas Utara">Kec. Labuan Amas Utara</option>
                             <option value="Batang Alai Selatan">Kec. Batang Alai Selatan</option>
                             <option value="Batang Alai Utara">Kec. Batang Alai Utara</option>
                             <option value="Batang Alai Timur">Kec. Batang Alai Timur</option>
@@ -641,7 +632,7 @@
                         <i class="fa-solid fa-bullhorn text-sbi-500"></i>
                         <span>SBI Media Center & Publikasi Berita</span>
                     </h2>
-                    <p class="text-xs text-slate-500">Pusat informasi resmi, dokumentasi foto program, dan link publikasi seputar SBI</p>
+                    <p class="text-xs text-slate-500">Pusat informasi resmi, unggah dokumentasi foto program, dan link baca liputan lengkap</p>
                 </div>
                 <div class="flex items-center space-x-2">
                     <select id="media-category-filter" onchange="renderMediaCenter()" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg p-2.5 focus:ring-sbi-500">
@@ -653,7 +644,7 @@
                     </select>
                     <button id="team-add-media-btn" onclick="handleProtectedAction('media')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2.5 rounded-lg transition font-medium items-center space-x-1 shadow">
                         <i class="fa-solid fa-plus"></i>
-                        <span>Tambah Konten</span>
+                        <span>Tambah Berita / Konten</span>
                     </button>
                 </div>
             </div>
@@ -792,11 +783,11 @@
                 <div>
                     <h2 class="text-xl font-bold text-slate-900 flex items-center space-x-2">
                         <i class="fa-solid fa-users-gear text-sbi-600"></i>
-                        <span>Pembagian Tugas Internal & Alur Integrasi Sheets</span>
+                        <span>Pembagian Tugas Internal Bidang</span>
                     </h2>
-                    <p class="text-xs text-slate-500">Struktur Posisi Tim dan Panduan Sinkronisasi Backend Google Apps Script</p>
+                    <p class="text-xs text-slate-500">Struktur Posisi & Peran Tim Kemitraan, Publikasi, Data Guru, dan Dokumentasi SBI HST 2026</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="p-4 rounded-xl bg-sbi-50 border border-sbi-200 space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-sbi-800 uppercase">Koordinator Bidang</span>
@@ -804,63 +795,29 @@
                         </div>
                         <h4 class="font-bold text-slate-900 text-sm">Penanggung Jawab Utama</h4>
                         <p class="text-xs text-slate-600 leading-relaxed">
-                            Mengkoordinasikan seluruh program kerja, menyelaraskan target output 2026, dan memvalidasi keaslian data guru.
+                            Mengkoordinasikan seluruh kegiatan bidang, menyusun rencana kerja, dan mengontrol pencapaian target 2026.
                         </p>
                     </div>
                     <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-emerald-800 uppercase">Tim Data & Spasial</span>
+                            <span class="text-xs font-bold text-emerald-800 uppercase">Tim Data & Pemetaan Guru</span>
                             <i class="fa-solid fa-chalkboard-user text-emerald-600"></i>
                         </div>
-                        <h4 class="font-bold text-slate-900 text-sm">Manajemen Data & Koordinat</h4>
+                        <h4 class="font-bold text-slate-900 text-sm">Manajemen Data Guru & Sebaran</h4>
                         <p class="text-xs text-slate-600 leading-relaxed">
-                            Memelihara sinkronisasi Google Sheets, memetakan koordinat presisi SD/SMP se-HST, serta memonitor kemahiran CEFR.
+                            Mendata profil guru SD/SMP, memetakan tingkat CEFR, memantau kemajuan pembekalan, serta memelihara direktori sebaran spasial kecamatan.
                         </p>
                     </div>
                     <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-purple-800 uppercase">Tim Publikasi & Media</span>
+                            <span class="text-xs font-bold text-purple-800 uppercase">Tim Dokumentasi & Publikasi</span>
                             <i class="fa-solid fa-camera text-purple-600"></i>
                         </div>
-                        <h4 class="font-bold text-slate-900 text-sm">Fotografi & Publikasi</h4>
+                        <h4 class="font-bold text-slate-900 text-sm">Fotografi & Bank Arsip</h4>
                         <p class="text-xs text-slate-600 leading-relaxed">
-                            Dokumentasi foto/video, penulisan artikel kegiatan, infografis, serta kurasi cerita human storytelling.
+                            Fotografi, videografi kegiatan, pengelolaan Bank Dokumentasi SBI, pengarsipan materi, publikasi berita, serta pembuatan reels media sosial.
                         </p>
                     </div>
-                </div>
-
-                <div class="p-5 rounded-xl bg-slate-900 text-white space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <i class="fa-solid fa-code text-amber-400"></i>
-                            <h4 class="text-sm font-bold">Kode Google Apps Script Backend (Secure_Code.gs)</h4>
-                        </div>
-                        <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700">Google Sheets Integration</span>
-                    </div>
-                    <p class="text-xs text-slate-300">
-                        Pastikan kode di bawah terpasang pada menu <b>Extensions > Apps Script</b> di spreadsheet Anda agar data dapat dibaca (GET) dan ditulis (POST) secara aman:
-                    </p>
-                    <pre class="bg-black/50 p-3 rounded-lg text-[11px] font-mono text-emerald-300 overflow-x-auto custom-scrollbar"><code>var CLIENT_SECRET_TOKEN = "SBI-HST-SECURE-TOKEN-2026-X9Z8Y7";
-
-function doGet(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName("Data Guru") || ss.getSheets()[0];
-  var data = sheet.getDataRange().getValues();
-  if (data.length <= 1) return ContentService.createTextOutput(JSON.stringify([])).setMimeType(ContentService.MimeType.JSON);
-  
-  var headers = data[0];
-  var list = [];
-  for (var i = 1; i < data.length; i++) {
-    var row = data[i];
-    if (!row[0] && !row[1] && !row[2]) continue;
-    var item = {};
-    for (var j = 0; j < headers.length; j++) {
-      item[String(headers[j]).trim()] = row[j];
-    }
-    list.push(item);
-  }
-  return ContentService.createTextOutput(JSON.stringify(list)).setMimeType(ContentService.MimeType.JSON);
-}</code></pre>
                 </div>
             </div>
         </div>
@@ -893,7 +850,7 @@ function doGet(e) {
 
     <!-- MODAL POPUP FOR CRUD -->
     <div id="addModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div class="flex items-center space-x-2">
                     <span class="bg-sbired-500 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">Tim Mode</span>
@@ -938,15 +895,14 @@ function doGet(e) {
         var uploadedImageBase64 = "";
         var uploadedTeacherPhotoBase64 = "";
 
-        // TOKEN KEAMANAN RAHASIA
+        // TOKEN KEAMANAN RAHASIA (Sama persis dengan Secure_Code.gs)
         var CLIENT_SECRET_TOKEN = "SBI-HST-SECURE-TOKEN-2026-X9Z8Y7";
         // ENDPOINT GOOGLE APPS SCRIPT WEB APP
         var googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbzFzOUhbV9k0dWUtVFsGxLGsgS3_abKzOlfUIDNHbDxGIB3rGt7SIMWv2AQbGpWs_9S/exec";
 
         function formatGoogleDriveImageUrl(url) {
             if (!url) return "";
-            url = String(url).trim();
-            if (url.indexOf("data:image") === 0) return url;
+            url = url.trim();
             var driveFileMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if (driveFileMatch && driveFileMatch[1]) {
                 return "https://lh3.googleusercontent.com/d/" + driveFileMatch[1];
@@ -958,185 +914,59 @@ function doGet(e) {
             return url;
         }
 
-        // MASTER LENGKAP SELURUH SEKOLAH SD & SMP DI 11 KECAMATAN HULU SUNGAI TENGAH
         var hstSchoolsMaster = [
-            // --- KECAMATAN BARABAI ---
-            { name: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5847, lng: 115.3812 },
-            { name: "SDN 2 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5872, lng: 115.3848 },
-            { name: "SDN 3 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5890, lng: 115.3865 },
-            { name: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", lat: -2.5815, lng: 115.3780 },
-            { name: "SDN 2 Barabai Darat", subdistrict: "Barabai", level: "SD", lat: -2.5802, lng: 115.3765 },
-            { name: "SDN 3 Barabai Darat", subdistrict: "Barabai", level: "SD", lat: -2.5788, lng: 115.3745 },
-            { name: "SDN Barabai Utara", subdistrict: "Barabai", level: "SD", lat: -2.5765, lng: 115.3810 },
-            { name: "SDN 1 Mandingin", subdistrict: "Barabai", level: "SD", lat: -2.5930, lng: 115.3720 },
-            { name: "SDN 2 Mandingin", subdistrict: "Barabai", level: "SD", lat: -2.5955, lng: 115.3705 },
-            { name: "SDN Babai", subdistrict: "Barabai", level: "SD", lat: -2.5695, lng: 115.3880 },
-            { name: "SDN Bukat", subdistrict: "Barabai", level: "SD", lat: -2.5735, lng: 115.3895 },
-            { name: "SDN Ayuang", subdistrict: "Barabai", level: "SD", lat: -2.5620, lng: 115.3950 },
-            { name: "SMPN 1 Hulu Sungai Tengah (SMPN 1 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5862, lng: 115.3798 },
-            { name: "SMPN 2 Hulu Sungai Tengah (SMPN 2 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5885, lng: 115.3740 },
-            { name: "SMPN 3 Hulu Sungai Tengah (SMPN 3 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5810, lng: 115.3860 },
-            { name: "SMPN 4 Hulu Sungai Tengah (SMPN 4 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5740, lng: 115.3785 },
-            { name: "SMPN 5 Hulu Sungai Tengah (SMPN 5 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5910, lng: 115.3690 },
-
-            // --- KECAMATAN PANDAWAN ---
-            { name: "SDN Pandawan", subdistrict: "Pandawan", level: "SD", lat: -2.5385, lng: 115.3421 },
-            { name: "SDN 1 Pandawan", subdistrict: "Pandawan", level: "SD", lat: -2.5385, lng: 115.3421 },
-            { name: "SDN 2 Barikin", subdistrict: "Pandawan", level: "SD", lat: -2.5470, lng: 115.3310 },
-            { name: "SDN 3 Barikin", subdistrict: "Pandawan", level: "SD", lat: -2.5495, lng: 115.3285 },
-            { name: "SDN Walatung", subdistrict: "Pandawan", level: "SD", lat: -2.5450, lng: 115.3350 },
-            { name: "SDN 1 Banua Kupang", subdistrict: "Pandawan", level: "SD", lat: -2.5350, lng: 115.2520 },
-            { name: "SDN 2 Banua Kupang", subdistrict: "Pandawan", level: "SD", lat: -2.5380, lng: 115.2490 },
-            { name: "SDN 3 Banua Kupang", subdistrict: "Pandawan", level: "SD", lat: -2.5410, lng: 115.2450 },
-            { name: "SDN 4 Banua Kupang", subdistrict: "Pandawan", level: "SD", lat: -2.5440, lng: 115.2420 },
-            { name: "SDN 3 Mahang Matang Landung", subdistrict: "Pandawan", level: "SD", lat: -2.5510, lng: 115.3520 },
-            { name: "SDN Kambat Utara", subdistrict: "Pandawan", level: "SD", lat: -2.5280, lng: 115.3480 },
-            { name: "SDN Jaranih", subdistrict: "Pandawan", level: "SD", lat: -2.5320, lng: 115.3390 },
-            { name: "SDN Masiraan", subdistrict: "Pandawan", level: "SD", lat: -2.5560, lng: 115.3250 },
-            { name: "SMPN 9 Hulu Sungai Tengah (SMPN 1 Pandawan)", subdistrict: "Pandawan", level: "SMP", lat: -2.5412, lng: 115.3415 },
-            { name: "SMPN 16 Hulu Sungai Tengah (SMPN 2 Pandawan)", subdistrict: "Pandawan", level: "SMP", lat: -2.5480, lng: 115.3300 },
-            { name: "SMPN 26 Satu Atap HST", subdistrict: "Pandawan", level: "SMP", lat: -2.5530, lng: 115.3500 },
-
-            // --- KECAMATAN LABUAN AMAS UTARA (LAU) ---
-            { name: "SDN Rantau Bujur", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5837, lng: 115.2133 },
-            { name: "SDN 1 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5215, lng: 115.2590 },
-            { name: "SDN 2 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5230, lng: 115.2580 },
-            { name: "SDN 1 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5650, lng: 115.2150 },
-            { name: "SDN 2 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5700, lng: 115.2180 },
-            { name: "SDN 3 Sungai Buluh (Awang Landas)", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5780, lng: 115.2100 },
-            { name: "SDN 4 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5620, lng: 115.2220 },
-            { name: "SDN 1 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5050, lng: 115.2750 },
-            { name: "SDN 2 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5080, lng: 115.2780 },
-            { name: "SDN 1 Pemangkih Seberang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5020, lng: 115.2810 },
-            { name: "SDN 1 Binjai Pirua", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5480, lng: 115.2350 },
-            { name: "SDN 2 Binjai Pirua", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5510, lng: 115.2310 },
-            { name: "SDN Rantau Keminting", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5720, lng: 115.2280 },
-            { name: "SDN 1 Samhurang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6110, lng: 115.2350 },
-            { name: "SDN 2 Samhurang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6147, lng: 115.2320 },
-            { name: "SDN Pahalatan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5550, lng: 115.2480 },
-            { name: "SDN Perumahan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6382, lng: 115.2250 },
-            { name: "SDN Tungkup", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5320, lng: 115.2650 },
-            { name: "SDN Mantaas", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5950, lng: 115.1950 },
-            { name: "SDN Tabat", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5150, lng: 115.2880 },
-            { name: "SMPN 8 Hulu Sungai Tengah (SMPN 1 Labuan Amas Utara)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5195, lng: 115.2610 },
-            { name: "SMPN 13 Hulu Sungai Tengah (SMPN Mantaas)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5960, lng: 115.1970 },
-            { name: "SMPN 20 Hulu Sungai Tengah (SMPN Rantau Bujur)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5877, lng: 115.2063 },
-            { name: "SMPN 32 Satu Atap Hulu Sungai Tengah (Tabat)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5140, lng: 115.2890 },
-
-            // --- KECAMATAN LABUAN AMAS SELATAN (LAS) ---
-            { name: "SDN 2 Pantai Hambawang Timur", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6105, lng: 115.2815 },
-            { name: "SDN 2 Benawa Tengah", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6150, lng: 115.2920 },
-            { name: "SDN Banua Rantau", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6230, lng: 115.2750 },
-            { name: "SDN 1 Jatuh", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6020, lng: 115.2880 },
-            { name: "SDN Durian Gantang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6180, lng: 115.2840 },
-            { name: "SDN Sungai Rangas", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6290, lng: 115.2680 },
-            { name: "SDN Taras Padang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6120, lng: 115.2980 },
-            { name: "SMPN 7 Hulu Sungai Tengah (SMPN 1 Pantai Hambawang)", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6090, lng: 115.2825 },
-            { name: "SMPN 18 Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6140, lng: 115.2900 },
-            { name: "SMPN 24 Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6250, lng: 115.2780 },
-            { name: "SMPN 31 Satu Atap Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6050, lng: 115.2950 },
-
-            // --- KECAMATAN BATU BENAWA ---
-            { name: "SDN 1 Pagat", subdistrict: "Batu Benawa", level: "SD", lat: -2.6280, lng: 115.4210 },
-            { name: "SDN 2 Pagat", subdistrict: "Batu Benawa", level: "SD", lat: -2.6310, lng: 115.4240 },
-            { name: "SDN 2 Aluan", subdistrict: "Batu Benawa", level: "SD", lat: -2.6210, lng: 115.4150 },
-            { name: "SDN Aluan Mati", subdistrict: "Batu Benawa", level: "SD", lat: -2.6180, lng: 115.4120 },
-            { name: "SDN 2 Batu Tangga", subdistrict: "Batu Benawa", level: "SD", lat: -2.6450, lng: 115.4350 },
-            { name: "SDN Haliau", subdistrict: "Batu Benawa", level: "SD", lat: -2.6360, lng: 115.4180 },
-            { name: "SDN Murung A", subdistrict: "Batu Benawa", level: "SD", lat: -2.6240, lng: 115.4280 },
-            { name: "SDN Bakti", subdistrict: "Batu Benawa", level: "SD", lat: -2.6400, lng: 115.4100 },
-            { name: "SMPN 6 Hulu Sungai Tengah (SMPN 1 Batu Benawa)", subdistrict: "Batu Benawa", level: "SMP", lat: -2.6290, lng: 115.4220 },
-            { name: "SMPN 21 Hulu Sungai Tengah", subdistrict: "Batu Benawa", level: "SMP", lat: -2.6350, lng: 115.4300 },
-
-            // --- KECAMATAN HARUYAN ---
-            { name: "SDN Haruyan", subdistrict: "Haruyan", level: "SD", lat: -2.6480, lng: 115.3520 },
-            { name: "SDN 1 Haruyan Dayak", subdistrict: "Haruyan", level: "SD", lat: -2.6750, lng: 115.3620 },
-            { name: "SDN Anduhum", subdistrict: "Haruyan", level: "SD", lat: -2.6520, lng: 115.3480 },
-            { name: "SDN Pengambau Hilir Luar", subdistrict: "Haruyan", level: "SD", lat: -2.6420, lng: 115.3450 },
-            { name: "SDN Lok Buntar", subdistrict: "Haruyan", level: "SD", lat: -2.6610, lng: 115.3550 },
-            { name: "SMPN 12 Hulu Sungai Tengah (SMPN 1 Haruyan)", subdistrict: "Haruyan", level: "SMP", lat: -2.6490, lng: 115.3530 },
-            { name: "SMPN 27 Hulu Sungai Tengah", subdistrict: "Haruyan", level: "SMP", lat: -2.6680, lng: 115.3590 },
-            { name: "SMPN 33 Satu Atap Hulu Sungai Tengah", subdistrict: "Haruyan", level: "SMP", lat: -2.6730, lng: 115.3650 },
-
-            // --- KECAMATAN BATANG ALAI SELATAN (BAS) ---
-            { name: "SDN 1 Birayang", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6210, lng: 115.4810 },
-            { name: "SDN Birayang Surapati", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6240, lng: 115.4850 },
-            { name: "SDN Cukan Lipai", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6350, lng: 115.4920 },
-            { name: "SDN Karau", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6150, lng: 115.4750 },
-            { name: "SDN 1 Labunganak", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6080, lng: 115.4690 },
-            { name: "SDN 1 Lunjuk", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6290, lng: 115.4870 },
-            { name: "SDN Maheli", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6120, lng: 115.4950 },
-            { name: "SMPN 10 Hulu Sungai Tengah (SMPN 1 Birayang)", subdistrict: "Batang Alai Selatan", level: "SMP", lat: -2.6230, lng: 115.4830 },
-            { name: "SMPN 19 Hulu Sungai Tengah", subdistrict: "Batang Alai Selatan", level: "SMP", lat: -2.6310, lng: 115.4890 },
-            { name: "SMPN 25 Satu Atap Hulu Sungai Tengah", subdistrict: "Batang Alai Selatan", level: "SMP", lat: -2.6380, lng: 115.4950 },
-
-            // --- KECAMATAN BATANG ALAI UTARA (BAU) ---
-            { name: "SDN Ilung", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4975, lng: 115.4210 },
-            { name: "SDN 1 Awang Besar", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5080, lng: 115.4120 },
-            { name: "SDN 1 Guha", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4890, lng: 115.4280 },
-            { name: "SDN 3 Guha", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4870, lng: 115.4310 },
-            { name: "SDN Dangu", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5120, lng: 115.4180 },
-            { name: "SDN Telang", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5030, lng: 115.4300 },
-            { name: "SDN Maringgit", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4920, lng: 115.4150 },
-            { name: "SMPN 11 Hulu Sungai Tengah (SMPN 1 Ilung)", subdistrict: "Batang Alai Utara", level: "SMP", lat: -2.4980, lng: 115.4225 },
-            { name: "SMPN 22 Hulu Sungai Tengah", subdistrict: "Batang Alai Utara", level: "SMP", lat: -2.5050, lng: 115.4160 },
-
-            // --- KECAMATAN BATANG ALAI TIMUR (BAT) ---
-            { name: "SDN Hinai Kiri", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5790, lng: 115.5815 },
-            { name: "SDN Hinas Kiri", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5810, lng: 115.5840 },
-            { name: "SDN Muara Hungi", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5650, lng: 115.5900 },
-            { name: "SDN Batu Perahu", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5920, lng: 115.5950 },
-            { name: "SMPN 14 Hulu Sungai Tengah (SMPN 1 BAT)", subdistrict: "Batang Alai Timur", level: "SMP", lat: -2.5800, lng: 115.5820 },
-            { name: "SMPN 30 Satu Atap Hulu Sungai Tengah", subdistrict: "Batang Alai Timur", level: "SMP", lat: -2.5850, lng: 115.5900 },
-
-            // --- KECAMATAN HANTAKAN ---
-            { name: "SDN Hantakan", subdistrict: "Hantakan", level: "SD", lat: -2.7050, lng: 115.4520 },
-            { name: "SDN 1 Kias", subdistrict: "Hantakan", level: "SD", lat: -2.6920, lng: 115.4410 },
-            { name: "SDN Alat", subdistrict: "Hantakan", level: "SD", lat: -2.6980, lng: 115.4470 },
-            { name: "SDN Murung B", subdistrict: "Hantakan", level: "SD", lat: -2.7120, lng: 115.4590 },
-            { name: "SMPN 17 Hulu Sungai Tengah (SMPN 1 Hantakan)", subdistrict: "Hantakan", level: "SMP", lat: -2.7080, lng: 115.4540 },
-            { name: "SMPN 23 Hulu Sungai Tengah (SMPN 2 Hantakan)", subdistrict: "Hantakan", level: "SMP", lat: -2.7150, lng: 115.4650 },
-            { name: "SMPN 35 Satu Atap Hulu Sungai Tengah", subdistrict: "Hantakan", level: "SMP", lat: -2.7230, lng: 115.4720 },
-
-            // --- KECAMATAN LIMPASU ---
-            { name: "SDN 1 Limpasu", subdistrict: "Limpasu", level: "SD", lat: -2.4480, lng: 115.4720 },
-            { name: "SDN 2 Limpasu", subdistrict: "Limpasu", level: "SD", lat: -2.4510, lng: 115.4750 },
-            { name: "SDN Abung Surapati", subdistrict: "Limpasu", level: "SD", lat: -2.4600, lng: 115.4650 },
-            { name: "SDN Kahakan Kalibaru", subdistrict: "Limpasu", level: "SD", lat: -2.4410, lng: 115.4810 },
-            { name: "SDN Hawang", subdistrict: "Limpasu", level: "SD", lat: -2.4380, lng: 115.4850 },
-            { name: "SMPN 15 Hulu Sungai Tengah (SMPN 1 Limpasu)", subdistrict: "Limpasu", level: "SMP", lat: -2.4490, lng: 115.4735 },
-            { name: "SMPN 28 Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", lat: -2.4550, lng: 115.4780 },
-            { name: "SMPN 29 Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", lat: -2.4620, lng: 115.4690 },
-            { name: "SMPN 34 Satu Atap Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", lat: -2.4680, lng: 115.4710 }
+            { name: "SDN Rantau Bujur", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5837, lng: 115.2133, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 20 Hulu Sungai Tengah (SMPN Rantau Bujur)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5877, lng: 115.2063, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5215, lng: 115.2590, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5230, lng: 115.2580, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5650, lng: 115.2150, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5700, lng: 115.2180, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 3 Sungai Buluh (Awang Landas)", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5780, lng: 115.2100, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 4 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5620, lng: 115.2220, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5350, lng: 115.2520, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5380, lng: 115.2490, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 3 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5410, lng: 115.2450, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 4 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5440, lng: 115.2420, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5050, lng: 115.2750, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5080, lng: 115.2780, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Pemangkih Seberang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5020, lng: 115.2810, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Binjai Pirua", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5480, lng: 115.2350, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Binjai Pirua", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5510, lng: 115.2310, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Rantau Keminting", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5720, lng: 115.2280, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Samhurang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6110, lng: 115.2350, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Samhurang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6147, lng: 115.2320, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Pahalatan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5550, lng: 115.2480, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Perumahan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6382, lng: 115.2250, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Tungkup", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5320, lng: 115.2650, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Mantaas", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5950, lng: 115.1950, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN Tabat", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5150, lng: 115.2880, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 8 Hulu Sungai Tengah (SMPN 1 Labuan Amas Utara)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5195, lng: 115.2610, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 13 Hulu Sungai Tengah (SMPN Mantaas)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5960, lng: 115.1970, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 32 Satu Atap Hulu Sungai Tengah (Tabat)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5140, lng: 115.2890, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5847, lng: 115.3812, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 2 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5872, lng: 115.3848, photo: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", lat: -2.5815, lng: 115.3780, photo: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 1 Hulu Sungai Tengah (SMPN 1 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5862, lng: 115.3798, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" },
+            { name: "SDN 1 Pandawan", subdistrict: "Pandawan", level: "SD", lat: -2.5385, lng: 115.3421, photo: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" },
+            { name: "SMPN 9 Hulu Sungai Tengah (SMPN 1 Pandawan)", subdistrict: "Pandawan", level: "SMP", lat: -2.5412, lng: 115.3415, photo: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=400&q=80" }
         ];
 
         function normalizeSchoolName(str) {
-            return (str || '').toLowerCase()
-                .replace(/sd\s*negeri/g, 'sdn')
-                .replace(/smp\s*negeri/g, 'smpn')
-                .replace(/satu\s*atap/g, 'satap')
-                .replace(/[^a-z0-9]/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim();
+            return (str || '').toLowerCase().replace(/sd\s*negeri/g, 'sdn').replace(/smp\s*negeri/g, 'smpn').replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
         }
 
         function findMasterSchool(name, subdistrict) {
             if (!name) return null;
             var norm = normalizeSchoolName(name);
-            var exact = hstSchoolsMaster.find(function(s) { return normalizeSchoolName(s.name) === norm; });
-            if (exact) return exact;
-
+            var match = hstSchoolsMaster.find(function(s) { return normalizeSchoolName(s.name) === norm; });
+            if (match) return match;
             var candidates = hstSchoolsMaster.filter(function(s) {
                 var sNorm = normalizeSchoolName(s.name);
                 return sNorm.indexOf(norm) !== -1 || norm.indexOf(sNorm) !== -1;
             });
-
             if (candidates.length > 0) {
                 if (subdistrict) {
-                    var subMatch = candidates.find(function(c) {
-                        return c.subdistrict.toLowerCase().indexOf(subdistrict.toLowerCase()) !== -1 ||
-                               subdistrict.toLowerCase().indexOf(c.subdistrict.toLowerCase()) !== -1;
-                    });
+                    var subMatch = candidates.find(function(c) { return c.subdistrict.toLowerCase() === subdistrict.toLowerCase(); });
                     if (subMatch) return subMatch;
                 }
                 return candidates[0];
@@ -1165,7 +995,7 @@ function doGet(e) {
             if (logoClickCounter >= 3) {
                 logoClickCounter = 0;
                 if (!isAdminLoggedIn) openAdminLoginModal();
-                else showToast("Mode Tim Pengelola sudah aktif.", "success");
+                else showToast("Mode Tim Pengelola sudah aktif di perangkat Anda.", "success");
             }
         }
 
@@ -1202,7 +1032,7 @@ function doGet(e) {
             try { localStorage.removeItem('sbi_team_session'); } catch (e) {}
             updateAccessUI();
             renderTeachersTable();
-            showToast("Mode Tim dikunci. Tampilan publik aktif.", "warning");
+            showToast("Mode Tim dikunci. Tampilan kembali bersih untuk publik.", "warning");
         }
 
         function updateAccessUI() {
@@ -1255,65 +1085,29 @@ function doGet(e) {
         }
 
         var districtCoordinates = {
-            "Barabai": [-2.5833, 115.3833],
-            "Pandawan": [-2.5400, 115.3400],
-            "Haruyan": [-2.6500, 115.3500],
-            "Batu Benawa": [-2.6300, 115.4200],
-            "Labuan Amas Selatan": [-2.6100, 115.2800],
-            "Labuan Amas Utara": [-2.5200, 115.2600],
-            "Batang Alai Selatan": [-2.6200, 115.4800],
-            "Batang Alai Utara": [-2.5000, 115.4200],
-            "Batang Alai Timur": [-2.5800, 115.5800],
-            "Hantakan": [-2.7000, 115.4500],
-            "Limpasu": [-2.4500, 115.4700]
+            "Barabai": [-2.5833, 115.3833], "Pandawan": [-2.5400, 115.3400], "Haruyan": [-2.6500, 115.3500],
+            "Batu Benawa": [-2.6300, 115.4200], "Labuan Amas Selatan": [-2.6100, 115.2800], "Labuan Amas Utara": [-2.5200, 115.2600],
+            "Batang Alai Selatan": [-2.6200, 115.4800], "Batang Alai Utara": [-2.5000, 115.4200], "Batang Alai Timur": [-2.5800, 115.5800],
+            "Hantakan": [-2.7000, 115.4500], "Limpasu": [-2.4500, 115.4700]
         };
 
-        // DATA DEFAULT CADANGAN JIKA OFFLINE
+        // DATA DEFAULT RESMI BERSIH (TERVALIDASI)
         var appState = {
             teachers: [
-                { id: 101, name: "Endah Dwi Sulistyani, S.Pd", nip: "19841210 200903 2 009", school: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", photo: "", lat: -2.5847, lng: 115.3812 },
-                { id: 102, name: "Rezki Syahriramadhana, S.Pd", nip: "-", school: "SDN 2 Barabai Timur", subdistrict: "Barabai", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5872, lng: 115.3848 },
-                { id: 103, name: "Muhammad Supriadi, S.Pd", nip: "19830423 201406 1 005", school: "SDN 3 Barabai Timur", subdistrict: "Barabai", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5890, lng: 115.3865 },
-                { id: 104, name: "Fitriani, S.Pd", nip: "-", school: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.5815, lng: 115.3780 },
-                { id: 105, name: "Ramlianor, S.Pd", nip: "19840407 201406 1 002", school: "SDN Barabai Utara", subdistrict: "Barabai", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5765, lng: 115.3810 },
-                { id: 106, name: "Sri Arismiati, S.Pd", nip: "-", school: "SDN Pandawan", subdistrict: "Pandawan", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "", lat: -2.5385, lng: 115.3421 },
-                { id: 107, name: "Muhammad Junaidi, S.Pd", nip: "19800614 200903 1 002", school: "SDN 2 Barikin", subdistrict: "Pandawan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5470, lng: 115.3310 },
-                { id: 108, name: "Harlena Eka Yanti, S.Pd", nip: "19890207 202421 2 026", school: "SDN 2 Pantai Hambawang Timur", subdistrict: "Labuan Amas Selatan", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "", lat: -2.6105, lng: 115.2815 },
-                { id: 109, name: "Jaki Arakhim, S.Pd", nip: "19840129 200903 1 003", school: "SDN 2 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5230, lng: 115.2580 },
-                { id: 110, name: "Pendidik SDN Rantau Bujur", nip: "19900512 201601 1 002", school: "SDN Rantau Bujur", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5837, lng: 115.2133 },
-                { id: 111, name: "Taufikur Rahman, S.Pd", nip: "-", school: "SDN Ilung", subdistrict: "Batang Alai Utara", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "", lat: -2.4975, lng: 115.4210 },
-                { id: 112, name: "Rizain Fatmawati, S.Pd", nip: "-", school: "SDN 1 Limpasu", subdistrict: "Limpasu", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.4480, lng: 115.4720 },
-                { id: 113, name: "Siti Jubaidah, S.Pd", nip: "19830521 201406 2 008", school: "SDN 1 Birayang", subdistrict: "Batang Alai Selatan", level: "SD", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.6210, lng: 115.4810 },
-                { id: 114, name: "Muhamad Fazerinor, S.Pd", nip: "19801001 201406 1 002", school: "SDN Hantakan", subdistrict: "Hantakan", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "", lat: -2.7050, lng: 115.4520 },
-                { id: 115, name: "Muhammad Karni Hajiri", nip: "19791216 200903 1 002", school: "SDN 1 Pagat", subdistrict: "Batu Benawa", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.6280, lng: 115.4210 },
-                { id: 116, name: "Normiati, S.Pd", nip: "-", school: "SDN Hinas Kiri", subdistrict: "Batang Alai Timur", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "", lat: -2.5810, lng: 115.5840 },
-                { id: 117, name: "Hj. Azhariya Rabihah, S.Pd.I", nip: "-", school: "SMPN 1 Hulu Sungai Tengah (SMPN 1 Barabai)", subdistrict: "Barabai", level: "SMP", cefr: "C1 Advanced", role: "Master Trainer", photo: "", lat: -2.5862, lng: 115.3798 },
-                { id: 118, name: "Norliana, S.Pd", nip: "19840206 201101 2 009", school: "SMPN 2 Hulu Sungai Tengah (SMPN 2 Barabai)", subdistrict: "Barabai", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.5885, lng: 115.3740 },
-                { id: 119, name: "Khairunnisa, S.Pd.I", nip: "-", school: "SMPN 3 Hulu Sungai Tengah (SMPN 3 Barabai)", subdistrict: "Barabai", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.5810, lng: 115.3860 },
-                { id: 120, name: "Norlatifah, S.Pd", nip: "19910820 202221 2 005", school: "SMPN 5 Hulu Sungai Tengah (SMPN 5 Barabai)", subdistrict: "Barabai", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5910, lng: 115.3690 },
-                { id: 121, name: "Hj. Nurhadiyati, S.Pd", nip: "19731203 199903 2 005", school: "SMPN 6 Hulu Sungai Tengah (SMPN 1 Batu Benawa)", subdistrict: "Batu Benawa", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.6290, lng: 115.4220 },
-                { id: 122, name: "Lilimarlen, S.Pd.I", nip: "19790622 200604 2 026", school: "SMPN 8 Hulu Sungai Tengah (SMPN 1 Labuan Amas Utara)", subdistrict: "Labuan Amas Utara", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.5195, lng: 115.2610 },
-                { id: 123, name: "Siti Jubaidah, S.Pd", nip: "19821126 201001 2 009", school: "SMPN 9 Hulu Sungai Tengah (SMPN 1 Pandawan)", subdistrict: "Pandawan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.5412, lng: 115.3415 },
-                { id: 124, name: "Milianti, S.Pd", nip: "19760613 200604 2 030", school: "SMPN 11 Hulu Sungai Tengah (SMPN 1 Ilung)", subdistrict: "Batang Alai Utara", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.4980, lng: 115.4225 },
-                { id: 125, name: "Sri Rahmawati, S.Pd", nip: "19680306 198902 2 001", school: "SMPN 12 Hulu Sungai Tengah (SMPN 1 Haruyan)", subdistrict: "Haruyan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.6490, lng: 115.3530 },
-                { id: 126, name: "Khairunnisya, S.Pd.I", nip: "19790929 200604 2 033", school: "SMPN 13 Hulu Sungai Tengah (SMPN Mantaas)", subdistrict: "Labuan Amas Utara", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5960, lng: 115.1970 },
-                { id: 127, name: "Mahruni, S.Pd", nip: "19921210 202321 1 006", school: "SMPN 14 Hulu Sungai Tengah (SMPN 1 BAT)", subdistrict: "Batang Alai Timur", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5800, lng: 115.5820 },
-                { id: 128, name: "Raudatul Inayah, S.Pd", nip: "-", school: "SMPN 15 Hulu Sungai Tengah (SMPN 1 Limpasu)", subdistrict: "Limpasu", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.4490, lng: 115.4735 },
-                { id: 129, name: "Wardah, S.Pd.I", nip: "19820601 200904 2 004", school: "SMPN 16 Hulu Sungai Tengah (SMPN 2 Pandawan)", subdistrict: "Pandawan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5480, lng: 115.3300 },
-                { id: 130, name: "Siti Asiah, S.Pd", nip: "-", school: "SMPN 17 Hulu Sungai Tengah (SMPN 1 Hantakan)", subdistrict: "Hantakan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.7080, lng: 115.4540 },
-                { id: 131, name: "Muhamad Rizani, S.Pd", nip: "19690511 199403 1 008", school: "SMPN 18 Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.6140, lng: 115.2900 },
-                { id: 132, name: "Norbainah, S.Pd", nip: "19820107 202221 2 009", school: "SMPN 19 Hulu Sungai Tengah", subdistrict: "Batang Alai Selatan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.6310, lng: 115.4890 },
-                { id: 133, name: "Pendidik SMPN 20 HST", nip: "-", school: "SMPN 20 Hulu Sungai Tengah (SMPN Rantau Bujur)", subdistrict: "Labuan Amas Utara", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5877, lng: 115.2063 },
-                { id: 134, name: "Syahrida Julaiha, S.Pd", nip: "-", school: "SMPN 21 Hulu Sungai Tengah", subdistrict: "Batu Benawa", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.6350, lng: 115.4300 },
-                { id: 135, name: "Herliannisa, S.Pd", nip: "19851106 200903 2 006", school: "SMPN 23 Hulu Sungai Tengah (SMPN 2 Hantakan)", subdistrict: "Hantakan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.7150, lng: 115.4650 },
-                { id: 136, name: "Ervan Haziki, S.Pd", nip: "-", school: "SMPN 28 Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.4550, lng: 115.4780 },
-                { id: 137, name: "Fahmi Hidayat, S.Pd", nip: "-", school: "SMPN 29 Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.4620, lng: 115.4690 },
-                { id: 138, name: "Siti Zuliaheldah, S.Pd.I", nip: "19771027 200604 2 021", school: "SMPN 30 Satu Atap Hulu Sungai Tengah", subdistrict: "Batang Alai Timur", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5850, lng: 115.5900 },
-                { id: 139, name: "Renny Mahlina, S.Pd", nip: "19830924 202121 2 001", school: "SMPN 31 Satu Atap Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.6050, lng: 115.2950 },
-                { id: 140, name: "Siti Hadimah, S.Pd.", nip: "-", school: "SMPN 32 Satu Atap Hulu Sungai Tengah (Tabat)", subdistrict: "Labuan Amas Utara", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.5140, lng: 115.2890 },
-                { id: 141, name: "Lestari, S.Pd", nip: "19780331 200604 2 025", school: "SMPN 33 Satu Atap Hulu Sungai Tengah", subdistrict: "Haruyan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.6730, lng: 115.3650 },
-                { id: 142, name: "Sri Mujayati, S.S", nip: "19780922 200903 2 002", school: "SMPN 34 Satu Atap Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "", lat: -2.4680, lng: 115.4710 },
-                { id: 143, name: "Supian B., S.Pd", nip: "19870513 201903 1 007", school: "SMPN 35 Satu Atap Hulu Sungai Tengah", subdistrict: "Hantakan", level: "SMP", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "", lat: -2.7230, lng: 115.4720 }
+                { id: 14, name: "Pendidik SBI SDN Rantau Bujur", nip: "19900512 201601 1 002", school: "SDN Rantau Bujur", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=200&q=80", lat: -2.5837, lng: 115.2133 },
+                { id: 1, name: "Ibu Rahmah, S.Pd.", nip: "19850412 201001 2 015", school: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", cefr: "B2 Upper-Int", role: "Master Trainer", photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80", lat: -2.5847, lng: 115.3812 },
+                { id: 2, name: "Ahmad Fauzi, S.Pd., M.Pd.", nip: "19820815 200803 1 004", school: "SMPN 9 Hulu Sungai Tengah (SMPN 1 Pandawan)", subdistrict: "Pandawan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80", lat: -2.5412, lng: 115.3415 },
+                { id: 3, name: "Siti Mariam, S.Pd.", nip: "19910320 201502 2 008", school: "SDN Haruyan", subdistrict: "Haruyan", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=200&q=80", lat: -2.6480, lng: 115.3520 },
+                { id: 4, name: "Muhammad Rizky, S.Pd.", nip: "19940211 201901 1 003", school: "SDN 2 Pagat", subdistrict: "Batu Benawa", level: "SD", cefr: "A1 Beginner", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80", lat: -2.6310, lng: 115.4240 },
+                { id: 5, name: "Hj. Nurul Hidayah, S.Pd.", nip: "19791105 200501 2 006", school: "SMPN 7 Hulu Sungai Tengah (SMPN 1 Pantai Hambawang)", subdistrict: "Labuan Amas Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80", lat: -2.6090, lng: 115.2825 },
+                { id: 6, name: "Supian Sauri, S.Pd.", nip: "19880614 201402 1 002", school: "SDN Ilung", subdistrict: "Batang Alai Utara", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80", lat: -2.4975, lng: 115.4210 },
+                { id: 7, name: "Dewi Ratnasari, S.Pd.", nip: "19900928 201701 2 011", school: "SMPN 10 Hulu Sungai Tengah (SMPN 1 Birayang)", subdistrict: "Batang Alai Selatan", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=200&q=80", lat: -2.6230, lng: 115.4830 },
+                { id: 8, name: "Herman Susanto, S.Pd.", nip: "19860103 201101 1 005", school: "SDN Walatung", subdistrict: "Pandawan", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80", lat: -2.5450, lng: 115.3350 },
+                { id: 9, name: "Laila Khairani, S.Pd.", nip: "19920719 201802 2 003", school: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", cefr: "C1 Advanced", role: "Master Trainer", photo: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80", lat: -2.5815, lng: 115.3780 },
+                { id: 10, name: "Bambang Hermawan, S.Pd.", nip: "19830522 200902 1 007", school: "SMPN 23 Hulu Sungai Tengah (SMPN 2 Hantakan)", subdistrict: "Hantakan", level: "SMP", cefr: "A1 Beginner", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=200&q=80", lat: -2.7150, lng: 115.4650 },
+                { id: 11, name: "Rina Astuti, S.Pd.", nip: "19951210 202001 2 009", school: "SDN 1 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "A2 Elementary", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1534751516642-a171edd2521d?auto=format&fit=crop&w=200&q=80", lat: -2.5215, lng: 115.2590 },
+                { id: 12, name: "Khairul Anam, S.Pd.", nip: "19870408 201201 1 006", school: "SMPN 15 Hulu Sungai Tengah (SMPN 1 Limpasu)", subdistrict: "Limpasu", level: "SMP", cefr: "B2 Upper-Int", role: "Guru Inti", photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80", lat: -2.4490, lng: 115.4735 },
+                { id: 13, name: "Mulia Hastuti, S.Pd.", nip: "19930814 201903 2 004", school: "SDN Hinai Kiri", subdistrict: "Batang Alai Timur", level: "SD", cefr: "B1 Intermediate", role: "Guru Sasaran", photo: "https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=200&q=80", lat: -2.5790, lng: 115.5815 }
             ],
             targetOutputs: [
                 { name: "Database guru SBI & pemetaan sebaran", target: 1, current: 1, status: "Selesai", unit: "database" },
@@ -1332,52 +1126,52 @@ function doGet(e) {
             mediaCenter: [
                 {
                     id: 1,
-                    title: "Pengimbasan SBI SD Se-Kabupaten Hulu Sungai Tengah Resmi Berjalan",
+                    title: "Pengimbasan SBI SD Se-Kabupaten Hulu Sungai Tengah Resmi Dimulai",
                     category: "Berita Kegiatan",
                     date: "14 Feb 2026",
                     author: "Tim Publikasi",
-                    excerpt: "Dinas Pendidikan HST menggelar koordinasi pengimbasan Bahasa Inggris untuk puluhan SD sasaran guna memperkuat fondasi kebiasaan tutur bilingual.",
+                    excerpt: "Dinas Pendidikan HST menggelar koordinasi pengimbasan Bahasa Inggris untuk 24 SD sasaran guna memperkuat fondasi kebiasaan tutur bilingual.",
                     reach: "1.2k Reads",
                     image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80",
                     url: "https://disdik.hulusungaitengahkab.go.id"
                 },
                 {
                     id: 2,
-                    title: "Reels Inspirasi: How We Run 'English Friday' at Barabai",
+                    title: "Reels Inspirasi: How We Run 'English Friday' at SD Barabai",
                     category: "Reels / Media Sosial",
                     date: "20 Feb 2026",
                     author: "Tim Medsos",
-                    excerpt: "Aktivitas seru para siswa mempraktikkan ungkapan percakapan sehari-hari Bahasa Inggris dengan rasa percaya diri tinggi.",
+                    excerpt: "Aktivitas seru para siswa SD Barabai mempraktikkan ungkapan sehari-hari Bahasa Inggris dengan senyuman ceria.",
                     reach: "4.8k Views",
                     image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80",
                     url: "https://instagram.com"
                 },
                 {
                     id: 3,
-                    title: "Infografis: Alur Penguatan Ekosistem SBI SMP HST 2026",
+                    title: "Infografis: 5 Tahapan Penting Penguatan Ekosistem SBI SMP HST 2026",
                     category: "Infografis",
                     date: "01 Mar 2026",
                     author: "Tim Data & Visual",
-                    excerpt: "Panduan visual alur pendampingan modul pembelajaran bilingual dan komunitas praktisi guru SMP se-HST.",
+                    excerpt: "Panduan visual alur pendampingan modul pembelajaran bilingual dan komunitas praktisi guru SMP.",
                     reach: "890 Shares",
                     image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
-                    url: "https://disdik.hulusungaitengahkab.go.id"
+                    url: "https://kemdikbud.go.id"
                 }
             ],
             practices: [
                 {
                     id: 1,
-                    school: "SDN 1 Barabai Timur",
-                    subdistrict: "Barabai",
+                    school: "SD Negeri 1 Barabai Timur",
+                    subdistrict: "Kec. Barabai",
                     title: "Program 'English Morning Corner & Daily Greeting'",
                     type: "English Day / Corner",
-                    description: "Setiap pagi sebelum masuk kelas, guru piket menyapa peserta didik menggunakan ekspresi percakapan Bahasa Inggris secara interaktif.",
+                    description: "Setiap pagi sebelum masuk kelas, OSIS dan guru piket menyapa peserta didik menggunakan ekspresi Bahasa Inggris dasar secara interaktif.",
                     impact: "Meningkatkan keberanian siswa berbicara Bahasa Inggris tanpa rasa takut salah."
                 },
                 {
                     id: 2,
-                    school: "SMPN 9 Hulu Sungai Tengah (SMPN 1 Pandawan)",
-                    subdistrict: "Pandawan",
+                    school: "SMP Negeri 1 Pandawan",
+                    subdistrict: "Kec. Pandawan",
                     title: "Bilingual Mathematics & Science Classroom Integration",
                     type: "Bilingual Learning",
                     description: "Penggunaan kosa kata instruksional Bahasa Inggris dalam mata pelajaran IPA dan Matematika.",
@@ -1385,8 +1179,8 @@ function doGet(e) {
                 },
                 {
                     id: 3,
-                    school: "SDN Haruyan",
-                    subdistrict: "Haruyan",
+                    school: "SD Negeri Haruyan",
+                    subdistrict: "Kec. Haruyan",
                     title: "English Wall & Storytelling Board",
                     type: "Lingkungan Berbahasa Inggris",
                     description: "Pemanfaatan dinding lorong sekolah untuk majalah dinding kosa kata mingguan dan karya kreasi siswa.",
@@ -1412,14 +1206,14 @@ function doGet(e) {
                 }
             ],
             mitra: [
-                { id: 1, name: "Dinas Pendidikan Kab. Hulu Sungai Tengah", category: "Pemerintah Daerah", pic: "Kabid Pembinaan SD & SMP", role: "Pengarah Program & Kebijakan", status: "Aktif Terkoordinasi" },
-                { id: 2, name: "Komunitas Praktisi Guru Bahasa Inggris HST", category: "Komunitas Pendidikan", pic: "Ketua MGMP & KKG", role: "Pendampingan Modul & Pengimbasan", status: "Aktif Terkoordinasi" },
+                { id: 1, name: "Dinas Pendidikan Kab. Hulu Sungai Tengah", category: "Pemerintah Daerah", pic: "Kabid Pembinaan SD/SMP", role: "Pengarah Program & Kebijakan", status: "Aktif Terkoordinasi" },
+                { id: 2, name: "Komunitas Praktik Guru Bahasa Inggris HST", category: "Komunitas Pendidikan", pic: "Ketua MGMP / KKG", role: "Pendampingan Modul & Pengimbasan", status: "Aktif Terkoordinasi" },
                 { id: 3, name: "Pers & Media Publikasi Lokal Barabai", category: "Media Partner", pic: "Redaksi Media", role: "Penyebarluasan Press Release & Berita", status: "Terjalin" }
             ],
             testimonials: [
                 {
                     id: 1,
-                    name: "Drs. H. M. Zain",
+                    name: "Drs. H. M. Zain (Kepala Sekolah)",
                     role: "Kepala SMP Ekosistem SBI",
                     text: "Sistem pemetaan data guru dan dokumentasi SBI 2026 sangat komprehensif. Terbukti meningkatkan motivasi mengajar para pendidik di sekolah kami."
                 },
@@ -1523,7 +1317,7 @@ function doGet(e) {
                 if (satelliteLayer && !leafletMapInstance.hasLayer(satelliteLayer)) satelliteLayer.addTo(leafletMapInstance);
                 if (btnSat) btnSat.className = "px-2.5 py-1 rounded-md bg-sbi-900 text-amber-300 shadow-sm font-bold flex items-center space-x-1 transition";
                 if (btnStreet) btnStreet.className = "px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900 flex items-center space-x-1 transition";
-                showToast("Beralih ke Citra Satelit Bumi.");
+                showToast("Beralih ke Tampilan Citra Satelit Bumi.");
             } else {
                 if (satelliteLayer && leafletMapInstance.hasLayer(satelliteLayer)) leafletMapInstance.removeLayer(satelliteLayer);
                 if (streetLayer && !leafletMapInstance.hasLayer(streetLayer)) streetLayer.addTo(leafletMapInstance);
@@ -1543,13 +1337,9 @@ function doGet(e) {
 
         function updateTeacherMetrics() {
             var total = appState.teachers.length;
-            var sdCount = appState.teachers.filter(function(t) { return (t.level || '').toUpperCase() === 'SD'; }).length;
-            var smpCount = appState.teachers.filter(function(t) { return (t.level || '').toUpperCase() === 'SMP'; }).length;
-            var masterCount = appState.teachers.filter(function(t) {
-                var r = (t.role || '').toLowerCase();
-                var c = (t.cefr || '').toLowerCase();
-                return r.indexOf('master') !== -1 || r.indexOf('inti') !== -1 || c.indexOf('b2') !== -1 || c.indexOf('c1') !== -1;
-            }).length;
+            var sdCount = appState.teachers.filter(function(t) { return t.level === 'SD'; }).length;
+            var smpCount = appState.teachers.filter(function(t) { return t.level === 'SMP'; }).length;
+            var masterCount = appState.teachers.filter(function(t) { return t.role === 'Master Trainer' || t.role === 'Guru Inti'; }).length;
 
             var elTotal = document.getElementById('count-total-teachers');
             var elSd = document.getElementById('count-sd-teachers');
@@ -1565,22 +1355,15 @@ function doGet(e) {
             if (dashElem) dashElem.innerText = total;
             var dashHeader = document.getElementById('dash-stat-teachers');
             if (dashHeader) dashHeader.innerText = total;
-
-            var dashSd = document.getElementById('dash-stat-sd');
-            if (dashSd) dashSd.innerText = sdCount + " SD";
-            var dashSmp = document.getElementById('dash-stat-smp');
-            if (dashSmp) dashSmp.innerText = smpCount + " SMP";
         }
 
         function getDistrictDistribution() {
-            var districts = ["Barabai", "Pandawan", "Labuan Amas Utara", "Labuan Amas Selatan", "Batu Benawa", "Haruyan", "Batang Alai Selatan", "Batang Alai Utara", "Batang Alai Timur", "Hantakan", "Limpasu"];
+            var districts = ["Barabai", "Pandawan", "Haruyan", "Batu Benawa", "Labuan Amas Selatan", "Labuan Amas Utara", "Batang Alai Selatan", "Batang Alai Utara", "Batang Alai Timur", "Hantakan", "Limpasu"];
             var counts = {};
             districts.forEach(function(d) { counts[d] = 0; });
             appState.teachers.forEach(function(t) {
-                var sub = t.subdistrict || "Barabai";
-                var matched = districts.find(function(d) { return d.toLowerCase() === sub.toLowerCase(); });
-                if (matched) counts[matched]++;
-                else counts["Barabai"]++;
+                if (counts[t.subdistrict] !== undefined) counts[t.subdistrict]++;
+                else counts[t.subdistrict] = 1;
             });
             return { districts: districts, counts: counts };
         }
@@ -1601,8 +1384,8 @@ function doGet(e) {
 
             var teachersToRender = filteredTeachers || appState.teachers;
             teachersToRender.forEach(function(t) {
-                var lat = parseFloat(t.lat), lng = parseFloat(t.lng);
-                if (isNaN(lat) || isNaN(lng) || !lat || !lng) {
+                var lat = t.lat, lng = t.lng;
+                if (!lat || !lng) {
                     var master = findMasterSchool(t.school, t.subdistrict);
                     if (master) { lat = master.lat; lng = master.lng; }
                     else {
@@ -1612,12 +1395,14 @@ function doGet(e) {
                     t.lat = lat; t.lng = lng;
                 }
 
-                var isMaster = (t.role || '').indexOf('Master') !== -1;
-                var isInti = (t.role || '').indexOf('Inti') !== -1;
+                var masterSchool = findMasterSchool(t.school, t.subdistrict);
+                var schoolPhoto = (masterSchool && masterSchool.photo) ? masterSchool.photo : "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80";
+                var isMaster = t.role === 'Master Trainer';
+                var isInti = t.role === 'Guru Inti';
                 var markerColor = isMaster ? '#f59e0b' : (isInti ? '#1b365d' : '#10b981');
                 var defaultAvatar = "https://placehold.co/100x100/1e293b/ffffff?text=" + encodeURIComponent((t.name || 'G').charAt(0));
                 var photoSrc = formatGoogleDriveImageUrl(t.photo) || defaultAvatar;
-                var gmapsSearchUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(t.school + " " + (t.subdistrict || '') + " Hulu Sungai Tengah");
+                var gmapsSearchUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(t.school + " " + t.subdistrict + " Hulu Sungai Tengah");
 
                 var customIcon = L.divIcon({
                     className: 'custom-map-pin',
@@ -1629,28 +1414,31 @@ function doGet(e) {
                 var marker = L.marker([lat, lng], { icon: customIcon });
                 var popupContent = `
                     <div class="p-1 space-y-2 font-sans" style="min-width: 240px; max-width: 280px;">
-                        <div class="flex items-center space-x-2 pt-1 border-b border-slate-100 pb-2">
-                            <img src="${photoSrc}" onerror="this.src='${defaultAvatar}'" class="w-10 h-10 rounded-full object-cover border-2 border-sbi-500 shadow-sm flex-shrink-0" />
+                        <div class="h-28 w-full rounded-lg overflow-hidden relative shadow-inner bg-slate-100">
+                            <img src="${schoolPhoto}" alt="${t.school}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x200/1e293b/ffffff?text=Sekolah+SBI+HST'" />
+                            <span class="absolute bottom-1.5 left-1.5 bg-sbi-900/85 text-white text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
+                                <i class="fa-solid fa-school mr-1"></i>${t.level}
+                            </span>
+                            <span class="absolute top-1.5 right-1.5 bg-sbired-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">${t.subdistrict}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 pt-1">
+                            <img src="${photoSrc}" onerror="this.src='${defaultAvatar}'" class="w-9 h-9 rounded-full object-cover border-2 border-sbi-500 shadow-sm flex-shrink-0" />
                             <div class="min-w-0 flex-1">
                                 <h4 class="font-extrabold text-slate-900 text-xs leading-tight truncate">${t.name}</h4>
                                 <div class="flex items-center space-x-1 mt-0.5">
-                                    <span class="text-[9px] font-bold text-amber-800 bg-amber-50 px-1 rounded border border-amber-200">${t.cefr || 'A1'}</span>
-                                    <span class="text-[9px] text-slate-500 font-semibold truncate">${t.role || 'Guru Sasaran'}</span>
+                                    <span class="text-[9px] font-bold text-amber-800 bg-amber-50 px-1 rounded border border-amber-200">${t.cefr}</span>
+                                    <span class="text-[9px] text-slate-500 font-semibold">${t.role}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-[11px] text-slate-800 font-bold">
-                            <i class="fa-solid fa-school text-sbi-600 mr-1"></i>${t.school}
+                        <div class="text-[11px] text-slate-800 font-bold border-t border-slate-100 pt-1.5">
+                            <i class="fa-solid fa-location-dot text-sbired-500 mr-1"></i>${t.school}
                         </div>
-                        <div class="text-[10px] text-slate-500 flex items-center justify-between">
-                            <span><i class="fa-solid fa-location-dot text-sbired-500 mr-1"></i>Kec. ${t.subdistrict}</span>
-                            <span class="bg-sbi-100 text-sbi-800 font-bold px-1.5 py-0.2 rounded text-[9px]">${t.level}</span>
-                        </div>
-                        <div class="text-[9px] text-slate-400 font-mono">GPS: ${lat.toFixed(4)}, ${lng.toFixed(4)}</div>
+                        <div class="text-[10px] text-slate-400 font-mono">GPS: ${lat.toFixed(4)}, ${lng.toFixed(4)}</div>
                         <div class="pt-1">
-                            <a href="${gmapsSearchUrl}" target="_blank" rel="noopener noreferrer" class="w-full bg-sbi-800 hover:bg-sbi-900 text-white text-[11px] font-bold py-1.5 px-2 rounded-lg flex items-center justify-center space-x-1.5 shadow transition">
+                            <a href="${gmapsSearchUrl}" target="_blank" rel="noopener noreferrer" class="w-full bg-sbi-800 hover:bg-sbi-900 text-white text-[11px] font-bold py-1.5 px-2.5 rounded-lg flex items-center justify-center space-x-1.5 shadow transition">
                                 <i class="fa-solid fa-arrow-up-right-from-square text-amber-300"></i>
-                                <span>Buka di Google Maps Presisi</span>
+                                <span>Buka di Google Maps & Street View</span>
                             </a>
                         </div>
                     </div>
@@ -1672,7 +1460,7 @@ function doGet(e) {
             var resetLbl = document.getElementById('reset-filter-label');
             if (resetBtn) { resetBtn.classList.remove('hidden'); resetBtn.classList.add('inline-flex'); }
             if (resetLbl) resetLbl.innerText = 'Reset (Kec. ' + districtName + ')';
-            showToast('Filter aktif: Kec. ' + districtName);
+            showToast('Filter aktif: Menampilkan data Kecamatan ' + districtName);
         }
 
         function resetActiveFilters() {
@@ -1681,7 +1469,7 @@ function doGet(e) {
             renderTeachersTable();
             if (leafletMapInstance) leafletMapInstance.flyTo([-2.5833, 115.3833], 11, { duration: 1.2 });
             var subtext = document.getElementById('map-status-subtext');
-            if (subtext) subtext.innerText = 'Koordinat presisi SD dan SMP se-Kabupaten Hulu Sungai Tengah';
+            if (subtext) subtext.innerText = 'Koordinat nyata sekolah di Kabupaten Hulu Sungai Tengah';
             var resetBtn = document.getElementById('btn-reset-filter');
             if (resetBtn) { resetBtn.classList.add('hidden'); resetBtn.classList.remove('inline-flex'); }
             showToast('Filter dikembalikan ke seluruh Kabupaten Hulu Sungai Tengah');
@@ -1777,9 +1565,9 @@ function doGet(e) {
             var keyword = (keyElem && keyElem.value ? keyElem.value : '').toLowerCase();
 
             var filtered = appState.teachers.filter(function(t) {
-                var matchKec = kecFilter === 'ALL' || (t.subdistrict || '').toLowerCase() === kecFilter.toLowerCase();
-                var matchJenjang = jenjangFilter === 'ALL' || (t.level || '').toUpperCase() === jenjangFilter;
-                var matchRole = roleFilter === 'ALL' || (t.role || '').toLowerCase().indexOf(roleFilter.toLowerCase()) !== -1;
+                var matchKec = kecFilter === 'ALL' || t.subdistrict === kecFilter;
+                var matchJenjang = jenjangFilter === 'ALL' || t.level === jenjangFilter;
+                var matchRole = roleFilter === 'ALL' || t.role === roleFilter;
                 var matchKey = (t.name || '').toLowerCase().indexOf(keyword) !== -1 || 
                                (t.school || '').toLowerCase().indexOf(keyword) !== -1 || 
                                (t.nip || '').toLowerCase().indexOf(keyword) !== -1;
@@ -1794,20 +1582,19 @@ function doGet(e) {
             }
 
             tbody.innerHTML = filtered.map(function(t) {
-                var isMaster = (t.role || '').indexOf('Master') !== -1;
-                var isInti = (t.role || '').indexOf('Inti') !== -1;
+                var isMaster = t.role === 'Master Trainer';
+                var isInti = t.role === 'Guru Inti';
                 var badgeClass = isMaster ? 'bg-amber-100 text-amber-800 border-amber-300' : (isInti ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-slate-100 text-slate-700 border-slate-300');
-                var levelBadge = (t.level || '').toUpperCase() === 'SD' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800';
+                var levelBadge = t.level === 'SD' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800';
                 var defaultAvatar = "https://placehold.co/80x80/1e293b/ffffff?text=" + encodeURIComponent((t.name || 'G').charAt(0));
                 var photoSrc = formatGoogleDriveImageUrl(t.photo) || defaultAvatar;
 
                 var cefrBadge = 'bg-slate-100 text-slate-700';
-                var cefrStr = (t.cefr || '').toUpperCase();
-                if (cefrStr.indexOf('A1') !== -1) cefrBadge = 'bg-sky-50 text-sky-700 border border-sky-200';
-                else if (cefrStr.indexOf('A2') !== -1) cefrBadge = 'bg-teal-50 text-teal-700 border border-teal-200';
-                else if (cefrStr.indexOf('B1') !== -1) cefrBadge = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
-                else if (cefrStr.indexOf('B2') !== -1) cefrBadge = 'bg-amber-50 text-amber-800 border border-amber-200';
-                else if (cefrStr.indexOf('C1') !== -1) cefrBadge = 'bg-purple-50 text-purple-800 border border-purple-200';
+                if ((t.cefr || '').indexOf('A1') !== -1) cefrBadge = 'bg-sky-50 text-sky-700 border border-sky-200';
+                else if ((t.cefr || '').indexOf('A2') !== -1) cefrBadge = 'bg-teal-50 text-teal-700 border border-teal-200';
+                else if ((t.cefr || '').indexOf('B1') !== -1) cefrBadge = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+                else if ((t.cefr || '').indexOf('B2') !== -1) cefrBadge = 'bg-amber-50 text-amber-800 border border-amber-200';
+                else if ((t.cefr || '').indexOf('C1') !== -1) cefrBadge = 'bg-purple-50 text-purple-800 border border-purple-200';
 
                 var actionCol = isAdminLoggedIn ? `
                     <td class="p-3 text-center team-col">
@@ -1833,14 +1620,14 @@ function doGet(e) {
                                 </div>
                             </div>
                         </td>
-                        <td class="p-3 font-mono text-xs text-slate-700">${t.nip || '-'}</td>
+                        <td class="p-3 font-mono text-xs text-slate-700">${t.nip}</td>
                         <td class="p-3">
                             <div class="font-semibold text-slate-800">${t.school}</div>
                             <div class="text-[11px] text-slate-500"><i class="fa-solid fa-location-dot mr-1 text-sbired-500"></i>Kec. ${t.subdistrict}</div>
                         </td>
                         <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${levelBadge}">${t.level}</span></td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${cefrBadge}"><i class="fa-solid fa-award mr-1"></i>${t.cefr || 'A1 Beginner'}</span></td>
-                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">${t.role || 'Guru Sasaran'}</span></td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${cefrBadge}"><i class="fa-solid fa-award mr-1"></i>${t.cefr}</span></td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">${t.role}</span></td>
                         ${actionCol}
                     </tr>
                 `;
@@ -1993,106 +1780,61 @@ function doGet(e) {
             }
         }
 
-        // SINKRONISASI AMAN & FLEKSIBEL DARI GOOGLE SHEETS
-        async function syncFromGoogleSheetsSafe(isManualClick) {
-            var syncIcon = document.getElementById('sync-icon');
-            var syncStatusText = document.getElementById('sync-status-text');
-            var syncIndicator = document.getElementById('sync-status-indicator');
-
-            if (syncIcon) syncIcon.classList.add('fa-spin');
-            if (syncStatusText) syncStatusText.innerText = "Menghubungkan Sheets...";
-
+        // SINKRONISASI AMAN DENGAN FILTER SANITASI
+        async function syncFromGoogleSheetsSafe() {
             try {
-                if (!googleAppsScriptUrl) {
-                    if (syncStatusText) syncStatusText.innerText = "Offline (Data Bawaan)";
-                    return;
-                }
-
-                var gasRes = await fetch(googleAppsScriptUrl, {
-                    method: 'GET'
-                });
-
-                if (gasRes.ok) {
-                    var gasData = await gasRes.json();
-                    var rowsArray = Array.isArray(gasData) ? gasData : (gasData && gasData.data ? gasData.data : []);
-
-                    if (rowsArray.length > 0) {
-                        var loadedList = [];
-
-                        rowsArray.forEach(function(row, idx) {
-                            // Ekstrak nama dengan berbagai variasi kolom
-                            var name = String(
-                                row["Nama Guru"] || row["NAMA GURU SBI"] || row["NAMA GURU PROGRAM PENGIMBASAN BATCH 1"] ||
-                                row["nama"] || row["name"] || row["Nama"] || ""
-                            ).trim();
-
-                            var school = String(
-                                row["Sekolah"] || row["NAMA SEKOLAH"] || row["sekolah"] || row["school"] || ""
-                            ).trim();
-
-                            if (!name || name === "-" || name.length < 2) return;
-
-                            var nip = String(row["NIP"] || row["nip"] || row["NUPTK"] || "-").trim();
-                            var subdistrict = String(row["Kecamatan"] || row["subdistrict"] || row["kecamatan"] || "").trim();
-                            var level = String(row["Jenjang"] || row["level"] || "").toUpperCase().trim();
-
-                            if (!level || (level !== 'SD' && level !== 'SMP')) {
-                                level = school.toUpperCase().indexOf("SMP") !== -1 ? "SMP" : "SD";
-                            }
-
-                            // Auto-resolve koordinat dan kecamatan dari Master Sekolah
-                            var master = findMasterSchool(school, subdistrict);
-                            var lat = row["lat"] || null;
-                            var lng = row["lng"] || null;
-
-                            if (master) {
-                                if (!subdistrict) subdistrict = master.subdistrict;
-                                if (!lat || !lng) { lat = master.lat; lng = master.lng; }
-                            } else {
-                                if (!subdistrict) subdistrict = "Barabai";
-                                if (!lat || !lng) {
-                                    var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
-                                    lat = base[0]; lng = base[1];
+                if (googleAppsScriptUrl) {
+                    var gasRes = await fetch(googleAppsScriptUrl);
+                    if (gasRes.ok) {
+                        var gasData = await gasRes.json();
+                        if (Array.isArray(gasData) && gasData.length > 0) {
+                            var sanitizedList = [];
+                            
+                            gasData.forEach(function(row, idx) {
+                                var name = String(row["Nama Guru"] || row["name"] || "").trim();
+                                var school = String(row["Sekolah"] || row["school"] || "").trim();
+                                
+                                if (!name || name.length < 3 || name.indexOf("kajsd") !== -1 || school.indexOf("sdfs") !== -1) {
+                                    return;
                                 }
-                            }
 
-                            var cefr = String(row["CEFR Level"] || row["cefr"] || row["CEFR"] || "A1 Beginner").trim();
-                            var role = String(row["Peran"] || row["Peran SBI"] || row["role"] || "Guru Sasaran").trim();
-                            var rawPhoto = String(row["Foto Profil"] || row["photo"] || row["Link Foto Google Drive / Foto Profil"] || "").trim();
-                            var photo = formatGoogleDriveImageUrl(rawPhoto);
+                                var nip = String(row["NIP"] || row["nip"] || "-").trim();
+                                var subdistrict = String(row["Kecamatan"] || row["subdistrict"] || "Barabai").trim();
+                                var level = (row["Jenjang"] || row["level"] || "SD").toString().toUpperCase();
+                                if (level !== 'SD' && level !== 'SMP') level = 'SD';
+                                var cefr = row["CEFR Level"] || row["cefr"] || "A1 Beginner";
+                                var role = row["Peran"] || row["role"] || "Guru Sasaran";
+                                var rawPhoto = row["Foto Profil"] || row["photo"] || row["Link Foto Google Drive / Foto Profil"] || "";
+                                var photo = formatGoogleDriveImageUrl(rawPhoto);
 
-                            loadedList.push({
-                                id: row["ID"] || row["id"] || (Date.now() + idx),
-                                name: name,
-                                nip: nip,
-                                school: school || "Sekolah SBI HST",
-                                subdistrict: subdistrict,
-                                level: level,
-                                cefr: cefr,
-                                role: role,
-                                photo: photo,
-                                lat: parseFloat(lat),
-                                lng: parseFloat(lng)
+                                var lat = row["lat"] || null;
+                                var lng = row["lng"] || null;
+                                if (!lat || !lng) {
+                                    var mMatch = findMasterSchool(school, subdistrict);
+                                    if (mMatch) { lat = mMatch.lat; lng = mMatch.lng; }
+                                    else {
+                                        var base = districtCoordinates[subdistrict] || [-2.5833, 115.3833];
+                                        lat = base[0]; lng = base[1];
+                                    }
+                                }
+
+                                sanitizedList.push({
+                                    id: row["ID"] || row["id"] || (Date.now() + idx),
+                                    name: name, nip: nip, school: school, subdistrict: subdistrict,
+                                    level: level, cefr: cefr, role: role, photo: photo,
+                                    lat: parseFloat(lat), lng: parseFloat(lng)
+                                });
                             });
-                        });
 
-                        if (loadedList.length > 0) {
-                            appState.teachers = loadedList;
-                            renderTeachersModule();
-                            if (syncStatusText) syncStatusText.innerText = `Sheets Terhubung (${loadedList.length} Guru)`;
-                            if (syncIndicator) syncIndicator.classList.remove('hidden');
-                            if (isManualClick) showToast(`Berhasil menyinkronkan ${loadedList.length} guru langsung dari Google Sheets!`);
+                            if (sanitizedList.length > 0) {
+                                appState.teachers = sanitizedList;
+                                renderTeachersModule();
+                            }
                         }
-                    } else {
-                        if (syncStatusText) syncStatusText.innerText = "Sheets Terhubung (Kosong)";
                     }
                 }
             } catch (err) {
                 console.warn("Sinkronisasi otomatis:", err);
-                if (syncStatusText) syncStatusText.innerText = "Offline Mode";
-                if (isManualClick) showToast("Gagal terhubung ke Sheets. Menggunakan basis data lokal terpetakan.", "warning");
-            } finally {
-                if (syncIcon) syncIcon.classList.remove('fa-spin');
             }
         }
 
@@ -2121,7 +1863,7 @@ function doGet(e) {
             updateFormFields();
 
             document.getElementById('input-teacher-name').value = teacher.name;
-            document.getElementById('input-teacher-nip').value = teacher.nip || '';
+            document.getElementById('input-teacher-nip').value = teacher.nip;
 
             var schoolSelect = document.getElementById('input-teacher-school-select');
             var schoolCustom = document.getElementById('input-teacher-school-custom');
@@ -2527,11 +2269,9 @@ function doGet(e) {
             var levelElem = document.getElementById('input-teacher-level');
             var latElem = document.getElementById('input-teacher-lat');
             var lngElem = document.getElementById('input-teacher-lng');
-            var badgeGps = document.getElementById('gps-badge-status');
 
             if (val === '__CUSTOM__') {
                 if (customInput) customInput.classList.remove('hidden');
-                if (badgeGps) badgeGps.innerText = "GPS Manual";
                 return;
             } else {
                 if (customInput) customInput.classList.add('hidden');
@@ -2548,7 +2288,6 @@ function doGet(e) {
                 if (level && levelElem) levelElem.value = level;
                 if (lat && latElem) latElem.value = lat;
                 if (lng && lngElem) lngElem.value = lng;
-                if (badgeGps) badgeGps.innerText = "Terkunci: " + lat + ", " + lng;
             }
         }
 
@@ -2559,19 +2298,13 @@ function doGet(e) {
             if (!container) return;
 
             if (type === 'teacher') {
-                var districts = [
-                    "Barabai", "Pandawan", "Labuan Amas Utara", "Labuan Amas Selatan", 
-                    "Batu Benawa", "Haruyan", "Batang Alai Selatan", "Batang Alai Utara", 
-                    "Batang Alai Timur", "Hantakan", "Limpasu"
-                ];
-
+                var districts = ["Labuan Amas Utara", "Barabai", "Pandawan", "Labuan Amas Selatan", "Haruyan", "Batu Benawa", "Batang Alai Selatan", "Batang Alai Utara", "Batang Alai Timur", "Hantakan", "Limpasu"];
                 var schoolOptionsHtml = districts.map(function(dist) {
                     var schoolsInDist = hstSchoolsMaster.filter(function(s) { return s.subdistrict === dist; });
-                    if (schoolsInDist.length === 0) return '';
                     var opts = schoolsInDist.map(function(s) {
                         return '<option value="' + s.name + '" data-kec="' + s.subdistrict + '" data-level="' + s.level + '" data-lat="' + s.lat + '" data-lng="' + s.lng + '">' + s.name + ' (' + s.level + ')</option>';
                     }).join('');
-                    return '<optgroup label="--- KECAMATAN ' + dist.toUpperCase() + ' (' + schoolsInDist.length + ' Sekolah) ---">' + opts + '</optgroup>';
+                    return '<optgroup label="--- KECAMATAN ' + dist.toUpperCase() + ' ---">' + opts + '</optgroup>';
                 }).join('');
 
                 container.innerHTML = `
@@ -2582,39 +2315,39 @@ function doGet(e) {
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700">NIP / NUPTK</label>
-                            <input type="text" id="input-teacher-nip" placeholder="1985xxxx... atau -" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                            <input type="text" id="input-teacher-nip" placeholder="1985xxxx..." required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
                         </div>
                     </div>
                     <div class="space-y-2 p-3 rounded-xl bg-sbi-50/70 border border-sbi-200">
                         <div class="flex items-center justify-between">
                             <label class="block text-xs font-bold text-sbi-900 flex items-center space-x-1.5">
                                 <i class="fa-solid fa-school text-sbi-600"></i>
-                                <span>Pilih Sekolah SD & SMP Se-Kab. HST</span>
+                                <span>Pilih Sekolah Sasaran SD & SMP Se-HST</span>
                             </label>
-                            <span id="gps-badge-status" class="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">GPS Presisi Otomatis</span>
+                            <span class="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">GPS Presisi Otomatis</span>
                         </div>
                         <div class="relative">
-                            <input type="text" id="input-school-search" oninput="filterSchoolDropdown(this.value)" placeholder="Ketik cepat nama sekolah (contoh: SMPN 1, Rantau Bujur, Birayang)..." class="w-full bg-white border border-slate-300 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-sbi-500">
+                            <input type="text" id="input-school-search" oninput="filterSchoolDropdown(this.value)" placeholder="Ketik cepat nama sekolah (misal: Rantau Bujur)..." class="w-full bg-white border border-slate-300 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-sbi-500">
                             <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-400 text-xs"></i>
                         </div>
-                        <select id="input-teacher-school-select" onchange="handleSchoolSelectChange(this)" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold text-slate-800 focus:ring-sbi-500 custom-scrollbar max-h-40">
-                            <option value="">-- Pilih Sekolah di Kabupaten Hulu Sungai Tengah --</option>
+                        <select id="input-teacher-school-select" onchange="handleSchoolSelectChange(this)" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold text-slate-800 focus:ring-sbi-500 custom-scrollbar">
+                            <option value="">-- Pilih Sekolah di Hulu Sungai Tengah --</option>
                             ${schoolOptionsHtml}
-                            <option value="__CUSTOM__">+ Masukkan Nama Sekolah Khusus / Lainnya...</option>
+                            <option value="__CUSTOM__">+ Masukkan Nama Sekolah Khusus Lainnya...</option>
                         </select>
                         <input type="text" id="input-teacher-school-custom" placeholder="Ketik nama sekolah khusus..." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs hidden mt-1.5">
-                        <p class="text-[10px] text-slate-500">Memilih sekolah otomatis mengunci Titik Lintang/Bujur Asli di peta Leaflet interaktif.</p>
+                        <p class="text-[10px] text-slate-500">Memilih sekolah otomatis mengunci Titik Lintang/Bujur Asli (seperti SDN Rantau Bujur pada -2.5837, 115.2133).</p>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700">Kecamatan</label>
                             <select id="input-teacher-kec" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-medium">
+                                <option value="Labuan Amas Utara">Labuan Amas Utara</option>
                                 <option value="Barabai">Barabai</option>
                                 <option value="Pandawan">Pandawan</option>
-                                <option value="Labuan Amas Utara">Labuan Amas Utara</option>
-                                <option value="Labuan Amas Selatan">Labuan Amas Selatan</option>
-                                <option value="Batu Benawa">Batu Benawa</option>
                                 <option value="Haruyan">Haruyan</option>
+                                <option value="Batu Benawa">Batu Benawa</option>
+                                <option value="Labuan Amas Selatan">Labuan Amas Selatan</option>
                                 <option value="Batang Alai Selatan">Batang Alai Selatan</option>
                                 <option value="Batang Alai Utara">Batang Alai Utara</option>
                                 <option value="Batang Alai Timur">Batang Alai Timur</option>
@@ -2657,7 +2390,7 @@ function doGet(e) {
                             <div class="flex-1 space-y-1">
                                 <input type="file" id="input-teacher-photo-file" accept="image/*" onchange="handleTeacherPhotoUpload(event)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-sbi-100 file:text-sbi-700 hover:file:bg-sbi-200">
                                 <input type="text" id="input-teacher-photo-url" oninput="previewPhotoUrl(this.value)" placeholder="Tempel Link Foto Google Drive atau Link Web..." class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-[11px]">
-                                <p class="text-[10px] text-slate-400">Link Google Drive terkonversi otomatis menjadi gambar nyata.</p>
+                                <p class="text-[10px] text-slate-400">Link Google Drive dikonversi otomatis menjadi foto nyata.</p>
                             </div>
                         </div>
                     </div>
@@ -2706,11 +2439,11 @@ function doGet(e) {
                 container.innerHTML = `
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Nama Sekolah</label>
-                        <input type="text" id="input-school" placeholder="e.g. SD Negeri 1 Barabai Timur" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                        <input type="text" id="input-school" placeholder="e.g. SD Negeri 2 Barabai" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Kecamatan</label>
-                        <input type="text" id="input-subdistrict" placeholder="e.g. Barabai" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                        <input type="text" id="input-subdistrict" placeholder="e.g. Kec. Barabai" required class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Judul Praktik Baik</label>
@@ -2886,7 +2619,7 @@ function doGet(e) {
                         photo: finalPhoto
                     }, 'Data Guru');
 
-                    showToast("Guru baru berhasil ditambahkan!");
+                    showToast("Guru baru berhasil ditambahkan secara aman!");
                 }
                 renderTeachersModule();
             } else if (type === 'media') {
@@ -3008,22 +2741,8 @@ function doGet(e) {
             renderArchiveGrid();
             renderTestimonials();
 
-            // Jalankan sinkronisasi awal dari Google Sheets
-            syncFromGoogleSheetsSafe(false);
+            syncFromGoogleSheetsSafe();
         };
     </script>
 </body>
 </html>
-```eof
-
-### Rangkuman Pembaruan yang Telah Dilakukan:
-
-1. **Sinkronisasi Google Sheets Otomatis & Tombol Sinkron Manual**:
-   * Menambahkan pembacaan kolom cerdas di `syncFromGoogleSheetsSafe` yang mendukung berbagai judul kolom spreadsheet (`Nama Guru`, `NAMA GURU SBI`, `NAMA SEKOLAH`, `Sekolah`, dll.).
-   * Menambahkan tombol **"Sinkron Sheets"** berwarna hijau di header modul guru lengkap dengan indikator status putaran ikon dan toast notifikasi keberhasilan.
-2. **Master Lengkap Sekolah SD & SMP Se-HST (`hstSchoolsMaster`)**:
-   * Menambahkan seluruh SD pengimbasan dan SMP ekosistem (termasuk SMPN 1 s.d. SMPN 35 Satap) yang terkelompok rapi per-kecamatan di 11 kecamatan Hulu Sungai Tengah.
-3. **Penguncian Koordinat GPS Presisi Peta**:
-   * Saat peserta memilih sekolah di formulir, sistem langsung mengisi kecamatan, jenjang, dan mengunci koordinat GPS sekolah secara presisi sehingga titik pin pada peta Leaflet langsung tertata akurat.
-4. **Backend Reference**:
-   * Skrip Google Apps Script (`doGet` & `doPost`) juga disertakan di dalam tab *Tim & Alur Kerja* agar mudah diinspeksi atau diperbarui kapan saja.
