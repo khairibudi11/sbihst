@@ -614,7 +614,7 @@
                                 <th class="p-3">Sekolah & Kecamatan</th>
                                 <th class="p-3">Jenjang</th>
                                 <th class="p-3">Tingkat CEFR</th>
-                                <th class="p-3">Peran SBI</th>
+                                <th class="p-3">Guru SBI</th>
                                 <th class="p-3 text-center team-col hidden">Aksi / Pengelolaan</th>
                             </tr>
                         </thead>
@@ -902,7 +902,8 @@
 
         function formatGoogleDriveImageUrl(url) {
             if (!url) return "";
-            url = url.trim();
+            url = String(url).trim();
+            if (url.indexOf("data:image") === 0) return url;
             var driveFileMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if (driveFileMatch && driveFileMatch[1]) {
                 return "https://lh3.googleusercontent.com/d/" + driveFileMatch[1];
@@ -914,56 +915,142 @@
             return url;
         }
 
-// MASTER LENGKAP SELURUH SEKOLAH SD & SMP DI 11 KECAMATAN HULU SUNGAI TENGAH
+        // PENYIMPANAN CADANGAN FOTO LOKAL AGAR FOTO UPLOAD KOMPUTER & LINK DRIVE SELALU TERSIMPAN
+        function getSavedLocalPhotosMap() {
+            try {
+                var raw = localStorage.getItem('sbi_teacher_photos_2026');
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveLocalTeacherPhoto(teacherObj) {
+            if (!teacherObj || !teacherObj.photo) return;
+            try {
+                var map = getSavedLocalPhotosMap();
+                if (teacherObj.id) map["id_" + teacherObj.id] = teacherObj.photo;
+                if (teacherObj.nip && teacherObj.nip !== "-") map["nip_" + teacherObj.nip.trim()] = teacherObj.photo;
+                if (teacherObj.name) map["name_" + teacherObj.name.trim().toLowerCase()] = teacherObj.photo;
+                localStorage.setItem('sbi_teacher_photos_2026', JSON.stringify(map));
+            } catch (e) {}
+        }
+
+        function getFallbackLocalPhoto(id, nip, name) {
+            var map = getSavedLocalPhotosMap();
+            if (id && map["id_" + id]) return map["id_" + id];
+            if (nip && map["nip_" + String(nip).trim()]) return map["nip_" + String(nip).trim()];
+            if (name && map["name_" + String(name).trim().toLowerCase()]) return map["name_" + String(name).trim().toLowerCase()];
+            return "";
+        }
+
+        function saveLocalTeachersState() {
+            try {
+                localStorage.setItem('sbi_teachers_state_2026', JSON.stringify(appState.teachers));
+            } catch (e) {}
+        }
+
+/ MASTER LENGKAP SELURUH SEKOLAH SD & SMP DI 11 KECAMATAN HULU SUNGAI TENGAH
         var hstSchoolsMaster = [
-            // --- KECAMATAN BARABAI ---
+            // --- 1. KECAMATAN BARABAI ---
             { name: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5847, lng: 115.3812 },
             { name: "SDN 2 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5872, lng: 115.3848 },
             { name: "SDN 3 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5890, lng: 115.3865 },
+            { name: "SDN 4 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5860, lng: 115.3830 },
             { name: "SDN 1 Barabai Darat", subdistrict: "Barabai", level: "SD", lat: -2.5815, lng: 115.3780 },
             { name: "SDN 2 Barabai Darat", subdistrict: "Barabai", level: "SD", lat: -2.5802, lng: 115.3765 },
             { name: "SDN 3 Barabai Darat", subdistrict: "Barabai", level: "SD", lat: -2.5788, lng: 115.3745 },
+            { name: "SDN 1 Barabai Barat", subdistrict: "Barabai", level: "SD", lat: -2.5840, lng: 115.3750 },
+            { name: "SDN 2 Barabai Barat", subdistrict: "Barabai", level: "SD", lat: -2.5852, lng: 115.3735 },
             { name: "SDN Barabai Utara", subdistrict: "Barabai", level: "SD", lat: -2.5765, lng: 115.3810 },
+            { name: "SDN 1 Barabai Selatan", subdistrict: "Barabai", level: "SD", lat: -2.5910, lng: 115.3790 },
+            { name: "SDN 2 Barabai Selatan", subdistrict: "Barabai", level: "SD", lat: -2.5925, lng: 115.3805 },
+            { name: "SDN 1Bukat", subdistrict: "Barabai", level: "SD", lat: -2.5735, lng: 115.3895 },
+            { name: "SDN 2 Bukat", subdistrict: "Barabai", level: "SD", lat: -2.5720, lng: 115.3910 },
             { name: "SDN 1 Mandingin", subdistrict: "Barabai", level: "SD", lat: -2.5930, lng: 115.3720 },
             { name: "SDN 2 Mandingin", subdistrict: "Barabai", level: "SD", lat: -2.5955, lng: 115.3705 },
+            { name: "SDN 3 Mandingin", subdistrict: "Barabai", level: "SD", lat: -2.5970, lng: 115.3690 },
+            { name: "SDN 1 Banua Jingah", subdistrict: "Barabai", level: "SD", lat: -2.5980, lng: 115.3760 },
+            { name: "SDN 2 Banua Jingah", subdistrict: "Barabai", level: "SD", lat: -2.5995, lng: 115.3775 },
+            { name: "SDN 1 Benawa Tengah", subdistrict: "Barabai", level: "SD", lat: -2.6010, lng: 115.3890 },
+            { name: "SDN 2 Benawa Tengah", subdistrict: "Barabai", level: "SD", lat: -2.6025, lng: 115.3910 },
+            { name: "SDN 1 Pajukungan", subdistrict: "Barabai", level: "SD", lat: -2.5890, lng: 115.3620 },
+            { name: "SDN 2 Pajukungan", subdistrict: "Barabai", level: "SD", lat: -2.5905, lng: 115.3600 },
+            { name: "SDN Banua Budi", subdistrict: "Barabai", level: "SD", lat: -2.5670, lng: 115.3850 },
+            { name: "SDN Banua Binjai", subdistrict: "Barabai", level: "SD", lat: -2.5780, lng: 115.3940 },
             { name: "SDN Babai", subdistrict: "Barabai", level: "SD", lat: -2.5695, lng: 115.3880 },
-            { name: "SDN Bukat", subdistrict: "Barabai", level: "SD", lat: -2.5735, lng: 115.3895 },
-            { name: "SDN Ayuang", subdistrict: "Barabai", level: "SD", lat: -2.5620, lng: 115.3950 },
-            { name: "SMPN 1 Hulu Sungai Tengah (SMPN 1 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5862, lng: 115.3798 },
-            { name: "SMPN 2 Hulu Sungai Tengah (SMPN 2 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5885, lng: 115.3740 },
-            { name: "SMPN 3 Hulu Sungai Tengah (SMPN 3 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5810, lng: 115.3860 },
-            { name: "SMPN 4 Hulu Sungai Tengah (SMPN 4 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5740, lng: 115.3785 },
-            { name: "SMPN 5 Hulu Sungai Tengah (SMPN 5 Barabai)", subdistrict: "Barabai", level: "SMP", lat: -2.5910, lng: 115.3690 },
+            { name: "SDN Awang Besar", subdistrict: "Barabai", level: "SD", lat: -2.5590, lng: 115.3920 },
+            { name: "SDN 1 Kayu Bawang", subdistrict: "Barabai", level: "SD", lat: -2.5640, lng: 115.3980 },
+            { name: "SDN 2 Kayu Bawang", subdistrict: "Barabai", level: "SD", lat: -2.5655, lng: 115.4000 },
+            { name: "SDN 1 Ayuang", subdistrict: "Barabai", level: "SD", lat: -2.5620, lng: 115.3950 },
+            { name: "SDN 2 Ayuang", subdistrict: "Barabai", level: "SD", lat: -2.5605, lng: 115.3970 },
+            { name: "SDN Bakapas", subdistrict: "Barabai", level: "SD", lat: -2.5750, lng: 115.3680 },
+            { name: "SDN Gambah", subdistrict: "Barabai", level: "SD", lat: -2.5710, lng: 115.3730 },
+            { name: "SDIT Al-Khair Barabai", subdistrict: "Barabai", level: "SD", lat: -2.5825, lng: 115.3855 },
+            { name: "SD Muhammadiyah Barabai", subdistrict: "Barabai", level: "SD", lat: -2.5838, lng: 115.3792 },
+            { name: "SD Advent Barabai", subdistrict: "Barabai", level: "SD", lat: -2.5855, lng: 115.3820 },
+            { name: "SMPN 1 Hulu Sungai Tengah", subdistrict: "Barabai", level: "SMP", lat: -2.5862, lng: 115.3798 },
+            { name: "SMPN 2 Hulu Sungai Tengah", subdistrict: "Barabai", level: "SMP", lat: -2.5885, lng: 115.3740 },
+            { name: "SMPN 3 Hulu Sungai Tengah", subdistrict: "Barabai", level: "SMP", lat: -2.5810, lng: 115.3860 },
+            { name: "SMPN 4 Hulu Sungai Tengah", subdistrict: "Barabai", level: "SMP", lat: -2.5740, lng: 115.3785 },
+            { name: "SMPN 5 Hulu Sungai Tengah", subdistrict: "Barabai", level: "SMP", lat: -2.5910, lng: 115.3690 },
+            { name: "SMPIT Al-Khair Barabai", subdistrict: "Barabai", level: "SMP", lat: -2.5830, lng: 115.3862 },
 
-            // --- KECAMATAN PANDAWAN ---
-            { name: "SDN Pandawan", subdistrict: "Pandawan", level: "SD", lat: -2.5385, lng: 115.3421 },
+            // --- 2. KECAMATAN PANDAWAN ---
             { name: "SDN 1 Pandawan", subdistrict: "Pandawan", level: "SD", lat: -2.5385, lng: 115.3421 },
-            { name: "SDN 2 Barikin", subdistrict: "Pandawan", level: "SD", lat: -2.5470, lng: 115.3310 },
-            { name: "SDN 3 Barikin", subdistrict: "Pandawan", level: "SD", lat: -2.5495, lng: 115.3285 },
+            { name: "SDN 2 Pandawan", subdistrict: "Pandawan", level: "SD", lat: -2.5398, lng: 115.3405 },
+            { name: "SDN 1 Kambat Utara", subdistrict: "Pandawan", level: "SD", lat: -2.5280, lng: 115.3480 },
+            { name: "SDN 2 Kambat Utara", subdistrict: "Pandawan", level: "SD", lat: -2.5265, lng: 115.3495 },
+            { name: "SDN Kambat Selatan", subdistrict: "Pandawan", level: "SD", lat: -2.5330, lng: 115.3460 },
+            { name: "SDN 1 Kayu Rabah", subdistrict: "Pandawan", level: "SD", lat: -2.5430, lng: 115.3380 },
+            { name: "SDN 2 Kayu Rabah", subdistrict: "Pandawan", level: "SD", lat: -2.5442, lng: 115.3365 },
+            { name: "SDN Setiap", subdistrict: "Pandawan", level: "SD", lat: -2.5360, lng: 115.3330 },
+            { name: "SDN 1 Banua Hanyar", subdistrict: "Pandawan", level: "SD", lat: -2.5500, lng: 115.3440 },
+            { name: "SDN 2 Banua Hanyar", subdistrict: "Pandawan", level: "SD", lat: -2.5515, lng: 115.3425 },
             { name: "SDN Walatung", subdistrict: "Pandawan", level: "SD", lat: -2.5450, lng: 115.3350 },
-            { name: "SDN 1 Banua Kupang", subdistrict: "Pandawan", level: "SD", lat: -2.5350, lng: 115.2520 },
-            { name: "SDN 2 Banua Kupang", subdistrict: "Pandawan", level: "SD", lat: -2.5380, lng: 115.2490 },
-            { name: "SDN 3 Banua Kupang", subdistrict: "Pandawan", level: "SD", lat: -2.5410, lng: 115.2450 },
-            { name: "SDN 4 Banua Kupang", subdistrict: "Pandawan", level: "SD", lat: -2.5440, lng: 115.2420 },
-            { name: "SDN 3 Mahang Matang Landung", subdistrict: "Pandawan", level: "SD", lat: -2.5510, lng: 115.3520 },
-            { name: "SDN Kambat Utara", subdistrict: "Pandawan", level: "SD", lat: -2.5280, lng: 115.3480 },
-            { name: "SDN Jaranih", subdistrict: "Pandawan", level: "SD", lat: -2.5320, lng: 115.3390 },
+            { name: "SDN 1 Banua Asam", subdistrict: "Pandawan", level: "SD", lat: -2.5540, lng: 115.3290 },
+            { name: "SDN 2 Banua Asam", subdistrict: "Pandawan", level: "SD", lat: -2.5555, lng: 115.3275 },
             { name: "SDN Masiraan", subdistrict: "Pandawan", level: "SD", lat: -2.5560, lng: 115.3250 },
-            { name: "SMPN 9 Hulu Sungai Tengah (SMPN 1 Pandawan)", subdistrict: "Pandawan", level: "SMP", lat: -2.5412, lng: 115.3415 },
-            { name: "SMPN 16 Hulu Sungai Tengah (SMPN 2 Pandawan)", subdistrict: "Pandawan", level: "SMP", lat: -2.5480, lng: 115.3300 },
-            { name: "SMPN 26 Satu Atap HST", subdistrict: "Pandawan", level: "SMP", lat: -2.5530, lng: 115.3500 },
+            { name: "SDN 1 Banua Supanggal", subdistrict: "Pandawan", level: "SD", lat: -2.5480, lng: 115.3190 },
+            { name: "SDN 2 Banua Supanggal", subdistrict: "Pandawan", level: "SD", lat: -2.5495, lng: 115.3175 },
+            { name: "SDN 1 Hilir Banua", subdistrict: "Pandawan", level: "SD", lat: -2.5350, lng: 115.3210 },
+            { name: "SDN 2 Hilir Banua", subdistrict: "Pandawan", level: "SD", lat: -2.5365, lng: 115.3195 },
+            { name: "SDN 1 Jaranih", subdistrict: "Pandawan", level: "SD", lat: -2.5320, lng: 115.3390 },
+            { name: "SDN 2 Jaranih", subdistrict: "Pandawan", level: "SD", lat: -2.5305, lng: 115.3375 },
+            { name: "SDN 1 Matang Ginalon", subdistrict: "Pandawan", level: "SD", lat: -2.5410, lng: 115.3510 },
+            { name: "SDN 2 Matang Ginalon", subdistrict: "Pandawan", level: "SD", lat: -2.5425, lng: 115.3525 },
+            { name: "SDN 1 Palajau", subdistrict: "Pandawan", level: "SD", lat: -2.5610, lng: 115.3580 },
+            { name: "SDN 2 Palajau", subdistrict: "Pandawan", level: "SD", lat: -2.5625, lng: 115.3595 },
+            { name: "SDN Hulu Rasau", subdistrict: "Pandawan", level: "SD", lat: -2.5580, lng: 115.3540 },
+            { name: "SDN 1 Mahang Putat", subdistrict: "Pandawan", level: "SD", lat: -2.5470, lng: 115.3560 },
+            { name: "SDN 2 Mahang Putat", subdistrict: "Pandawan", level: "SD", lat: -2.5485, lng: 115.3575 },
+            { name: "SDN 1 Mahang Sungai Hanyar", subdistrict: "Pandawan", level: "SD", lat: -2.5520, lng: 115.3610 },
+            { name: "SDN 2 Mahang Sungai Hanyar", subdistrict: "Pandawan", level: "SD", lat: -2.5535, lng: 115.3625 },
+            { name: "SDN 1 Mahang Matang Landung", subdistrict: "Pandawan", level: "SD", lat: -2.5490, lng: 115.3500 },
+            { name: "SDN 2 Mahang Matang Landung", subdistrict: "Pandawan", level: "SD", lat: -2.5500, lng: 115.3510 },
+            { name: "SDN 3 Mahang Matang Landung", subdistrict: "Pandawan", level: "SD", lat: -2.5510, lng: 115.3520 },
+            { name: "SDN Mahang Baru", subdistrict: "Pandawan", level: "SD", lat: -2.5550, lng: 115.3490 },
+            { name: "SDN Buluan", subdistrict: "Pandawan", level: "SD", lat: -2.5290, lng: 115.3310 },
+            { name: "SDN 1 Banua Batung", subdistrict: "Pandawan", level: "SD", lat: -2.5390, lng: 115.3270 },
+            { name: "SDN 2 Banua Batung", subdistrict: "Pandawan", level: "SD", lat: -2.5405, lng: 115.3255 },
+            { name: "SMPN 9 Hulu Sungai Tengah", subdistrict: "Pandawan", level: "SMP", lat: -2.5412, lng: 115.3415 },
+            { name: "SMPN 16 Hulu Sungai Tengah", subdistrict: "Pandawan", level: "SMP", lat: -2.5480, lng: 115.3300 },
+            { name: "SMPN 26 Satu Atap Hulu Sungai Tengah", subdistrict: "Pandawan", level: "SMP", lat: -2.5530, lng: 115.3500 },
 
-            // --- KECAMATAN LABUAN AMAS UTARA (LAU) ---
+            // --- 3. KECAMATAN LABUAN AMAS UTARA (LAU) ---
             { name: "SDN Rantau Bujur", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5837, lng: 115.2133 },
             { name: "SDN 1 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5215, lng: 115.2590 },
             { name: "SDN 2 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5230, lng: 115.2580 },
+            { name: "SDN 3 Kasarangan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5245, lng: 115.2565 },
             { name: "SDN 1 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5650, lng: 115.2150 },
             { name: "SDN 2 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5700, lng: 115.2180 },
-            { name: "SDN 3 Sungai Buluh (Awang Landas)", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5780, lng: 115.2100 },
+            { name: "SDN 3 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5780, lng: 115.2100 },
             { name: "SDN 4 Sungai Buluh", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5620, lng: 115.2220 },
             { name: "SDN 1 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5050, lng: 115.2750 },
             { name: "SDN 2 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5080, lng: 115.2780 },
+            { name: "SDN 3 Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5095, lng: 115.2795 },
             { name: "SDN 1 Pemangkih Seberang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5020, lng: 115.2810 },
+            { name: "SDN 2 Pemangkih Seberang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5035, lng: 115.2825 },
             { name: "SDN 1 Binjai Pirua", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5480, lng: 115.2350 },
             { name: "SDN 2 Binjai Pirua", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5510, lng: 115.2310 },
             { name: "SDN Rantau Keminting", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5720, lng: 115.2280 },
@@ -972,95 +1059,231 @@
             { name: "SDN Pahalatan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5550, lng: 115.2480 },
             { name: "SDN Perumahan", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.6382, lng: 115.2250 },
             { name: "SDN Tungkup", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5320, lng: 115.2650 },
-            { name: "SDN Mantaas", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5950, lng: 115.1950 },
-            { name: "SDN Tabat", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5150, lng: 115.2880 },
-            { name: "SMPN 8 Hulu Sungai Tengah (SMPN 1 Labuan Amas Utara)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5195, lng: 115.2610 },
-            { name: "SMPN 13 Hulu Sungai Tengah (SMPN Mantaas)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5960, lng: 115.1970 },
-            { name: "SMPN 20 Hulu Sungai Tengah (SMPN Rantau Bujur)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5877, lng: 115.2063 },
-            { name: "SMPN 32 Satu Atap Hulu Sungai Tengah (Tabat)", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5140, lng: 115.2890 },
+            { name: "SDN 1 Mantaas", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5950, lng: 115.1950 },
+            { name: "SDN 2 Mantaas", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5965, lng: 115.1935 },
+            { name: "SDN 1 Tabat", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5150, lng: 115.2880 },
+            { name: "SDN 2 Tabat", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5165, lng: 115.2895 },
+            { name: "SDN 1 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5350, lng: 115.2520 },
+            { name: "SDN 2 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5380, lng: 115.2490 },
+            { name: "SDN 3 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5410, lng: 115.2450 },
+            { name: "SDN 4 Banua Kupang", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5440, lng: 115.2420 },
+            { name: "SDN Kadundung", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5460, lng: 115.2540 },
+            { name: "SDN Binjai Pemangkih", subdistrict: "Labuan Amas Utara", level: "SD", lat: -2.5120, lng: 115.2710 },
+            { name: "SMPN 8 Hulu Sungai Tengah", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5195, lng: 115.2610 },
+            { name: "SMPN 13 Hulu Sungai Tengah", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5960, lng: 115.1970 },
+            { name: "SMPN 20 Hulu Sungai Tengah", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5877, lng: 115.2063 },
+            { name: "SMPN 32 Satu Atap Hulu Sungai Tengah", subdistrict: "Labuan Amas Utara", level: "SMP", lat: -2.5140, lng: 115.2890 },
 
-            // --- KECAMATAN LABUAN AMAS SELATAN (LAS) ---
+            // --- 4. KECAMATAN LABUAN AMAS SELATAN (LAS) ---
+            { name: "SDN 1 Pantai Hambawang Barat", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6085, lng: 115.2780 },
+            { name: "SDN 2 Pantai Hambawang Barat", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6095, lng: 115.2765 },
+            { name: "SDN 3 Pantai Hambawang Barat", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6110, lng: 115.2750 },
+            { name: "SDN 1 Pantai Hambawang Timur", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6090, lng: 115.2800 },
             { name: "SDN 2 Pantai Hambawang Timur", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6105, lng: 115.2815 },
-            { name: "SDN 2 Benawa Tengah", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6150, lng: 115.2920 },
-            { name: "SDN Banua Rantau", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6230, lng: 115.2750 },
-            { name: "SDN 1 Jatuh", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6020, lng: 115.2880 },
-            { name: "SDN Durian Gantang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6180, lng: 115.2840 },
+            { name: "SDN 1 Durian Gantang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6180, lng: 115.2840 },
+            { name: "SDN 2 Durian Gantang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6195, lng: 115.2855 },
+            { name: "SDN 3 Durian Gantang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6210, lng: 115.2870 },
+            { name: "SDN 1 Banua Kepayang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6050, lng: 115.2720 },
+            { name: "SDN 2 Banua Kepayang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6065, lng: 115.2705 },
+            { name: "SDN 1 Taal", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6150, lng: 115.2650 },
+            { name: "SDN 2 Taal", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6165, lng: 115.2635 },
+            { name: "SDN Sungai Jaranih", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6250, lng: 115.2710 },
             { name: "SDN Sungai Rangas", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6290, lng: 115.2680 },
+            { name: "SDN 1 Guha", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6010, lng: 115.2620 },
+            { name: "SDN 2 Guha", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6025, lng: 115.2605 },
+            { name: "SDN Bangkal", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6070, lng: 115.2890 },
+            { name: "SDN Panggang Marak", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6140, lng: 115.2940 },
+            { name: "SDN Jamil", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6160, lng: 115.2790 },
             { name: "SDN Taras Padang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6120, lng: 115.2980 },
-            { name: "SMPN 7 Hulu Sungai Tengah (SMPN 1 Pantai Hambawang)", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6090, lng: 115.2825 },
+            { name: "SDN 1 Murung Taal", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6200, lng: 115.2610 },
+            { name: "SDN 2 Murung Taal", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6215, lng: 115.2595 },
+            { name: "SDN Tabudarat Hilir", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.5980, lng: 115.2840 },
+            { name: "SDN 1 Tabudarat Tengah", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.5950, lng: 115.2890 },
+            { name: "SDN 2 Tabudarat Tengah", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.5965, lng: 115.2905 },
+            { name: "SDN Tabudarat Hulu", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.5930, lng: 115.2940 },
+            { name: "SDN 1 Mahang Baru", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6040, lng: 115.2920 },
+            { name: "SDN 2 Mahang Baru", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6055, lng: 115.2935 },
+            { name: "SDN Mundar", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6270, lng: 115.2810 },
+            { name: "SDN Banua Rantau", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6230, lng: 115.2750 },
+            { name: "SDN Batang Bahalang", subdistrict: "Labuan Amas Selatan", level: "SD", lat: -2.6000, lng: 115.2990 },
+            { name: "SMPN 7 Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6090, lng: 115.2825 },
             { name: "SMPN 18 Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6140, lng: 115.2900 },
             { name: "SMPN 24 Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6250, lng: 115.2780 },
             { name: "SMPN 31 Satu Atap Hulu Sungai Tengah", subdistrict: "Labuan Amas Selatan", level: "SMP", lat: -2.6050, lng: 115.2950 },
 
-            // --- KECAMATAN BATU BENAWA ---
+            // --- 5. KECAMATAN BATU BENAWA ---
             { name: "SDN 1 Pagat", subdistrict: "Batu Benawa", level: "SD", lat: -2.6280, lng: 115.4210 },
             { name: "SDN 2 Pagat", subdistrict: "Batu Benawa", level: "SD", lat: -2.6310, lng: 115.4240 },
+            { name: "SDN 1 Kalibaru", subdistrict: "Batu Benawa", level: "SD", lat: -2.6330, lng: 115.4150 },
+            { name: "SDN 2 Kalibaru", subdistrict: "Batu Benawa", level: "SD", lat: -2.6345, lng: 115.4135 },
+            { name: "SDN 1 Aluan", subdistrict: "Batu Benawa", level: "SD", lat: -2.6195, lng: 115.4135 },
             { name: "SDN 2 Aluan", subdistrict: "Batu Benawa", level: "SD", lat: -2.6210, lng: 115.4150 },
             { name: "SDN Aluan Mati", subdistrict: "Batu Benawa", level: "SD", lat: -2.6180, lng: 115.4120 },
-            { name: "SDN 2 Batu Tangga", subdistrict: "Batu Benawa", level: "SD", lat: -2.6450, lng: 115.4350 },
-            { name: "SDN Haliau", subdistrict: "Batu Benawa", level: "SD", lat: -2.6360, lng: 115.4180 },
+            { name: "SDN Aluan Besar", subdistrict: "Batu Benawa", level: "SD", lat: -2.6160, lng: 115.4090 },
+            { name: "SDN 1 Aluan Sumur", subdistrict: "Batu Benawa", level: "SD", lat: -2.6140, lng: 115.4170 },
+            { name: "SDN 2 Aluan Sumur", subdistrict: "Batu Benawa", level: "SD", lat: -2.6155, lng: 115.4185 },
+            { name: "SDN Kahakan", subdistrict: "Batu Benawa", level: "SD", lat: -2.6260, lng: 115.4080 },
+            { name: "SDN 1 Pantai Batung", subdistrict: "Batu Benawa", level: "SD", lat: -2.6090, lng: 115.4040 },
+            { name: "SDN 2 Pantai Batung", subdistrict: "Batu Benawa", level: "SD", lat: -2.6105, lng: 115.4055 },
+            { name: "SDN Layuh", subdistrict: "Batu Benawa", level: "SD", lat: -2.6120, lng: 115.4010 },
             { name: "SDN Murung A", subdistrict: "Batu Benawa", level: "SD", lat: -2.6240, lng: 115.4280 },
+            { name: "SDN 1 Baru", subdistrict: "Batu Benawa", level: "SD", lat: -2.6380, lng: 115.4260 },
+            { name: "SDN 2 Baru", subdistrict: "Batu Benawa", level: "SD", lat: -2.6395, lng: 115.4275 },
+            { name: "SDN Haliau", subdistrict: "Batu Benawa", level: "SD", lat: -2.6360, lng: 115.4180 },
+            { name: "SDN 1 Batu Tangga", subdistrict: "Batu Benawa", level: "SD", lat: -2.6435, lng: 115.4335 },
+            { name: "SDN 2 Batu Tangga", subdistrict: "Batu Benawa", level: "SD", lat: -2.6450, lng: 115.4350 },
+            { name: "SDN Hantakan Baru (Paya Besar)", subdistrict: "Batu Benawa", level: "SD", lat: -2.6410, lng: 115.4210 },
             { name: "SDN Bakti", subdistrict: "Batu Benawa", level: "SD", lat: -2.6400, lng: 115.4100 },
-            { name: "SMPN 6 Hulu Sungai Tengah (SMPN 1 Batu Benawa)", subdistrict: "Batu Benawa", level: "SMP", lat: -2.6290, lng: 115.4220 },
+            { name: "SMPN 6 Hulu Sungai Tengah", subdistrict: "Batu Benawa", level: "SMP", lat: -2.6290, lng: 115.4220 },
             { name: "SMPN 21 Hulu Sungai Tengah", subdistrict: "Batu Benawa", level: "SMP", lat: -2.6350, lng: 115.4300 },
 
-            // --- KECAMATAN HARUYAN ---
+            // --- 6. KECAMATAN HARUYAN ---
             { name: "SDN Haruyan", subdistrict: "Haruyan", level: "SD", lat: -2.6480, lng: 115.3520 },
+            { name: "SDN 1 Haruyan Seberang", subdistrict: "Haruyan", level: "SD", lat: -2.6495, lng: 115.3505 },
+            { name: "SDN 2 Haruyan Seberang", subdistrict: "Haruyan", level: "SD", lat: -2.6510, lng: 115.3490 },
             { name: "SDN 1 Haruyan Dayak", subdistrict: "Haruyan", level: "SD", lat: -2.6750, lng: 115.3620 },
+            { name: "SDN 2 Haruyan Dayak", subdistrict: "Haruyan", level: "SD", lat: -2.6765, lng: 115.3635 },
+            { name: "SDN 1 Pengambau Hilir Luar", subdistrict: "Haruyan", level: "SD", lat: -2.6420, lng: 115.3450 },
+            { name: "SDN 2 Pengambau Hilir Luar", subdistrict: "Haruyan", level: "SD", lat: -2.6435, lng: 115.3435 },
+            { name: "SDN Pengambau Hilir Dalam", subdistrict: "Haruyan", level: "SD", lat: -2.6450, lng: 115.3410 },
+            { name: "SDN 1 Pengambau Hulu", subdistrict: "Haruyan", level: "SD", lat: -2.6550, lng: 115.3580 },
+            { name: "SDN 2 Pengambau Hulu", subdistrict: "Haruyan", level: "SD", lat: -2.6565, lng: 115.3595 },
+            { name: "SDN Sungai Harang", subdistrict: "Haruyan", level: "SD", lat: -2.6600, lng: 115.3640 },
+            { name: "SDN Batu Panggung", subdistrict: "Haruyan", level: "SD", lat: -2.6650, lng: 115.3690 },
+            { name: "SDN 1 Mangunang", subdistrict: "Haruyan", level: "SD", lat: -2.6350, lng: 115.3350 },
+            { name: "SDN 2 Mangunang", subdistrict: "Haruyan", level: "SD", lat: -2.6365, lng: 115.3335 },
+            { name: "SDN 1 Mangunang Seberang", subdistrict: "Haruyan", level: "SD", lat: -2.6380, lng: 115.3310 },
+            { name: "SDN 2 Mangunang Seberang", subdistrict: "Haruyan", level: "SD", lat: -2.6395, lng: 115.3295 },
+            { name: "SDN 1 Pandanu", subdistrict: "Haruyan", level: "SD", lat: -2.6460, lng: 115.3360 },
+            { name: "SDN 2 Pandanu", subdistrict: "Haruyan", level: "SD", lat: -2.6475, lng: 115.3345 },
+            { name: "SDN Teluk Mesjid", subdistrict: "Haruyan", level: "SD", lat: -2.6530, lng: 115.3420 },
+            { name: "SDN 1 Panggung", subdistrict: "Haruyan", level: "SD", lat: -2.6580, lng: 115.3460 },
+            { name: "SDN 2 Panggung", subdistrict: "Haruyan", level: "SD", lat: -2.6595, lng: 115.3445 },
+            { name: "SDN 1 Barikin", subdistrict: "Haruyan", level: "SD", lat: -2.6620, lng: 115.3380 },
+            { name: "SDN 2 Barikin", subdistrict: "Haruyan", level: "SD", lat: -2.6635, lng: 115.3365 },
+            { name: "SDN 3 Barikin", subdistrict: "Haruyan", level: "SD", lat: -2.6650, lng: 115.3350 },
             { name: "SDN Anduhum", subdistrict: "Haruyan", level: "SD", lat: -2.6520, lng: 115.3480 },
-            { name: "SDN Pengambau Hilir Luar", subdistrict: "Haruyan", level: "SD", lat: -2.6420, lng: 115.3450 },
+            { name: "SDN Tabat Padang", subdistrict: "Haruyan", level: "SD", lat: -2.6680, lng: 115.3490 },
             { name: "SDN Lok Buntar", subdistrict: "Haruyan", level: "SD", lat: -2.6610, lng: 115.3550 },
-            { name: "SMPN 12 Hulu Sungai Tengah (SMPN 1 Haruyan)", subdistrict: "Haruyan", level: "SMP", lat: -2.6490, lng: 115.3530 },
+            { name: "SDN Hapulang", subdistrict: "Haruyan", level: "SD", lat: -2.6710, lng: 115.3530 },
+            { name: "SMPN 12 Hulu Sungai Tengah", subdistrict: "Haruyan", level: "SMP", lat: -2.6490, lng: 115.3530 },
             { name: "SMPN 27 Hulu Sungai Tengah", subdistrict: "Haruyan", level: "SMP", lat: -2.6680, lng: 115.3590 },
             { name: "SMPN 33 Satu Atap Hulu Sungai Tengah", subdistrict: "Haruyan", level: "SMP", lat: -2.6730, lng: 115.3650 },
 
-            // --- KECAMATAN BATANG ALAI SELATAN (BAS) ---
+            // --- 7. KECAMATAN BATANG ALAI SELATAN (BAS) ---
             { name: "SDN 1 Birayang", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6210, lng: 115.4810 },
+            { name: "SDN 2 Birayang", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6225, lng: 115.4825 },
+            { name: "SDN 3 Birayang", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6240, lng: 115.4840 },
+            { name: "SDN Birayang Timur", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6200, lng: 115.4870 },
             { name: "SDN Birayang Surapati", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6240, lng: 115.4850 },
-            { name: "SDN Cukan Lipai", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6350, lng: 115.4920 },
+            { name: "SDN 1 Rangas", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6170, lng: 115.4720 },
+            { name: "SDN 2 Rangas", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6185, lng: 115.4705 },
             { name: "SDN Karau", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6150, lng: 115.4750 },
-            { name: "SDN 1 Labunganak", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6080, lng: 115.4690 },
-            { name: "SDN 1 Lunjuk", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6290, lng: 115.4870 },
+            { name: "SDN Tanah Habang", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6110, lng: 115.4790 },
+            { name: "SDN Banua Rantau (BAS)", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6090, lng: 115.4830 },
+            { name: "SDN 1 Kapar", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6280, lng: 115.4760 },
+            { name: "SDN 2 Kapar", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6295, lng: 115.4745 },
+            { name: "SDN Tembok Bahalang", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6320, lng: 115.4790 },
+            { name: "SDN Limbar", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6340, lng: 115.4840 },
+            { name: "SDN Wawai", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6380, lng: 115.4880 },
+            { name: "SDN Wawai Gardu", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6400, lng: 115.4910 },
+            { name: "SDN 1 Labuhan", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6430, lng: 115.4950 },
+            { name: "SDN 2 Labuhan", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6445, lng: 115.4965 },
+            { name: "SDN Cukan Lipai", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6350, lng: 115.4920 },
+            { name: "SDN Paya", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6260, lng: 115.4910 },
             { name: "SDN Maheli", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6120, lng: 115.4950 },
-            { name: "SMPN 10 Hulu Sungai Tengah (SMPN 1 Birayang)", subdistrict: "Batang Alai Selatan", level: "SMP", lat: -2.6230, lng: 115.4830 },
+            { name: "SDN 1 Lunjuk", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6290, lng: 115.4870 },
+            { name: "SDN 2 Lunjuk", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6305, lng: 115.4885 },
+            { name: "SDN 1 Anduhum (BAS)", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6050, lng: 115.4720 },
+            { name: "SDN 1 Labunganak", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6080, lng: 115.4690 },
+            { name: "SDN 2 Labunganak", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6095, lng: 115.4675 },
+            { name: "SDN Lok Besar", subdistrict: "Batang Alai Selatan", level: "SD", lat: -2.6140, lng: 115.4650 },
+            { name: "SMPN 10 Hulu Sungai Tengah", subdistrict: "Batang Alai Selatan", level: "SMP", lat: -2.6230, lng: 115.4830 },
             { name: "SMPN 19 Hulu Sungai Tengah", subdistrict: "Batang Alai Selatan", level: "SMP", lat: -2.6310, lng: 115.4890 },
             { name: "SMPN 25 Satu Atap Hulu Sungai Tengah", subdistrict: "Batang Alai Selatan", level: "SMP", lat: -2.6380, lng: 115.4950 },
 
-            // --- KECAMATAN BATANG ALAI UTARA (BAU) ---
-            { name: "SDN Ilung", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4975, lng: 115.4210 },
-            { name: "SDN 1 Awang Besar", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5080, lng: 115.4120 },
-            { name: "SDN 1 Guha", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4890, lng: 115.4280 },
-            { name: "SDN 3 Guha", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4870, lng: 115.4310 },
-            { name: "SDN Dangu", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5120, lng: 115.4180 },
-            { name: "SDN Telang", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5030, lng: 115.4300 },
+            // --- 8. KECAMATAN BATANG ALAI UTARA (BAU) ---
+            { name: "SDN 1 Ilung", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4975, lng: 115.4210 },
+            { name: "SDN 2 Ilung", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4990, lng: 115.4225 },
+            { name: "SDN Ilung Tengah", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4950, lng: 115.4190 },
+            { name: "SDN Ilung Pasar Lama", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4935, lng: 115.4240 },
             { name: "SDN Maringgit", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4920, lng: 115.4150 },
-            { name: "SMPN 11 Hulu Sungai Tengah (SMPN 1 Ilung)", subdistrict: "Batang Alai Utara", level: "SMP", lat: -2.4980, lng: 115.4225 },
+            { name: "SDN Telang", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5030, lng: 115.4300 },
+            { name: "SDN Labung Anak", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5060, lng: 115.4260 },
+            { name: "SDN Hapingin", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5090, lng: 115.4220 },
+            { name: "SDN 1 Dangu", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5120, lng: 115.4180 },
+            { name: "SDN 2 Dangu", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5135, lng: 115.4165 },
+            { name: "SDN 1Sumanggi", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4880, lng: 115.4110 },
+            { name: "SDN 2 Sumanggi", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4895, lng: 115.4095 },
+            { name: "SDN Sumanggi Seberang", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4860, lng: 115.4080 },
+            { name: "SDN 1 Awang", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5080, lng: 115.4120 },
+            { name: "SDN 2 Awang", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5095, lng: 115.4105 },
+            { name: "SDN Awang Baru", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5110, lng: 115.4080 },
+            { name: "SDN Muara Rintis", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.5010, lng: 115.4050 },
+            { name: "SDN 1 Guha (BAU)", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4890, lng: 115.4280 },
+            { name: "SDN 2 Guha (BAU)", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4880, lng: 115.4295 },
+            { name: "SDN 3 Guha (BAU)", subdistrict: "Batang Alai Utara", level: "SD", lat: -2.4870, lng: 115.4310 },
+            { name: "SMPN 11 Hulu Sungai Tengah", subdistrict: "Batang Alai Utara", level: "SMP", lat: -2.4980, lng: 115.4225 },
             { name: "SMPN 22 Hulu Sungai Tengah", subdistrict: "Batang Alai Utara", level: "SMP", lat: -2.5050, lng: 115.4160 },
 
-            // --- KECAMATAN BATANG ALAI TIMUR (BAT) ---
-            { name: "SDN Hinai Kiri", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5790, lng: 115.5815 },
+            // --- 9. KECAMATAN BATANG ALAI TIMUR (BAT) ---
+            { name: "SDN Tandilang", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5750, lng: 115.5650 },
+            { name: "SDN 1 Muara Hungi", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5650, lng: 115.5900 },
+            { name: "SDN 2 Muara Hungi", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5665, lng: 115.5915 },
             { name: "SDN Hinas Kiri", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5810, lng: 115.5840 },
-            { name: "SDN Muara Hungi", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5650, lng: 115.5900 },
+            { name: "SDN Hinai Kiri", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5790, lng: 115.5815 },
+            { name: "SDN Nateh", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5720, lng: 115.5450 },
+            { name: "SDN Pembakulan", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5780, lng: 115.5580 },
+            { name: "SDN Batu Tangga (BAT)", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5850, lng: 115.5720 },
+            { name: "SDN Atiran", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5890, lng: 115.5880 },
             { name: "SDN Batu Perahu", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5920, lng: 115.5950 },
-            { name: "SMPN 14 Hulu Sungai Tengah (SMPN 1 BAT)", subdistrict: "Batang Alai Timur", level: "SMP", lat: -2.5800, lng: 115.5820 },
+            { name: "SDN Juhu", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.6150, lng: 115.6500 },
+            { name: "SDN Aing Bantai", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.6050, lng: 115.6300 },
+            { name: "SDN Datar Batung", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5980, lng: 115.6100 },
+            { name: "SMPN 14 Hulu Sungai Tengah", subdistrict: "Batang Alai Timur", level: "SMP", lat: -2.5800, lng: 115.5820 },
             { name: "SMPN 30 Satu Atap Hulu Sungai Tengah", subdistrict: "Batang Alai Timur", level: "SMP", lat: -2.5850, lng: 115.5900 },
+            { name: "SMPN 36 Satu Atap Hulu Sungai Tengah", subdistrict: "Batang Alai Timur", level: "SMP", lat: -2.5925, lng: 115.5960 },
 
-            // --- KECAMATAN HANTAKAN ---
-            { name: "SDN Hantakan", subdistrict: "Hantakan", level: "SD", lat: -2.7050, lng: 115.4520 },
+            // --- 10. KECAMATAN HANTAKAN ---
+            { name: "SDN 1 Hantakan", subdistrict: "Hantakan", level: "SD", lat: -2.7050, lng: 115.4520 },
+            { name: "SDN 2 Hantakan", subdistrict: "Hantakan", level: "SD", lat: -2.7065, lng: 115.4535 },
+            { name: "SDN 1 Alat", subdistrict: "Hantakan", level: "SD", lat: -2.6980, lng: 115.4470 },
+            { name: "SDN 2 Alat", subdistrict: "Hantakan", level: "SD", lat: -2.6995, lng: 115.4485 },
+            { name: "SDN 1 Murung B", subdistrict: "Hantakan", level: "SD", lat: -2.7120, lng: 115.4590 },
+            { name: "SDN 2 Murung B", subdistrict: "Hantakan", level: "SD", lat: -2.7135, lng: 115.4605 },
+            { name: "SDN 3 Murung B", subdistrict: "Hantakan", level: "SD", lat: -2.7150, lng: 115.4620 },
+            { name: "SDN 1 Bulayak", subdistrict: "Hantakan", level: "SD", lat: -2.7180, lng: 115.4680 },
+            { name: "SDN 2 Bulayak", subdistrict: "Hantakan", level: "SD", lat: -2.7195, lng: 115.4695 },
+            { name: "SDN Batu Tunggal", subdistrict: "Hantakan", level: "SD", lat: -2.6880, lng: 115.4360 },
+            { name: "SDN Pasting", subdistrict: "Hantakan", level: "SD", lat: -2.6940, lng: 115.4390 },
+            { name: "SDN 1 Tilahan", subdistrict: "Hantakan", level: "SD", lat: -2.7020, lng: 115.4610 },
+            { name: "SDN 2 Tilahan", subdistrict: "Hantakan", level: "SD", lat: -2.7035, lng: 115.4625 },
+            { name: "SDN Haruyan Dayak (Hantakan)", subdistrict: "Hantakan", level: "SD", lat: -2.7250, lng: 115.4750 },
+            { name: "SDN 1 Kindingan", subdistrict: "Hantakan", level: "SD", lat: -2.7290, lng: 115.4820 },
+            { name: "SDN 2 Kindingan", subdistrict: "Hantakan", level: "SD", lat: -2.7305, lng: 115.4835 },
+            { name: "SDN Datar Ajab", subdistrict: "Hantakan", level: "SD", lat: -2.7380, lng: 115.4950 },
+            { name: "SDN Patikalain", subdistrict: "Hantakan", level: "SD", lat: -2.7210, lng: 115.4780 },
             { name: "SDN 1 Kias", subdistrict: "Hantakan", level: "SD", lat: -2.6920, lng: 115.4410 },
-            { name: "SDN Alat", subdistrict: "Hantakan", level: "SD", lat: -2.6980, lng: 115.4470 },
-            { name: "SDN Murung B", subdistrict: "Hantakan", level: "SD", lat: -2.7120, lng: 115.4590 },
-            { name: "SMPN 17 Hulu Sungai Tengah (SMPN 1 Hantakan)", subdistrict: "Hantakan", level: "SMP", lat: -2.7080, lng: 115.4540 },
-            { name: "SMPN 23 Hulu Sungai Tengah (SMPN 2 Hantakan)", subdistrict: "Hantakan", level: "SMP", lat: -2.7150, lng: 115.4650 },
+            { name: "SMPN 17 Hulu Sungai Tengah", subdistrict: "Hantakan", level: "SMP", lat: -2.7080, lng: 115.4540 },
+            { name: "SMPN 23 Hulu Sungai Tengah", subdistrict: "Hantakan", level: "SMP", lat: -2.7150, lng: 115.4650 },
             { name: "SMPN 35 Satu Atap Hulu Sungai Tengah", subdistrict: "Hantakan", level: "SMP", lat: -2.7230, lng: 115.4720 },
 
-            // --- KECAMATAN LIMPASU ---
+            // --- 11. KECAMATAN LIMPASU ---
             { name: "SDN 1 Limpasu", subdistrict: "Limpasu", level: "SD", lat: -2.4480, lng: 115.4720 },
             { name: "SDN 2 Limpasu", subdistrict: "Limpasu", level: "SD", lat: -2.4510, lng: 115.4750 },
+            { name: "SDN 1 Kabang", subdistrict: "Limpasu", level: "SD", lat: -2.4540, lng: 115.4680 },
+            { name: "SDN 2 Kabang", subdistrict: "Limpasu", level: "SD", lat: -2.4555, lng: 115.4665 },
+            { name: "SDN 1 Karatungan", subdistrict: "Limpasu", level: "SD", lat: -2.4440, lng: 115.4620 },
+            { name: "SDN 2 Karatungan", subdistrict: "Limpasu", level: "SD", lat: -2.4455, lng: 115.4605 },
+            { name: "SDN Tapuk", subdistrict: "Limpasu", level: "SD", lat: -2.4400, lng: 115.4690 },
+            { name: "SDN Abung", subdistrict: "Limpasu", level: "SD", lat: -2.4580, lng: 115.4620 },
             { name: "SDN Abung Surapati", subdistrict: "Limpasu", level: "SD", lat: -2.4600, lng: 115.4650 },
+            { name: "SDN 1 Hawang", subdistrict: "Limpasu", level: "SD", lat: -2.4380, lng: 115.4850 },
+            { name: "SDN 2 Hawang", subdistrict: "Limpasu", level: "SD", lat: -2.4395, lng: 115.4865 },
+            { name: "SDN 1 Pauh", subdistrict: "Limpasu", level: "SD", lat: -2.4340, lng: 115.4780 },
+            { name: "SDN 2 Pauh", subdistrict: "Limpasu", level: "SD", lat: -2.4355, lng: 115.4795 },
             { name: "SDN Kahakan Kalibaru", subdistrict: "Limpasu", level: "SD", lat: -2.4410, lng: 115.4810 },
-            { name: "SDN Hawang", subdistrict: "Limpasu", level: "SD", lat: -2.4380, lng: 115.4850 },
-            { name: "SMPN 15 Hulu Sungai Tengah (SMPN 1 Limpasu)", subdistrict: "Limpasu", level: "SMP", lat: -2.4490, lng: 115.4735 },
+            { name: "SMPN 15 Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", lat: -2.4490, lng: 115.4735 },
             { name: "SMPN 28 Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", lat: -2.4550, lng: 115.4780 },
             { name: "SMPN 29 Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", lat: -2.4620, lng: 115.4690 },
             { name: "SMPN 34 Satu Atap Hulu Sungai Tengah", subdistrict: "Limpasu", level: "SMP", lat: -2.4680, lng: 115.4710 }
@@ -1347,6 +1570,17 @@
             ]
         };
 
+        // Memuat data lokal terakhir jika tersedia agar foto yang baru ditambahkan langsung tampil
+        try {
+            var cachedTeachers = localStorage.getItem('sbi_teachers_state_2026');
+            if (cachedTeachers) {
+                var parsedCache = JSON.parse(cachedTeachers);
+                if (Array.isArray(parsedCache) && parsedCache.length > 0) {
+                    appState.teachers = parsedCache;
+                }
+            }
+        } catch (e) {}
+
         function switchTab(tabId) {
             var pages = document.querySelectorAll('.page-content');
             pages.forEach(function(el) { el.classList.add('hidden'); });
@@ -1512,11 +1746,12 @@
 
                 var masterSchool = findMasterSchool(t.school, t.subdistrict);
                 var schoolPhoto = (masterSchool && masterSchool.photo) ? masterSchool.photo : "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80";
-                var isMaster = t.role === 'Master Trainer';
-                var isInti = t.role === 'Guru Inti';
+                var isMaster = t.role === 'Main Program';
+                var isInti = t.role === 'Pengimbasan Batch 1;
                 var markerColor = isMaster ? '#f59e0b' : (isInti ? '#1b365d' : '#10b981');
                 var defaultAvatar = "https://placehold.co/100x100/1e293b/ffffff?text=" + encodeURIComponent((t.name || 'G').charAt(0));
-                var photoSrc = formatGoogleDriveImageUrl(t.photo) || defaultAvatar;
+                var resolvedPhoto = t.photo || getFallbackLocalPhoto(t.id, t.nip, t.name);
+                var photoSrc = formatGoogleDriveImageUrl(resolvedPhoto) || defaultAvatar;
                 var gmapsSearchUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(t.school + " " + t.subdistrict + " Hulu Sungai Tengah");
 
                 var customIcon = L.divIcon({
@@ -1702,7 +1937,8 @@
                 var badgeClass = isMaster ? 'bg-amber-100 text-amber-800 border-amber-300' : (isInti ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-slate-100 text-slate-700 border-slate-300');
                 var levelBadge = t.level === 'SD' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800';
                 var defaultAvatar = "https://placehold.co/80x80/1e293b/ffffff?text=" + encodeURIComponent((t.name || 'G').charAt(0));
-                var photoSrc = formatGoogleDriveImageUrl(t.photo) || defaultAvatar;
+                var resolvedPhoto = t.photo || getFallbackLocalPhoto(t.id, t.nip, t.name);
+                var photoSrc = formatGoogleDriveImageUrl(resolvedPhoto) || defaultAvatar;
 
                 var cefrBadge = 'bg-slate-100 text-slate-700';
                 if ((t.cefr || '').indexOf('A1') !== -1) cefrBadge = 'bg-sky-50 text-sky-700 border border-sky-200';
@@ -1810,11 +2046,13 @@
                             lat: latVal, lng: lngVal
                         };
 
+                        saveLocalTeacherPhoto(newRecord);
                         appState.teachers.unshift(newRecord);
                         sendSecureJsonToSheets('create', newRecord, 'Data Guru');
                         importedCount++;
                     }
 
+                    saveLocalTeachersState();
                     renderTeachersModule();
                     showToast(`Berhasil mengimpor ${importedCount} data guru secara aman!`);
                 } catch (err) {
@@ -1853,8 +2091,8 @@
                     "Sekolah": "SDN 1 Barabai Timur",
                     "Kecamatan": "Barabai",
                     "Jenjang": "SD",
-                    "CEFR Level": "A1 Beginner",
-                    "Peran SBI": "Guru Sasaran",
+                    "CEFR Level": "A2",
+                    "Guru SBI": "Main Program",
                     "Link Foto Google Drive / Foto Profil": "https://drive.google.com/file/d/1A2B3C.../view?usp=sharing"
                 }];
                 var ws = XLSX.utils.json_to_sheet(templateRows);
@@ -1868,7 +2106,7 @@
             }
         }
 
-        // PENGIRIMAN SECURE DENGAN BEARER TOKEN RAHASIA
+        // PENGIRIMAN SECURE DENGAN BEARER TOKEN RAHASIA & DUKUNGAN PENUH KOLOM FOTO
         async function sendSecureJsonToSheets(actionType, recordData, targetSheet) {
             if (!targetSheet) targetSheet = "Data Guru";
             if (!googleAppsScriptUrl) return;
@@ -1880,8 +2118,19 @@
                 timestamp: new Date().toISOString()
             };
 
-            if (actionType === 'delete') payload.id = recordData;
-            else payload.data = recordData;
+            if (actionType === 'delete') {
+                payload.id = recordData;
+            } else {
+                // Menyertakan alias nama kolom agar Google Apps Script selalu menyimpan Foto Profil dengan benar
+                var enrichedData = Object.assign({}, recordData);
+                if (recordData && recordData.photo !== undefined) {
+                    enrichedData.photo = recordData.photo;
+                    enrichedData["Foto Profil"] = recordData.photo;
+                    enrichedData["Link Foto Google Drive / Foto Profil"] = recordData.photo;
+                    enrichedData["Foto"] = recordData.photo;
+                }
+                payload.data = enrichedData;
+            }
 
             try {
                 await fetch(googleAppsScriptUrl, {
@@ -1895,7 +2144,7 @@
             }
         }
 
-        // SINKRONISASI AMAN DENGAN FILTER SANITASI
+        // SINKRONISASI AMAN DENGAN FILTER SANITASI & PEMULIHAN FOTO
         async function syncFromGoogleSheetsSafe() {
             try {
                 if (googleAppsScriptUrl) {
@@ -1913,14 +2162,21 @@
                                     return;
                                 }
 
+                                var rowId = row["ID"] || row["id"] || (Date.now() + idx);
                                 var nip = String(row["NIP"] || row["nip"] || "-").trim();
                                 var subdistrict = String(row["Kecamatan"] || row["subdistrict"] || "Barabai").trim();
                                 var level = (row["Jenjang"] || row["level"] || "SD").toString().toUpperCase();
                                 if (level !== 'SD' && level !== 'SMP') level = 'SD';
                                 var cefr = row["CEFR Level"] || row["cefr"] || "A1 Beginner";
-                                var role = row["Peran"] || row["role"] || "Guru Sasaran";
-                                var rawPhoto = row["Foto Profil"] || row["photo"] || row["Link Foto Google Drive / Foto Profil"] || "";
+                                var role = row["Peran"] || row["Peran SBI"] || row["role"] || "Guru Sasaran";
+                                var rawPhoto = row["Foto Profil"] || row["photo"] || row["Link Foto Google Drive / Foto Profil"] || row["Foto"] || "";
                                 var photo = formatGoogleDriveImageUrl(rawPhoto);
+
+                                // Jika kolom foto dari spreadsheet kosong atau masih placeholder huruf, cek penyimpanan foto lokal (upload komputer / link)
+                                var localSavedPhoto = getFallbackLocalPhoto(rowId, nip, name);
+                                if ((!photo || photo.indexOf("placehold.co") !== -1) && localSavedPhoto) {
+                                    photo = formatGoogleDriveImageUrl(localSavedPhoto);
+                                }
 
                                 var lat = row["lat"] || null;
                                 var lng = row["lng"] || null;
@@ -1933,16 +2189,23 @@
                                     }
                                 }
 
-                                sanitizedList.push({
-                                    id: row["ID"] || row["id"] || (Date.now() + idx),
+                                var teacherEntry = {
+                                    id: rowId,
                                     name: name, nip: nip, school: school, subdistrict: subdistrict,
                                     level: level, cefr: cefr, role: role, photo: photo,
                                     lat: parseFloat(lat), lng: parseFloat(lng)
-                                });
+                                };
+
+                                if (photo && photo.indexOf("placehold.co") === -1) {
+                                    saveLocalTeacherPhoto(teacherEntry);
+                                }
+
+                                sanitizedList.push(teacherEntry);
                             });
 
                             if (sanitizedList.length > 0) {
                                 appState.teachers = sanitizedList;
+                                saveLocalTeachersState();
                                 renderTeachersModule();
                             }
                         }
@@ -1974,7 +2237,8 @@
             var mBtn = document.getElementById('btn-submit-form');
             if (mBtn) mBtn.innerText = "Perbarui Data";
 
-            uploadedTeacherPhotoBase64 = teacher.photo || "";
+            var existingPhoto = teacher.photo || getFallbackLocalPhoto(teacher.id, teacher.nip, teacher.name) || "";
+            uploadedTeacherPhotoBase64 = existingPhoto.indexOf('data:image') === 0 ? existingPhoto : "";
             updateFormFields();
 
             document.getElementById('input-teacher-name').value = teacher.name;
@@ -2012,13 +2276,13 @@
             if (lngElem && teacher.lng) lngElem.value = teacher.lng;
 
             var photoUrlInput = document.getElementById('input-teacher-photo-url');
-            if (photoUrlInput && teacher.photo && teacher.photo.indexOf('http') === 0) {
-                photoUrlInput.value = teacher.photo;
+            if (photoUrlInput && existingPhoto && existingPhoto.indexOf('http') === 0 && existingPhoto.indexOf('placehold.co') === -1) {
+                photoUrlInput.value = existingPhoto;
             }
 
             var preview = document.getElementById('teacher-photo-preview');
-            if (preview && teacher.photo) {
-                preview.src = formatGoogleDriveImageUrl(teacher.photo);
+            if (preview && existingPhoto) {
+                preview.src = formatGoogleDriveImageUrl(existingPhoto);
                 preview.classList.remove('hidden');
             }
 
@@ -2040,6 +2304,7 @@
             if (confirm("Apakah Anda yakin ingin menghapus data \"" + teacherName + "\" dari direktori?")) {
                 sendSecureJsonToSheets('delete', id, 'Data Guru');
                 appState.teachers.splice(targetIndex, 1);
+                saveLocalTeachersState();
                 renderTeachersModule();
                 showToast("Data guru \"" + teacherName + "\" berhasil dihapus.");
             }
@@ -2320,19 +2585,50 @@
             uploadedTeacherPhotoBase64 = "";
         }
 
+        // PERBAIKAN UPLOAD FOTO GURU DARI KOMPUTER: Kompresi otomatis via Canvas agar muat di sel Google Sheets (< 50.000 karakter) & localStorage
         function handleTeacherPhotoUpload(event) {
             var file = event.target.files[0];
             if (file) {
-                if (file.size > 2 * 1024 * 1024) {
-                    showToast("Ukuran foto profil maksimal 2MB!", "error");
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast("Ukuran foto profil maksimal 5MB!", "error");
                     event.target.value = "";
                     return;
                 }
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    uploadedTeacherPhotoBase64 = e.target.result;
-                    var preview = document.getElementById('teacher-photo-preview');
-                    if (preview) { preview.src = uploadedTeacherPhotoBase64; preview.classList.remove('hidden'); }
+                    var img = new Image();
+                    img.onload = function() {
+                        var canvas = document.createElement('canvas');
+                        var targetSize = 160; // Ukuran optimal avatar tajam & ringan (~8KB-15KB Base64)
+                        canvas.width = targetSize;
+                        canvas.height = targetSize;
+                        var ctx = canvas.getContext('2d');
+
+                        // Center crop persegi otomatis agar foto profil tampak proporsional
+                        var minDim = Math.min(img.width, img.height);
+                        var sx = (img.width - minDim) / 2;
+                        var sy = (img.height - minDim) / 2;
+
+                        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, targetSize, targetSize);
+                        uploadedTeacherPhotoBase64 = canvas.toDataURL('image/jpeg', 0.78);
+
+                        var preview = document.getElementById('teacher-photo-preview');
+                        if (preview) {
+                            preview.src = uploadedTeacherPhotoBase64;
+                            preview.classList.remove('hidden');
+                        }
+                        var urlInput = document.getElementById('input-teacher-photo-url');
+                        if (urlInput) urlInput.value = "";
+                    };
+                    img.onerror = function() {
+                        uploadedTeacherPhotoBase64 = e.target.result;
+                        var preview = document.getElementById('teacher-photo-preview');
+                        if (preview) {
+                            preview.src = uploadedTeacherPhotoBase64;
+                            preview.classList.remove('hidden');
+                        }
+                    };
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -2480,32 +2776,31 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700">Tingkat CEFR</label>
                             <select id="input-teacher-cefr" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-bold text-sbi-700">
-                                <option value="A1 Beginner">A1 Beginner</option>
-                                <option value="A2 Elementary">A2 Elementary</option>
-                                <option value="B1 Intermediate">B1 Intermediate</option>
-                                <option value="B2 Upper-Int">B2 Upper-Int</option>
-                                <option value="C1 Advanced">C1 Advanced</option>
+                                <option value="A1">A1</option>
+                                <option value="A2">A2</option>
+                                <option value="B1">B1</option>
+                                <option value="B2">B2</option>
                             </select>
                         </div>
                     </div>
                     <input type="hidden" id="input-teacher-lat" value="">
                     <input type="hidden" id="input-teacher-lng" value="">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700">Peran SBI</label>
+                        <label class="block text-xs font-semibold text-slate-700">Guru SBI</label>
                         <select id="input-teacher-role" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
-                            <option value="Guru Sasaran">Guru Sasaran</option>
+                            <option value="Main Program">Main Program</option>
                             <option value="Guru Inti">Guru Inti</option>
                             <option value="Master Trainer">Master Trainer</option>
                         </select>
                     </div>
                     <div class="space-y-1.5 p-3 rounded-xl bg-slate-50 border border-slate-200">
-                        <label class="block text-xs font-bold text-slate-700">Foto Profil Guru (Bisa Link Google Drive/Photos)</label>
+                        <label class="block text-xs font-bold text-slate-700">Foto Profil Guru (Bisa Upload Komputer atau Link Google Drive)</label>
                         <div class="flex items-center space-x-3">
                             <img id="teacher-photo-preview" src="" alt="Preview" class="w-12 h-12 rounded-full object-cover border border-slate-300 shadow-sm hidden">
                             <div class="flex-1 space-y-1">
                                 <input type="file" id="input-teacher-photo-file" accept="image/*" onchange="handleTeacherPhotoUpload(event)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-sbi-100 file:text-sbi-700 hover:file:bg-sbi-200">
                                 <input type="text" id="input-teacher-photo-url" oninput="previewPhotoUrl(this.value)" placeholder="Tempel Link Foto Google Drive atau Link Web..." class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-[11px]">
-                                <p class="text-[10px] text-slate-400">Link Google Drive dikonversi otomatis menjadi foto nyata.</p>
+                                <p class="text-[10px] text-slate-400">Upload komputer otomatis dioptimalkan & Link Google Drive dikonversi otomatis.</p>
                             </div>
                         </div>
                     </div>
@@ -2621,9 +2916,12 @@
             var preview = document.getElementById('teacher-photo-preview');
             if (!preview) return;
             if (val && val.trim().length > 5) {
+                uploadedTeacherPhotoBase64 = "";
+                var fileInput = document.getElementById('input-teacher-photo-file');
+                if (fileInput) fileInput.value = "";
                 preview.src = formatGoogleDriveImageUrl(val);
                 preview.classList.remove('hidden');
-            } else {
+            } else if (!uploadedTeacherPhotoBase64) {
                 preview.classList.add('hidden');
             }
         }
@@ -2657,7 +2955,14 @@
                 var role = document.getElementById('input-teacher-role').value;
                 var directPhotoUrl = document.getElementById('input-teacher-photo-url') ? document.getElementById('input-teacher-photo-url').value.trim() : '';
                 var convertedPhotoUrl = formatGoogleDriveImageUrl(directPhotoUrl);
-                var finalPhoto = uploadedTeacherPhotoBase64 || convertedPhotoUrl || ("https://placehold.co/100x100/1e293b/ffffff?text=" + encodeURIComponent(name.charAt(0)));
+
+                // Mendukung keduanya: Upload Komputer (uploadedTeacherPhotoBase64) maupun Link Google Drive (convertedPhotoUrl)
+                var finalPhoto = "";
+                if (uploadedTeacherPhotoBase64) {
+                    finalPhoto = uploadedTeacherPhotoBase64;
+                } else if (convertedPhotoUrl) {
+                    finalPhoto = convertedPhotoUrl;
+                }
 
                 var latVal = parseFloat(document.getElementById('input-teacher-lat').value);
                 var lngVal = parseFloat(document.getElementById('input-teacher-lng').value);
@@ -2677,6 +2982,7 @@
                 if (editId) {
                     var idx = appState.teachers.findIndex(function(t) { return t.id == editId; });
                     if (idx !== -1) {
+                        var updatedPhoto = finalPhoto || appState.teachers[idx].photo || ("https://placehold.co/100x100/1e293b/ffffff?text=" + encodeURIComponent(name.charAt(0)));
                         appState.teachers[idx].name = name;
                         appState.teachers[idx].nip = nip;
                         appState.teachers[idx].school = school;
@@ -2686,9 +2992,10 @@
                         appState.teachers[idx].role = role;
                         appState.teachers[idx].lat = latVal;
                         appState.teachers[idx].lng = lngVal;
-                        if (uploadedTeacherPhotoBase64 || directPhotoUrl) {
-                            appState.teachers[idx].photo = finalPhoto;
-                        }
+                        appState.teachers[idx].photo = updatedPhoto;
+
+                        saveLocalTeacherPhoto(appState.teachers[idx]);
+                        saveLocalTeachersState();
 
                         sendSecureJsonToSheets('update', {
                             id: editId,
@@ -2699,13 +3006,14 @@
                             level: level,
                             cefr: cefr,
                             role: role,
-                            photo: finalPhoto
+                            photo: updatedPhoto
                         }, 'Data Guru');
 
                         showToast("Data guru \"" + name + "\" berhasil diperbarui secara aman!");
                     }
                 } else {
                     var newId = Date.now();
+                    var savedPhoto = finalPhoto || ("https://placehold.co/100x100/1e293b/ffffff?text=" + encodeURIComponent(name.charAt(0)));
                     var newTeacherObj = {
                         id: newId,
                         name: name,
@@ -2715,12 +3023,14 @@
                         level: level,
                         cefr: cefr,
                         role: role,
-                        photo: finalPhoto,
+                        photo: savedPhoto,
                         lat: latVal,
                         lng: lngVal
                     };
 
+                    saveLocalTeacherPhoto(newTeacherObj);
                     appState.teachers.unshift(newTeacherObj);
+                    saveLocalTeachersState();
 
                     sendSecureJsonToSheets('create', {
                         id: newId,
@@ -2731,7 +3041,7 @@
                         level: level,
                         cefr: cefr,
                         role: role,
-                        photo: finalPhoto
+                        photo: savedPhoto
                     }, 'Data Guru');
 
                     showToast("Guru baru berhasil ditambahkan secara aman!");
