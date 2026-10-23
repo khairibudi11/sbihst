@@ -183,55 +183,7 @@
         </div>
     </div>
 
-    <!-- MODAL PEMBACA BERITA LENGKAP & GALERI MULTI-FOTO (TETAP DI LAMAN YANG SAMA) -->
-    <div id="mediaReaderModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-2 sm:p-4 no-print">
-        <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
-            <!-- Header Modal -->
-            <div class="flex items-center justify-between px-5 py-3.5 bg-sbi-900 text-white">
-                <div class="flex items-center space-x-2">
-                    <span id="reader-category" class="bg-sbired-500 text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Berita Kegiatan</span>
-                    <span id="reader-date" class="text-xs text-slate-300"><i class="fa-regular fa-calendar mr-1"></i>14 Feb 2026</span>
-                </div>
-                <button onclick="closeMediaArticleModal()" class="text-slate-300 hover:text-white text-lg px-2 py-0.5 rounded-lg hover:bg-sbi-800 transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Body Artikel (Scrollable) -->
-            <div class="p-5 sm:p-6 overflow-y-auto custom-scrollbar space-y-5 flex-1">
-                <div class="space-y-2">
-                    <h2 id="reader-title" class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug"></h2>
-                    <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 border-b border-slate-100 pb-3">
-                        <span><i class="fa-solid fa-user-pen text-sbi-600 mr-1.5"></i>Oleh: <b id="reader-author" class="text-slate-800"></b></span>
-                        <span><i class="fa-solid fa-eye text-amber-500 mr-1.5"></i><span id="reader-reach"></span></span>
-                    </div>
-                </div>
-
-                <!-- Foto Utama (Stage) -->
-                <div class="space-y-2.5">
-                    <div class="w-full h-64 sm:h-96 rounded-xl overflow-hidden bg-slate-950 border border-slate-200 relative flex items-center justify-center">
-                        <img id="reader-main-img" src="" alt="Foto Dokumentasi" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/800x450/1b365d/ffffff?text=Dokumentasi+SBI+HST+2026'">
-                        <span id="reader-photo-counter" class="absolute bottom-3 right-3 bg-slate-900/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm hidden">1 / 1 Foto</span>
-                    </div>
-                    <!-- Thumbnail Galeri Multi-Foto -->
-                    <div id="reader-gallery-thumbs" class="flex items-center gap-2 overflow-x-auto custom-scrollbar pb-1 hidden"></div>
-                </div>
-
-                <!-- Isi Berita Lengkap -->
-                <div id="reader-content" class="text-sm text-slate-700 leading-relaxed space-y-3 whitespace-pre-line font-normal"></div>
-            </div>
-
-            <!-- Footer Modal -->
-            <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
-                <div id="reader-ext-link-wrap"></div>
-                <button onclick="closeMediaArticleModal()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs font-bold px-4 py-2 rounded-lg shadow transition">
-                    Tutup Artikel
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- HEADER -->
+    <!-- HEADER ASLI KEMBALI SEPERTI SEMULA -->
     <header class="bg-sbi-900 text-white shadow-lg sticky top-0 z-40 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between py-2.5 sm:py-3 min-h-[4.5rem]">
@@ -672,104 +624,222 @@
             </div>
         </div>
 
-        <!-- OTHER TABS -->
+<!-- MEDIACENTER TAB -->
         <div id="page-mediacenter" class="page-content space-y-6 hidden">
-            <!-- TAMPILAN DAFTAR KARTU BERITA (DEFAULT) -->
-            <div id="media-list-view" class="space-y-6">
-                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900 flex items-center space-x-2">
-                            <i class="fa-solid fa-bullhorn text-sbi-500"></i>
-                            <span>SBI Media Center & Publikasi Berita</span>
-                        </h2>
-                        <p class="text-xs text-slate-500">Pusat informasi resmi, artikel liputan halaman penuh, galeri multi-foto, dan tautan publikasi</p>
+            <!-- 1. TAMPILAN LANDING PAGE PORTAL BERITA (TANPA TULISAN ARAB) -->
+            <div id="media-list-view" class="space-y-8">
+                <div class="bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200 text-center space-y-3 relative overflow-hidden">
+                    <div class="w-full h-1.5 bg-gradient-to-r from-sbi-800 via-sbired-500 to-amber-500 absolute top-0 left-0"></div>
+                    <div class="inline-flex items-center space-x-2 bg-sbi-50 border border-sbi-200 text-sbi-800 px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider">
+                        <i class="fa-solid fa-newspaper text-sbired-500"></i>
+                        <span>Portal Berita & Publikasi Resmi</span>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <select id="media-category-filter" onchange="renderMediaCenter()" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg p-2.5 focus:ring-sbi-500">
-                            <option value="ALL">Semua Jenis Konten</option>
+                    <h2 class="text-lg sm:text-2xl font-extrabold text-sbi-900 tracking-tight">
+                        Selamat Datang di Portal Berita Sekolah Berbahasa Inggris (SBI) Kabupaten Hulu Sungai Tengah
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 max-w-2xl mx-auto">
+                        Pusat Dokumentasi Kegiatan, Liputan Pengimbasan SD, Penguatan Ekosistem SMP, dan Inovasi Pembelajaran Bilingual Tahun 2026
+                    </p>
+
+                    <div class="pt-4 flex flex-wrap items-center justify-center gap-3">
+                        <div class="relative w-full max-w-xs">
+                            <input type="text" id="media-search-input" onkeyup="renderMediaCenter()" placeholder="Cari judul berita atau liputan..." class="w-full bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-xl pl-8 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-sbi-500">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                        </div>
+                        <select id="media-category-filter" onchange="renderMediaCenter()" class="bg-slate-50 border border-slate-300 text-slate-700 text-xs font-semibold rounded-xl px-3 py-2.5 focus:ring-sbi-500">
+                            <option value="ALL">Semua Kategori Konten</option>
                             <option value="Berita Kegiatan">Berita Kegiatan</option>
                             <option value="Reels / Media Sosial">Reels & Media Sosial</option>
                             <option value="Infografis">Infografis SBI</option>
                             <option value="Press Release">Press Release</option>
                         </select>
-                        <button id="team-add-media-btn" onclick="handleProtectedAction('media')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2.5 rounded-lg transition font-medium items-center space-x-1 shadow">
+                        <button id="team-add-media-btn" onclick="handleProtectedAction('media')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-4 py-2.5 rounded-xl transition font-bold items-center space-x-1.5 shadow">
                             <i class="fa-solid fa-plus"></i>
-                            <span>Tambah Berita / Konten</span>
+                            <span>Tulis Berita Baru</span>
                         </button>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="media-grid"></div>
+
+                <!-- Grid 3 Kolom Kartu Berita -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="media-grid"></div>
             </div>
 
-            <!-- TAMPILAN SATU HALAMAN PENUH ARTIKEL BERITA (LAYAKNYA WEBSITE PORTAL BERITA) -->
-            <div id="media-fullpage-view" class="hidden space-y-6">
-                <!-- Bar Navigasi Atas Artikel -->
-                <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-                    <button type="button" onclick="closeMediaArticleModal()" class="inline-flex items-center space-x-2 text-xs sm:text-sm font-bold text-sbi-700 hover:text-sbired-600 bg-sbi-50 hover:bg-sbi-100 px-4 py-2 rounded-xl transition shadow-sm">
-                        <i class="fa-solid fa-arrow-left"></i>
-                        <span>Kembali ke Daftar Berita Media Center</span>
-                    </button>
-                    <div class="flex items-center space-x-2 text-xs text-slate-500">
-                        <span>Portal Publikasi Resmi SBI HST 2026</span>
-                        <span>•</span>
-                        <button type="button" onclick="window.print()" class="text-slate-600 hover:text-sbi-800 font-semibold flex items-center space-x-1 bg-slate-100 px-3 py-1.5 rounded-lg">
-                            <i class="fa-solid fa-print"></i>
-                            <span>Cetak Artikel</span>
+            <!-- 2. TAMPILAN BACA ARTIKEL 2 KOLOM + SIDEBAR KANAN -->
+            <div id="media-fullpage-view" class="hidden space-y-4">
+                <!-- Bar URL Unik Artikel di Atas Berita -->
+                <div class="bg-white rounded-xl px-4 py-2.5 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center space-x-2 flex-1 min-w-[240px]">
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded flex items-center space-x-1 flex-shrink-0">
+                            <i class="fa-solid fa-link text-[9px]"></i>
+                            <span>URL BERITA</span>
+                        </span>
+                        <input type="text" id="top-article-url-bar" readonly onclick="this.select(); copyCurrentArticleLink();" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1 text-xs font-mono text-sbi-800 focus:outline-none cursor-pointer" value="http://smartsbi.web.id/">
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button type="button" onclick="copyCurrentArticleLink()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg transition flex items-center space-x-1 shadow-sm">
+                            <i class="fa-regular fa-copy text-amber-300"></i>
+                            <span>Salin Link</span>
+                        </button>
+                        <button type="button" onclick="shareCurrentArticleWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg transition flex items-center space-x-1 shadow-sm">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <span>Share WA</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Kontainer Utama Halaman Artikel -->
-                <article class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                    <!-- Header Artikel -->
-                    <div class="p-6 sm:p-10 border-b border-slate-100 space-y-4 bg-gradient-to-b from-slate-50/80 to-white">
-                        <div class="flex flex-wrap items-center gap-2.5">
-                            <span id="fullpage-category" class="bg-sbired-500 text-white text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-sm">Berita Kegiatan</span>
-                            <span id="fullpage-date" class="text-xs sm:text-sm text-slate-500 font-medium"><i class="fa-regular fa-calendar mr-1.5 text-sbi-600"></i>14 Feb 2026</span>
-                            <span class="text-slate-300">•</span>
-                            <span class="text-xs sm:text-sm text-slate-600"><i class="fa-solid fa-user-pen text-sbi-600 mr-1.5"></i>Oleh: <b id="fullpage-author" class="text-slate-900">Tim Publikasi</b></span>
-                            <span class="text-slate-300">•</span>
-                            <span class="text-xs sm:text-sm text-amber-600 font-semibold"><i class="fa-solid fa-eye mr-1"></i><span id="fullpage-reach"></span></span>
-                        </div>
-                        <h1 id="fullpage-title" class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight"></h1>
-                    </div>
-
-                    <!-- Area Panggung Foto Utama & Galeri Multi-Foto -->
-                    <div class="p-6 sm:p-10 pt-6 space-y-8">
-                        <div class="space-y-3">
-                            <div class="w-full h-[300px] sm:h-[480px] rounded-2xl overflow-hidden bg-slate-950 border border-slate-200 relative flex items-center justify-center shadow-inner">
-                                <img id="fullpage-main-img" src="" alt="Foto Dokumentasi Utama" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/1000x550/1b365d/ffffff?text=Dokumentasi+SBI+HST+2026'">
-                                <span id="fullpage-photo-counter" class="absolute bottom-4 right-4 bg-slate-900/85 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm hidden shadow">1 / 1 Foto</span>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- KOLOM KIRI (ARTIKEL UTAMA) -->
+                    <article class="lg:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-5 sm:p-8 space-y-6">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3.5">
+                            <div class="text-xs text-slate-400 font-medium flex items-center flex-wrap gap-1.5">
+                                <button type="button" onclick="closeMediaArticleModal()" class="hover:text-sbi-700 font-semibold text-sbi-600 transition flex items-center space-x-1">
+                                    <i class="fa-solid fa-house text-[10px]"></i>
+                                    <span>Beranda Media</span>
+                                </button>
+                                <span>›</span>
+                                <span id="fullpage-breadcrumb-cat" class="text-slate-500">Berita Kegiatan</span>
+                                <span>›</span>
+                                <span id="fullpage-breadcrumb-title" class="text-slate-600 font-semibold truncate max-w-[200px] sm:max-w-xs">Judul Artikel</span>
                             </div>
+                            <span id="fullpage-slug-pill" class="bg-slate-100 text-slate-600 border border-slate-200 text-[10px] font-mono px-2.5 py-1 rounded-md shadow-inner">
+                                portal_sbi_hst.html
+                            </span>
+                        </div>
 
-                            <!-- Deretan Thumbnail Multi-Foto -->
-                            <div id="fullpage-gallery-wrap" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 hidden">
+                        <div class="space-y-3">
+                            <h1 id="fullpage-title" class="text-2xl sm:text-3xl font-bold text-slate-900 leading-snug font-serif tracking-tight"></h1>
+                            <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                                <span id="fullpage-category" class="bg-sbired-500 text-white text-[10px] px-2.5 py-0.5 rounded font-bold uppercase tracking-wider">Berita Kegiatan</span>
+                                <span id="fullpage-date"><i class="fa-regular fa-calendar mr-1 text-sbi-600"></i>14 Feb 2026</span>
+                                <span>•</span>
+                                <span><i class="fa-solid fa-user-pen text-sbi-600 mr-1"></i>Penulis: <b id="fullpage-author" class="text-slate-800">Tim Publikasi</b></span>
+                                <span>•</span>
+                                <span class="text-amber-600 font-semibold"><i class="fa-solid fa-eye mr-1"></i><span id="fullpage-reach"></span></span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="w-full rounded-xl overflow-hidden bg-slate-100 border border-slate-200 relative flex items-center justify-center shadow-sm">
+                                <img id="fullpage-main-img" src="" alt="Poster / Dokumentasi Utama" class="w-full max-h-[520px] object-contain mx-auto" onerror="this.src='https://placehold.co/900x550/1b365d/ffffff?text=Dokumentasi+SBI+HST+2026'">
+                                <span id="fullpage-photo-counter" class="absolute bottom-3 right-3 bg-sbi-900/85 text-white text-[11px] font-bold px-3 py-1 rounded-full backdrop-blur-sm hidden shadow">1 / 1 Foto</span>
+                            </div>
+                            <div id="fullpage-gallery-wrap" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2 hidden">
                                 <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center space-x-1.5">
                                     <i class="fa-regular fa-images text-sbi-600"></i>
-                                    <span>Galeri Dokumentasi Kegiatan (Klik foto untuk memperbesar):</span>
+                                    <span>Galeri Dokumentasi Kegiatan (Klik untuk mengganti gambar):</span>
                                 </div>
-                                <div id="fullpage-gallery-thumbs" class="flex items-center gap-3 overflow-x-auto custom-scrollbar pb-1"></div>
+                                <div id="fullpage-gallery-thumbs" class="flex items-center gap-2.5 overflow-x-auto custom-scrollbar pb-1"></div>
                             </div>
                         </div>
 
-                        <!-- Isi Konten Berita Lengkap -->
-                        <div class="max-w-4xl mx-auto">
-                            <div id="fullpage-content" class="text-slate-800 text-sm sm:text-base leading-relaxed space-y-4 whitespace-pre-line font-normal"></div>
+                        <!-- Box Gelap di Bawah Poster -->
+                        <div class="bg-gradient-to-r from-sbi-900 via-sbi-800 to-sbi-900 text-white rounded-xl p-4 sm:p-5 shadow-md border border-sbi-700 space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-extrabold text-lg shadow flex-shrink-0">
+                                        <i class="fa-solid fa-newspaper"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-extrabold text-sm sm:text-base text-white leading-tight">Portal Publikasi Resmi SBI HST 2026</h4>
+                                        <p class="text-[11px] text-slate-300">Bagikan tautan halaman berita ini kepada rekan guru & sekolah sasaran</p>
+                                    </div>
+                                </div>
+                                <div class="text-[11px] text-emerald-300 font-medium flex items-center space-x-1">
+                                    <i class="fa-solid fa-user-check"></i>
+                                    <span>Tim Kemitraan & Publikasi</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-sbi-700/60">
+                                <button type="button" onclick="copyCurrentArticleLink()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition flex items-center space-x-1.5 shadow-sm">
+                                    <i class="fa-solid fa-link"></i>
+                                    <span>Salin Link Halaman Ini</span>
+                                </button>
+                                <button type="button" onclick="shareCurrentArticleWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition flex items-center space-x-1.5 shadow-sm">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                    <span>Bagikan ke WhatsApp</span>
+                                </button>
+                                <button type="button" onclick="window.print()" class="bg-sbi-700 hover:bg-sbi-600 text-slate-200 text-xs font-semibold px-3 py-2 rounded-lg transition flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-print"></i>
+                                    <span>Cetak Berita</span>
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- Kotak Tautan Luar & Navigasi Bawah -->
-                        <div class="max-w-4xl mx-auto pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div id="fullpage-content" class="text-slate-800 text-sm sm:text-base leading-relaxed space-y-4 whitespace-pre-line font-normal pt-2"></div>
+
+                        <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div id="fullpage-ext-link-wrap"></div>
-                            <button type="button" onclick="closeMediaArticleModal()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl shadow transition flex items-center space-x-2">
-                                <i class="fa-solid fa-grid-2"></i>
-                                <span>Lihat Berita Lainnya</span>
+                            <button type="button" onclick="closeMediaArticleModal()" class="bg-slate-100 hover:bg-sbi-50 text-sbi-800 border border-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                <span>Kembali ke Halaman Landing Berita</span>
                             </button>
                         </div>
-                    </div>
-                </article>
+                    </article>
+
+                    <!-- KOLOM KANAN (SIDEBAR SOCIAL PLUGIN & VIDEO) -->
+                    <aside class="lg:col-span-4 space-y-6">
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                            <h3 class="text-xs font-extrabold text-sbi-900 uppercase tracking-wider border-b border-slate-100 pb-2.5 flex items-center justify-between">
+                                <span>SOCIAL PLUGIN & BAGIKAN</span>
+                                <i class="fa-solid fa-share-nodes text-sbired-500"></i>
+                            </h3>
+                            <div class="grid grid-cols-5 gap-2 text-white text-center text-sm">
+                                <button onclick="shareSocialPlatform('facebook')" class="bg-[#3b5998] hover:opacity-90 py-2.5 rounded-lg shadow-sm transition"><i class="fa-brands fa-facebook-f"></i></button>
+                                <button onclick="shareSocialPlatform('twitter')" class="bg-[#0f1419] hover:opacity-90 py-2.5 rounded-lg shadow-sm transition"><i class="fa-brands fa-x-twitter"></i></button>
+                                <button onclick="shareSocialPlatform('linkedin')" class="bg-[#0077b5] hover:opacity-90 py-2.5 rounded-lg shadow-sm transition"><i class="fa-brands fa-linkedin-in"></i></button>
+                                <button onclick="shareCurrentArticleWhatsApp()" class="bg-[#25d366] hover:opacity-90 py-2.5 rounded-lg shadow-sm transition"><i class="fa-brands fa-whatsapp"></i></button>
+                                <button onclick="shareSocialPlatform('telegram')" class="bg-[#0088cc] hover:opacity-90 py-2.5 rounded-lg shadow-sm transition"><i class="fa-brands fa-telegram"></i></button>
+                                <button onclick="copyCurrentArticleLink()" class="bg-sbi-700 hover:bg-sbi-800 py-2.5 rounded-lg shadow-sm transition col-span-5 text-xs font-bold flex items-center justify-center space-x-2 mt-1">
+                                    <i class="fa-solid fa-copy text-amber-300"></i>
+                                    <span>Salin URL Unik Berita Ini</span>
+                                </button>
+                            </div>
+                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1.5">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-bold text-slate-500 uppercase">Mode Tautan Berbagi:</span>
+                                    <select id="share-link-mode" onchange="refreshShareUrlInputs()" class="text-[10px] bg-white border border-slate-300 rounded px-1.5 py-0.5 font-semibold text-sbi-800 focus:outline-none">
+                                        <option value="http">Aman Tanpa SSL (http://smartsbi.web.id)</option>
+                                        <option value="www">Domain WWW (https://www.smartsbi.web.id)</option>
+                                    </select>
+                                </div>
+                                <input type="text" id="sidebar-share-url-input" readonly onclick="this.select(); copyCurrentArticleLink();" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-[11px] font-mono text-sbi-700 focus:outline-none cursor-pointer" value="">
+                                <p class="text-[10px] text-slate-400 leading-tight">Default diatur ke <b>http://smartsbi.web.id</b> agar bebas dari blokir merah "Your connection is not private" di Chrome.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-3">
+                            <h3 class="text-xs font-extrabold text-sbi-900 uppercase tracking-wider border-b border-slate-100 pb-2.5 flex items-center justify-between">
+                                <span>SOROTAN DOKUMENTASI SBI</span>
+                                <i class="fa-brands fa-youtube text-sbired-500 text-sm"></i>
+                            </h3>
+                            <div onclick="switchTab('stories')" class="rounded-xl overflow-hidden relative group cursor-pointer border border-slate-200">
+                                <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80" alt="Dokumentasi SBI" class="w-full h-44 object-cover group-hover:scale-105 transition duration-300">
+                                <div class="absolute inset-0 bg-sbi-900/50 flex flex-col items-center justify-center p-4 text-center">
+                                    <div class="w-12 h-12 rounded-full bg-sbired-500 text-white flex items-center justify-center text-lg shadow-lg group-hover:scale-110 transition">
+                                        <i class="fa-solid fa-play ml-0.5"></i>
+                                    </div>
+                                    <span class="text-white font-bold text-xs mt-2 drop-shadow">Galeri Praktik Baik & Storytelling SBI HST</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-3">
+                            <h3 class="text-xs font-extrabold text-sbi-900 uppercase tracking-wider border-b border-slate-100 pb-2.5">
+                                PUBLIKASI & BERITA LAINNYA
+                            </h3>
+                            <div id="sidebar-related-news" class="space-y-3"></div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-1.5 border-l-4 border-l-sbi-700">
+                            <h4 class="text-xs font-extrabold text-sbi-900 uppercase">PROGRAM SBI KAB. HULU SUNGAI TENGAH</h4>
+                            <p class="text-xs text-slate-500 font-medium">Dinas Pendidikan Kab. HST • Unggul, Berkarakter, Mendunia</p>
+                        </div>
+                    </aside>
+                </div>
             </div>
         </div>
 
+        <!-- STORIES & PRAKTIK BAIK TAB -->
         <div id="page-stories" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -790,7 +860,7 @@
                 </div>
             </div>
             <div id="subpage-practices" class="space-y-4">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-wrap items-center justify-between gap-2">
                     <input type="text" id="practice-search" onkeyup="renderPractices()" placeholder="Cari nama sekolah, kecamatan, atau bentuk praktik baik..." class="w-full max-w-md bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-sbi-500">
                     <button id="team-add-practice-btn" onclick="handleProtectedAction('practice')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm items-center">
                         <i class="fa-solid fa-plus mr-1"></i> Tambah Praktik Baik
@@ -799,10 +869,16 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="practices-grid"></div>
             </div>
             <div id="subpage-humanstories" class="space-y-4 hidden">
+                <div class="flex justify-end">
+                    <button id="team-add-story-btn" onclick="handleProtectedAction('story')" class="hidden bg-sbired-500 hover:bg-sbired-600 text-white text-xs px-3 py-2 rounded-lg font-medium shadow-sm items-center">
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Human Story
+                    </button>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="stories-grid"></div>
             </div>
         </div>
 
+        <!-- DIGITAL ARCHIVE & MITRA TAB -->
         <div id="page-archive" class="page-content space-y-6 hidden">
             <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-4">
@@ -1015,10 +1091,231 @@
         var uploadedMediaImagesList = [];
         var uploadedTeacherPhotoBase64 = "";
 
-        // TOKEN KEAMANAN RAHASIA (Sama persis dengan Secure_Code.gs)
+        // TOKEN KEAMANAN RAHASIA
         var CLIENT_SECRET_TOKEN = "SBI-HST-SECURE-TOKEN-2026-X9Z8Y7";
         // ENDPOINT GOOGLE APPS SCRIPT WEB APP
         var googleAppsScriptUrl = "https://script.google.com/macros/s/AKfycbzFzOUhbV9k0dWUtVFsGxLGsgS3_abKzOlfUIDNHbDxGIB3rGt7SIMWv2AQbGpWs_9S/exec";
+
+        // =========================================================================
+        // SISTEM ROUTING URL UNIK BERGAYA PORTAL BERITA (https://smartsbi.web.id)
+        // =========================================================================
+        var PUBLIC_SITE_ORIGIN = "https://smartsbi.web.id";
+        var currentOpenedArticleId = null;
+
+        // Mendeteksi domain publik secara cerdas (Jika di dalam iframe Google Sites atari-embeds, otomatis gunakan https://smartsbi.web.id)
+        function getCleanBaseDomain() {
+            var host = window.location.hostname || "";
+            if (host.indexOf("googleusercontent.com") !== -1 || host.indexOf("atari-embeds") !== -1 || host.indexOf("sites.google.com") !== -1 || !host) {
+                return PUBLIC_SITE_ORIGIN + "/";
+            }
+            return window.location.origin + window.location.pathname;
+        }
+
+        function createSlug(text) {
+            return String(text || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .substring(0, 65);
+        }
+
+        // Menghasilkan path unik ala website portal: 2026/10/judul-berita-id.html
+        function createArticlePathCode(item) {
+            if (!item) return "";
+            var slug = createSlug(item.title) || "liputan-sbi";
+            return "2026/10/" + slug + "-" + item.id + ".html";
+        }
+
+        function getShareableArticleUrl(item) {
+            if (!item) return getCleanBaseDomain();
+            var baseUrl = getCleanBaseDomain();
+            var articlePath = createArticlePathCode(item);
+            var separator = baseUrl.indexOf('?') !== -1 ? '&' : '?';
+            return baseUrl + separator + "p=" + articlePath;
+        }
+
+        function updateBrowserUrl(tabId, articleItem) {
+            var cleanShareUrl = articleItem ? getShareableArticleUrl(articleItem) : getCleanBaseDomain() + (tabId && tabId !== 'dashboard' ? "?tab=" + tabId : "");
+            var topBarInput = document.getElementById('top-article-url-bar');
+            if (topBarInput && articleItem) {
+                topBarInput.value = cleanShareUrl;
+            }
+
+            try {
+                var baseUrl = window.location.origin + window.location.pathname;
+                if (articleItem) {
+                    var articlePath = createArticlePathCode(articleItem);
+                    var newUrl = baseUrl + "?p=" + articlePath;
+                    window.history.pushState({ tab: 'mediacenter', beritaId: articleItem.id }, '', newUrl);
+                } else {
+                    if (tabId && tabId !== 'dashboard') {
+                        window.history.pushState({ tab: tabId, beritaId: null }, '', baseUrl + "?tab=" + tabId);
+                    } else {
+                        window.history.pushState({ tab: 'dashboard', beritaId: null }, '', baseUrl);
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function copyTextToClipboard(text) {
+            if (!text) return;
+
+            // Pemilih otomatis pada kotak input URL yang terlihat agar pengguna juga bisa langsung Ctrl+C
+            var topInput = document.getElementById('top-article-url-bar');
+            var sideInput = document.getElementById('sidebar-share-url-input');
+            if (topInput) topInput.value = text;
+            if (sideInput) sideInput.value = text;
+
+            // Metode 1: Eksekusi langsung via textarea tersembunyi yang kompatibel di dalam iframe Google Sites
+            var copied = false;
+            try {
+                var tempInput = document.createElement("textarea");
+                tempInput.value = text;
+                tempInput.setAttribute("readonly", "");
+                tempInput.style.position = "fixed";
+                tempInput.style.top = "0";
+                tempInput.style.left = "0";
+                tempInput.style.width = "2em";
+                tempInput.style.height = "2em";
+                tempInput.style.padding = "0";
+                tempInput.style.border = "none";
+                tempInput.style.outline = "none";
+                tempInput.style.boxShadow = "none";
+                tempInput.style.background = "transparent";
+                document.body.appendChild(tempInput);
+                tempInput.focus();
+                tempInput.select();
+                tempInput.setSelectionRange(0, 999999);
+                copied = document.execCommand("copy");
+                document.body.removeChild(tempInput);
+            } catch (err) {
+                copied = false;
+            }
+
+            if (copied) {
+                showToast("Tautan berhasil disalin! Silakan Paste (Ctrl+V / Tempel) di WA atau Browser.");
+                return;
+            }
+
+            // Metode 2: Modern Clipboard API jika Metode 1 dibatasi browser
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showToast("Tautan berhasil disalin! Silakan Paste (Ctrl+V / Tempel).");
+                }).catch(function() {
+                    selectVisibleUrlBox(text);
+                });
+            } else {
+                selectVisibleUrlBox(text);
+            }
+        }
+
+        function selectVisibleUrlBox(text) {
+            var sideInput = document.getElementById('sidebar-share-url-input');
+            var topInput = document.getElementById('top-article-url-bar');
+            var target = sideInput || topInput;
+            if (target) {
+                target.value = text;
+                target.focus();
+                target.select();
+                try { document.execCommand('copy'); } catch (e) {}
+            }
+            showToast("Link telah diblok otomatis! Tekan Ctrl+C (atau tahan & Salin) lalu Paste.", "warning");
+        }
+
+        function shareArticleById(id, event) {
+            if (event) event.stopPropagation();
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(id); });
+            if (!item) return;
+            var shareUrl = getShareableArticleUrl(item);
+            copyTextToClipboard(shareUrl);
+        }
+
+        function copyCurrentArticleLink() {
+            if (!currentOpenedArticleId) return;
+            shareArticleById(currentOpenedArticleId);
+        }
+
+        function shareCurrentArticleWhatsApp() {
+            if (!currentOpenedArticleId) return;
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(currentOpenedArticleId); });
+            if (!item) return;
+            var shareUrl = getShareableArticleUrl(item);
+            var waText = "*" + item.title + "*\n\n" + (item.excerpt || '') + "\n\nBaca selengkapnya di Portal SBI HST 2026:\n" + shareUrl;
+            window.open("https://wa.me/?text=" + encodeURIComponent(waText), '_blank');
+        }
+
+        function shareSocialPlatform(platform) {
+            if (!currentOpenedArticleId) return;
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(currentOpenedArticleId); });
+            if (!item) return;
+            var shareUrl = encodeURIComponent(getShareableArticleUrl(item));
+            var shareTitle = encodeURIComponent(item.title);
+            var targetUrl = "";
+
+            if (platform === 'facebook') targetUrl = "https://www.facebook.com/sharer/sharer.php?u=" + shareUrl;
+            else if (platform === 'twitter') targetUrl = "https://twitter.com/intent/tweet?text=" + shareTitle + "&url=" + shareUrl;
+            else if (platform === 'linkedin') targetUrl = "https://www.linkedin.com/sharing/share-offsite/?url=" + shareUrl;
+            else if (platform === 'telegram') targetUrl = "https://t.me/share/url?url=" + shareUrl + "&text=" + shareTitle;
+
+            if (targetUrl) window.open(targetUrl, '_blank');
+        }
+
+        function findArticleByUrlParam(paramStr) {
+            if (!paramStr) return null;
+            var clean = decodeURIComponent(paramStr).replace(/\.html$/i, '').trim();
+            // Cek kecocokan ID di ujung path (misal: 2026/02/judul-berita-172938)
+            var parts = clean.split('-');
+            var lastPart = parts[parts.length - 1];
+            var firstPart = clean.split('-')[0];
+
+            return appState.mediaCenter.find(function(m) {
+                var slug = createSlug(m.title);
+                return String(m.id) === String(lastPart) ||
+                       String(m.id) === String(firstPart) ||
+                       clean.indexOf(slug) !== -1 ||
+                       createArticlePathCode(m).replace(/\.html$/i, '') === clean;
+            });
+        }
+
+        function handleInitialUrlRouting() {
+            try {
+                var params = new URLSearchParams(window.location.search);
+                var pParam = params.get('p') || params.get('berita');
+                var tabParam = params.get('tab');
+
+                if (pParam) {
+                    var matchedItem = findArticleByUrlParam(pParam);
+                    switchTab('mediacenter', true);
+                    if (matchedItem) {
+                        openMediaArticleModal(matchedItem.id, true);
+                        return true;
+                    }
+                    return false;
+                } else if (tabParam) {
+                    var validTabs = ['dashboard', 'teachers', 'mediacenter', 'stories', 'archive', 'impact', 'team'];
+                    if (validTabs.indexOf(tabParam) !== -1) {
+                        switchTab(tabParam, true);
+                    }
+                }
+            } catch (e) {}
+            return false;
+        }
+
+        window.addEventListener('popstate', function() {
+            var params = new URLSearchParams(window.location.search);
+            var pParam = params.get('p') || params.get('berita');
+            var tabParam = params.get('tab') || 'dashboard';
+
+            if (pParam) {
+                var matched = findArticleByUrlParam(pParam);
+                switchTab('mediacenter', true);
+                if (matched) openMediaArticleModal(matched.id, true);
+            } else {
+                closeMediaArticleModal(true);
+                switchTab(tabParam, true);
+            }
+        });
 
         function formatGoogleDriveImageUrl(url) {
             if (!url) return "";
@@ -1053,7 +1350,6 @@
             return "Main Program";
         }
 
-        // PENYIMPANAN CADANGAN FOTO LOKAL AGAR FOTO UPLOAD KOMPUTER & LINK DRIVE SELALU TERSIMPAN
         function getSavedLocalPhotosMap() {
             try {
                 var raw = localStorage.getItem('sbi_teacher_photos_2026');
@@ -1132,7 +1428,7 @@
             return list;
         }
 
-// MASTER LENGKAP SELURUH SEKOLAH SD & SMP DI 11 KECAMATAN HULU SUNGAI TENGAH
+        // MASTER LENGKAP SELURUH SEKOLAH SD & SMP DI 11 KECAMATAN HULU SUNGAI TENGAH
         var hstSchoolsMaster = [
             // --- KECAMATAN BARABAI ---
             { name: "SDN 1 Barabai Timur", subdistrict: "Barabai", level: "SD", lat: -2.5847, lng: 115.3812 },
@@ -1438,7 +1734,7 @@
             { name: "SDN Hinas Kanan", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5840, lng: 115.5880 },
             { name: "SDN Juhu", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.6100, lng: 115.6250 },
             { name: "SDN Muara Hungi", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5650, lng: 115.5900 },
-            { name: "SDNnateh", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5730, lng: 115.5620 },
+            { name: "SDN Nateh", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5730, lng: 115.5620 },
             { name: "SDN Pembakulan", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.5790, lng: 115.5815 },
             { name: "SDN Aing Bantai", subdistrict: "Batang Alai Timur", level: "SD", lat: -2.6050, lng: 115.6150 },
             { name: "SMPN 25 Satu Atap Hulu Sungai Tengah", subdistrict: "Batang Alai Timur", level: "SMP", lat: -2.5800, lng: 115.5820 },
@@ -1489,7 +1785,7 @@
             { name: "SMPN 6 Satu Atap Limpasu", subdistrict: "Limpasu", level: "SMP", lat: -2.4490, lng: 115.4735 },
             { name: "SMPN 28 Satu Atap Limpasu", subdistrict: "Limpasu", level: "SMP", lat: -2.4590, lng: 115.4640 }
         ];
-        
+
         function normalizeSchoolName(str) {
             return (str || '').toLowerCase().replace(/sd\s*negeri/g, 'sdn').replace(/smp\s*negeri/g, 'smpn').replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
         }
@@ -1583,6 +1879,7 @@
             var teamAddTeacher = document.getElementById('team-add-teacher-btn');
             var teamAddMedia = document.getElementById('team-add-media-btn');
             var teamAddPractice = document.getElementById('team-add-practice-btn');
+            var teamAddStory = document.getElementById('team-add-story-btn');
             var teamAddMitra = document.getElementById('team-add-mitra-btn');
             var teamAddArchive = document.getElementById('team-add-archive-btn');
             var teamAddTestimony = document.getElementById('team-add-testimony-btn');
@@ -1595,6 +1892,7 @@
                 if (teamAddTeacher) teamAddTeacher.classList.replace('hidden', 'flex');
                 if (teamAddMedia) teamAddMedia.classList.replace('hidden', 'flex');
                 if (teamAddPractice) teamAddPractice.classList.replace('hidden', 'flex');
+                if (teamAddStory) teamAddStory.classList.replace('hidden', 'flex');
                 if (teamAddMitra) teamAddMitra.classList.replace('hidden', 'flex');
                 if (teamAddArchive) teamAddArchive.classList.replace('hidden', 'flex');
                 if (teamAddTestimony) teamAddTestimony.classList.replace('hidden', 'flex');
@@ -1607,6 +1905,7 @@
                 if (teamAddTeacher) teamAddTeacher.classList.replace('flex', 'hidden');
                 if (teamAddMedia) teamAddMedia.classList.replace('flex', 'hidden');
                 if (teamAddPractice) teamAddPractice.classList.replace('flex', 'hidden');
+                if (teamAddStory) teamAddStory.classList.replace('flex', 'hidden');
                 if (teamAddMitra) teamAddMitra.classList.replace('flex', 'hidden');
                 if (teamAddArchive) teamAddArchive.classList.replace('flex', 'hidden');
                 if (teamAddTestimony) teamAddTestimony.classList.replace('flex', 'hidden');
@@ -1630,7 +1929,6 @@
             "Hantakan": [-2.7000, 115.4500], "Limpasu": [-2.4500, 115.4700]
         };
 
-        // DATA DEFAULT RESMI BERSIH (TERVALIDASI)
         var appState = {
             teachers: [
                 { id: 14, name: "Pendidik SBI SDN Rantau Bujur", nip: "19900512 201601 1 002", school: "SDN Rantau Bujur", subdistrict: "Labuan Amas Utara", level: "SD", cefr: "B1", role: "Pengimbasan Batch 1", photo: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=200&q=80", lat: -2.5837, lng: 115.2133 },
@@ -1786,17 +2084,12 @@
             ]
         };
 
-        // Memuat data lokal terakhir jika tersedia agar foto yang baru ditambahkan langsung tampil
         try {
             var cachedTeachers = localStorage.getItem('sbi_teachers_state_2026');
             if (cachedTeachers) {
                 var parsedCache = JSON.parse(cachedTeachers);
                 if (Array.isArray(parsedCache) && parsedCache.length > 0) {
-                    appState.teachers = parsedCache.map(function(t) {
-                        t.cefr = normalizeCefrValue(t.cefr);
-                        t.role = normalizeRoleValue(t.role);
-                        return t;
-                    });
+                    appState.teachers = parsedCache;
                 }
             }
         } catch (e) {}
@@ -1811,7 +2104,7 @@
             }
         } catch (e) {}
 
-        function switchTab(tabId) {
+        function switchTab(tabId, skipUrlUpdate) {
             var pages = document.querySelectorAll('.page-content');
             pages.forEach(function(el) { el.classList.add('hidden'); });
 
@@ -1836,9 +2129,13 @@
                     if (leafletMapInstance) leafletMapInstance.invalidateSize();
                 }, 200);
             } else if (tabId === 'mediacenter') {
-                closeMediaArticleModal();
+                if (!skipUrlUpdate) closeMediaArticleModal(true);
             } else if (tabId === 'impact') {
                 renderImpactCharts();
+            }
+
+            if (!skipUrlUpdate) {
+                updateBrowserUrl(tabId, null);
             }
         }
 
@@ -2337,7 +2634,6 @@
             }
         }
 
-        // PENGIRIMAN SECURE DENGAN BEARER TOKEN RAHASIA & DUKUNGAN PENUH KOLOM FOTO
         async function sendSecureJsonToSheets(actionType, recordData, targetSheet) {
             if (!targetSheet) targetSheet = "Data Guru";
             if (!googleAppsScriptUrl) return;
@@ -2352,7 +2648,6 @@
             if (actionType === 'delete') {
                 payload.id = recordData;
             } else {
-                // Menyertakan alias nama kolom agar Google Apps Script selalu menyimpan Foto Profil & Media Center dengan benar
                 var enrichedData = Object.assign({}, recordData);
                 if (targetSheet === "Media Center") {
                     var joinedPhotos = Array.isArray(recordData.images) ? recordData.images.join("|||") : (recordData.image || "");
@@ -2394,7 +2689,6 @@
             }
         }
 
-        // SINKRONISASI AMAN DENGAN FILTER SANITASI & PEMULIHAN FOTO + MEDIA CENTER
         async function syncFromGoogleSheetsSafe() {
             try {
                 if (googleAppsScriptUrl) {
@@ -2423,7 +2717,6 @@
                                 var rawPhoto = row["Foto Profil"] || row["photo"] || row["Link Foto Google Drive / Foto Profil"] || row["Foto"] || "";
                                 var photo = formatGoogleDriveImageUrl(rawPhoto);
 
-                                // Jika kolom foto dari spreadsheet kosong atau masih placeholder huruf, cek penyimpanan foto lokal (upload komputer / link)
                                 var localSavedPhoto = getFallbackLocalPhoto(rowId, nip, name);
                                 if ((!photo || photo.indexOf("placehold.co") !== -1) && localSavedPhoto) {
                                     photo = formatGoogleDriveImageUrl(localSavedPhoto);
@@ -2461,7 +2754,6 @@
                             }
                         }
 
-                        // Sinkronisasi juga untuk Sheet Media Center (jika Web App mengembalikan data sheet Media Center)
                         try {
                             var mediaRes = await fetch(googleAppsScriptUrl + "?sheet=" + encodeURIComponent("Media Center"));
                             if (mediaRes.ok) {
@@ -2524,7 +2816,7 @@
                 return;
             }
 
-            var teacher = appState.teachers.find(function(t) { return t.id === id; });
+            var teacher = appState.teachers.find(function(t) { return t.id == id; });
             if (!teacher) return;
 
             var mType = document.getElementById('modal-type');
@@ -2598,7 +2890,7 @@
                 return;
             }
 
-            var targetIndex = appState.teachers.findIndex(function(t) { return t.id === id; });
+            var targetIndex = appState.teachers.findIndex(function(t) { return t.id == id; });
             if (targetIndex === -1) return;
 
             var teacherName = appState.teachers[targetIndex].name;
@@ -2637,64 +2929,75 @@
             if (!grid) return;
             var filterElem = document.getElementById('media-category-filter');
             var filter = filterElem ? filterElem.value : 'ALL';
-            var filtered = filter === 'ALL' ? appState.mediaCenter : appState.mediaCenter.filter(function(m) { return m.category === filter; });
+            var searchElem = document.getElementById('media-search-input');
+            var keyword = (searchElem && searchElem.value ? searchElem.value : '').toLowerCase().trim();
+
+            var filtered = appState.mediaCenter.filter(function(m) {
+                var matchCat = (filter === 'ALL' || m.category === filter);
+                var matchKey = !keyword ||
+                               (m.title || '').toLowerCase().indexOf(keyword) !== -1 ||
+                               (m.excerpt || '').toLowerCase().indexOf(keyword) !== -1 ||
+                               (m.author || '').toLowerCase().indexOf(keyword) !== -1;
+                return matchCat && matchKey;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl p-10 text-center text-slate-400 border border-slate-200 italic">Belum ada berita atau publikasi yang sesuai dengan pencarian Anda.</div>`;
+                return;
+            }
 
             grid.innerHTML = filtered.map(function(item) {
                 var photos = parsePhotosArray(item.images || item.image, item.image);
-                var coverImg = photos[0] || "https://placehold.co/600x400/0284c7/white?text=SBI+HST+2026";
+                var coverImg = photos[0] || "https://placehold.co/600x400/1b365d/white?text=SBI+HST+2026";
                 var photoCountBadge = photos.length > 1 ? `
-                    <span class="absolute bottom-2.5 right-2.5 bg-slate-900/80 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-sm flex items-center space-x-1 shadow">
+                    <span class="absolute bottom-2.5 right-2.5 bg-sbi-900/85 text-amber-300 text-[10px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm flex items-center space-x-1 shadow">
                         <i class="fa-regular fa-images"></i>
                         <span>${photos.length} Foto</span>
                     </span>
                 ` : ``;
 
-                var hasExternalUrl = item.url && item.url !== '#' && item.url.trim() !== '';
-                var externalBtnHtml = hasExternalUrl ? `
-                    <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1 text-[11px] bg-slate-100 hover:bg-sbi-50 text-slate-700 hover:text-sbi-700 font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 transition" title="Buka Tautan Web Luar / Sosmed">
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-sbired-500"></i>
-                        <span>Link Luar</span>
-                    </a>
-                ` : ``;
-
                 var adminActionBtns = isAdminLoggedIn ? `
-                    <div class="flex items-center space-x-1">
-                        <button onclick="editMediaItem(${item.id})" class="text-blue-600 hover:text-blue-800 p-1.5 rounded hover:bg-blue-50 transition" title="Edit Berita">
+                    <div class="flex items-center space-x-1" onclick="event.stopPropagation()">
+                        <button onclick="editMediaItem('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 transition" title="Edit Berita">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button onclick="deleteMediaItem(${item.id})" class="text-rose-500 hover:text-rose-700 p-1.5 rounded hover:bg-rose-50 transition" title="Hapus Berita">
+                        <button onclick="deleteMediaItem('${item.id}')" class="text-rose-600 hover:text-rose-800 p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 transition" title="Hapus Berita">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </div>
                 ` : ``;
 
                 return `
-                    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
-                        <div onclick="openMediaArticleModal(${item.id})" class="h-44 overflow-hidden relative bg-slate-100 cursor-pointer group">
-                            <img src="${coverImg}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/600x400/0284c7/white?text=SBI+HST+2026'">
-                            <span class="absolute top-3 left-3 bg-sbi-900/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">${item.category}</span>
+                    <div onclick="openMediaArticleModal('${item.id}')" class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer group">
+                        <!-- Gambar Poster / Thumbnail -->
+                        <div class="h-52 overflow-hidden relative bg-slate-100">
+                            <img src="${coverImg}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/1b365d/white?text=SBI+HST+2026'">
+                            <span class="absolute top-3 left-3 bg-sbi-900/90 text-amber-300 text-[10px] font-bold px-3 py-1 rounded-full backdrop-blur-sm shadow">${item.category}</span>
                             ${photoCountBadge}
                         </div>
+
+                        <!-- Judul Serif & Excerpt Bersih seperti Web KKG PAI -->
                         <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                             <div class="space-y-2">
-                                <div class="flex items-center justify-between text-[11px] text-slate-400">
-                                    <span><i class="fa-regular fa-calendar mr-1"></i>${item.date}</span>
-                                    <div class="flex items-center space-x-2">
-                                        <span><i class="fa-solid fa-eye mr-1"></i>${item.reach}</span>
-                                        ${adminActionBtns}
-                                    </div>
-                                </div>
-                                <h3 onclick="openMediaArticleModal(${item.id})" class="font-bold text-slate-900 text-sm leading-snug hover:text-sbi-600 transition cursor-pointer">${item.title}</h3>
-                                <p class="text-xs text-slate-600 line-clamp-3">${item.excerpt}</p>
+                                <h3 class="font-bold font-serif text-slate-900 text-base sm:text-lg leading-snug group-hover:text-sbired-600 transition border-b border-slate-100 pb-2.5">
+                                    ${item.title}
+                                </h3>
+                                <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                                    Portal Liputan SBI – ${item.author} (${item.date}) • ${item.excerpt}
+                                </p>
                             </div>
-                            <div class="pt-3 border-t border-slate-100 space-y-2">
-                                <div class="text-[11px] text-slate-500">Oleh: <b class="text-slate-700">${item.author}</b></div>
-                                <div class="flex items-center justify-between gap-2 pt-0.5">
-                                    <button type="button" onclick="openMediaArticleModal(${item.id})" class="flex-1 inline-flex items-center justify-center space-x-1.5 bg-sbi-800 hover:bg-sbi-900 text-white text-[11px] font-bold py-1.5 px-3 rounded-lg shadow-sm transition cursor-pointer">
-                                        <i class="fa-solid fa-book-open text-amber-300 text-[10px]"></i>
-                                        <span>Baca Halaman Penuh</span>
+
+                            <div class="pt-2 flex items-center justify-between text-[11px] text-slate-400">
+                                <span class="text-sbi-700 font-bold group-hover:underline flex items-center space-x-1">
+                                    <span>Baca Selengkapnya</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </span>
+                                <div class="flex items-center space-x-2">
+                                    <button type="button" onclick="shareArticleById('${item.id}', event)" class="text-slate-500 hover:text-sbi-800 bg-slate-100 hover:bg-amber-100 px-2.5 py-1 rounded-md font-semibold transition flex items-center space-x-1" title="Salin Link Berita">
+                                        <i class="fa-solid fa-share-nodes text-sbired-500"></i>
+                                        <span>Share Link</span>
                                     </button>
-                                    ${externalBtnHtml}
+                                    ${adminActionBtns}
                                 </div>
                             </div>
                         </div>
@@ -2705,23 +3008,38 @@
 
         var activeArticlePhotos = [];
 
-        function openMediaArticleModal(id) {
-            var item = appState.mediaCenter.find(function(m) { return m.id == id; });
+        function openMediaArticleModal(id, skipUrlUpdate) {
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(id); });
             if (!item) return;
 
+            currentOpenedArticleId = item.id;
+            document.title = item.title + " - SBI HST 2026";
+
             var catEl = document.getElementById('fullpage-category');
+            var breadCatEl = document.getElementById('fullpage-breadcrumb-cat');
+            var breadTitleEl = document.getElementById('fullpage-breadcrumb-title');
+            var slugPillEl = document.getElementById('fullpage-slug-pill');
             var dateEl = document.getElementById('fullpage-date');
             var titleEl = document.getElementById('fullpage-title');
             var authorEl = document.getElementById('fullpage-author');
             var reachEl = document.getElementById('fullpage-reach');
             var contentEl = document.getElementById('fullpage-content');
+            var shareUrlInput = document.getElementById('sidebar-share-url-input');
+            var topBarInput = document.getElementById('top-article-url-bar');
+
+            var fullCanonicalUrl = getShareableArticleUrl(item);
 
             if (catEl) catEl.innerText = item.category || 'Berita Kegiatan';
-            if (dateEl) dateEl.innerHTML = '<i class="fa-regular fa-calendar mr-1.5 text-sbi-600"></i>' + (item.date || '2026');
+            if (breadCatEl) breadCatEl.innerText = item.category || 'Berita Kegiatan';
+            if (breadTitleEl) breadTitleEl.innerText = item.title || '';
+            if (slugPillEl) slugPillEl.innerText = (createSlug(item.title).substring(0, 28) || 'berita_sbi') + ".html";
+            if (dateEl) dateEl.innerHTML = '<i class="fa-regular fa-calendar mr-1 text-sbi-600"></i>' + (item.date || '2026');
             if (titleEl) titleEl.innerText = item.title || '';
             if (authorEl) authorEl.innerText = item.author || 'Tim Publikasi SBI';
             if (reachEl) reachEl.innerText = item.reach || 'Terpublikasi';
             if (contentEl) contentEl.innerText = item.content || item.excerpt || '';
+            if (shareUrlInput) shareUrlInput.value = fullCanonicalUrl;
+            if (topBarInput) topBarInput.value = fullCanonicalUrl;
 
             activeArticlePhotos = parsePhotosArray(item.images || item.image, item.image);
             if (activeArticlePhotos.length === 0) {
@@ -2757,20 +3075,43 @@
             if (extWrap) {
                 if (item.url && item.url !== '#' && item.url.trim() !== '') {
                     extWrap.innerHTML = `
-                        <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-xs sm:text-sm font-bold text-white bg-sbired-500 hover:bg-sbired-600 px-4 py-2.5 rounded-xl shadow transition">
+                        <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-xs font-bold text-white bg-sbired-500 hover:bg-sbired-600 px-4 py-2.5 rounded-xl shadow transition">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            <span>Buka Tautan Web / Liputan Eksternal</span>
+                            <span>Buka Tautan Sumber / Lampiran Luar</span>
                         </a>
                     `;
                 } else {
-                    extWrap.innerHTML = `<span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Artikel Mandiri Resmi • SBI Media Center Kab. Hulu Sungai Tengah</span>`;
+                    extWrap.innerHTML = `<span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Artikel Terverifikasi • Portal Resmi SBI HST 2026</span>`;
                 }
+            }
+
+            // Render Berita Lainnya di Sidebar Kanan
+            var relatedContainer = document.getElementById('sidebar-related-news');
+            if (relatedContainer) {
+                var others = appState.mediaCenter.filter(function(m) { return String(m.id) !== String(item.id); }).slice(0, 4);
+                relatedContainer.innerHTML = others.map(function(o) {
+                    var oPhotos = parsePhotosArray(o.images || o.image, o.image);
+                    var oThumb = oPhotos[0] || "https://placehold.co/120x90/1b365d/ffffff?text=SBI";
+                    return `
+                        <div onclick="openMediaArticleModal('${o.id}')" class="flex items-start space-x-3 p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition group">
+                            <img src="${oThumb}" class="w-16 h-12 rounded-lg object-cover flex-shrink-0 border border-slate-200" onerror="this.src='https://placehold.co/120x90/1b365d/ffffff?text=SBI'">
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-xs font-bold text-slate-800 group-hover:text-sbired-600 line-clamp-2 leading-snug">${o.title}</h4>
+                                <span class="text-[10px] text-slate-400">${o.date}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
 
             var listView = document.getElementById('media-list-view');
             var fullView = document.getElementById('media-fullpage-view');
             if (listView) listView.classList.add('hidden');
             if (fullView) fullView.classList.remove('hidden');
+
+            if (!skipUrlUpdate) {
+                updateBrowserUrl('mediacenter', item);
+            }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -2797,11 +3138,18 @@
             }
         }
 
-        function closeMediaArticleModal() {
+        function closeMediaArticleModal(skipUrlUpdate) {
+            currentOpenedArticleId = null;
+            document.title = "SBI HST 2026 - Communication, Data Guru & Sebaran Hub";
+
             var listView = document.getElementById('media-list-view');
             var fullView = document.getElementById('media-fullpage-view');
             if (fullView) fullView.classList.add('hidden');
             if (listView) listView.classList.remove('hidden');
+
+            if (!skipUrlUpdate) {
+                updateBrowserUrl('mediacenter', null);
+            }
         }
 
         function editMediaItem(id) {
@@ -2869,24 +3217,6 @@
             sendSecureJsonToSheets('delete', id, 'Media Center');
             renderMediaCenter();
             showToast("Berita berhasil dihapus dari Media Center.");
-        }
-
-        function saveLocalMediaStateSafe() {
-            try {
-                localStorage.setItem('sbi_media_state_2026', JSON.stringify(appState.mediaCenter));
-            } catch (err) {
-                console.warn("Kuota localStorage penuh, mengoptimalkan ukuran galeri foto lokal...", err);
-                try {
-                    var optimized = appState.mediaCenter.map(function(m) {
-                        var copy = Object.assign({}, m);
-                        if (Array.isArray(copy.images) && copy.images.length > 2) {
-                            copy.images = copy.images.slice(0, 2);
-                        }
-                        return copy;
-                    });
-                    localStorage.setItem('sbi_media_state_2026', JSON.stringify(optimized));
-                } catch (e2) {}
-            }
         }
 
         function renderPractices() {
@@ -3105,7 +3435,6 @@
             uploadedTeacherPhotoBase64 = "";
         }
 
-        // PERBAIKAN UPLOAD FOTO GURU DARI KOMPUTER: Kompresi otomatis via Canvas agar muat di sel Google Sheets (< 50.000 karakter) & localStorage
         function handleTeacherPhotoUpload(event) {
             var file = event.target.files[0];
             if (file) {
@@ -3153,7 +3482,6 @@
             }
         }
 
-        // UPLOAD MULTI-FOTO UNTUK MEDIA CENTER (Kompresi otomatis agar bisa simpan beberapa foto sekaligus ke Spreadsheet)
         function handleMediaImagesUpload(event) {
             var files = event.target.files;
             if (!files || files.length === 0) return;
@@ -3297,7 +3625,7 @@
                             <option value="__CUSTOM__">+ Masukkan Nama Sekolah Khusus Lainnya...</option>
                         </select>
                         <input type="text" id="input-teacher-school-custom" placeholder="Ketik nama sekolah khusus..." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs hidden mt-1.5">
-                        <p class="text-[10px] text-slate-500">Memilih sekolah otomatis mengunci Titik Lintang/Bujur Asli (seperti SDN Rantau Bujur pada -2.5837, 115.2133).</p>
+                        <p class="text-[10px] text-slate-500">Memilih sekolah otomatis mengunci Titik Lintang/Bujur Asli.</p>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div>
@@ -3350,7 +3678,6 @@
                             <div class="flex-1 space-y-1">
                                 <input type="file" id="input-teacher-photo-file" accept="image/*" onchange="handleTeacherPhotoUpload(event)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-sbi-100 file:text-sbi-700 hover:file:bg-sbi-200">
                                 <input type="text" id="input-teacher-photo-url" oninput="previewPhotoUrl(this.value)" placeholder="Tempel Link Foto Google Drive atau Link Web..." class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-[11px]">
-                                <p class="text-[10px] text-slate-400">Upload komputer otomatis dioptimalkan & Link Google Drive dikonversi otomatis.</p>
                             </div>
                         </div>
                     </div>
@@ -3381,20 +3708,20 @@
                         <input type="file" id="input-media-file" accept="image/*" multiple onchange="handleMediaImagesUpload(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sbi-100 file:text-sbi-700 hover:file:bg-sbi-200">
                         <div id="media-multi-preview" class="flex items-center gap-2 overflow-x-auto pt-1.5 hidden"></div>
                         <div class="mt-1">
-                            <textarea id="input-media-image-url" rows="2" placeholder="Atau tempelkan beberapa link foto Google Drive (pisahkan dengan koma atau baris baru)..." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-[11px]"></textarea>
+                            <textarea id="input-media-image-url" rows="2" placeholder="Atau tempelkan beberapa link foto Google Drive..." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-[11px]"></textarea>
                         </div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Ringkasan Singkat (Tampil di Kartu Depan)</label>
-                        <textarea id="input-desc" required rows="2" placeholder="Tuliskan ringkasan singkat 1-2 kalimat..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
+                        <textarea id="input-desc" required rows="2" placeholder="Tuliskan ringkasan singkat..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700">Isi Berita Lengkap (Dibaca di Laman Ini Saat Klik Baca Selengkapnya)</label>
+                        <label class="block text-xs font-semibold text-slate-700">Isi Berita Lengkap</label>
                         <textarea id="input-full-content" rows="4" placeholder="Tuliskan isi berita atau laporan kegiatan secara lengkap..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"></textarea>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700">Tautan Sumber / Liputan Luar (Opsional)</label>
-                        <input type="url" id="input-media-url" placeholder="https://disdik.hulusungaitengahkab.go.id/berita-... (Kosongkan jika tidak ada)" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+                        <input type="url" id="input-media-url" placeholder="https://..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
                     </div>
                 `;
             } else if (type === 'practice') {
@@ -3560,7 +3887,7 @@
                             photo: updatedPhoto
                         }, 'Data Guru');
 
-                        showToast("Data guru \"" + name + "\" berhasil diperbarui secara aman!");
+                        showToast("Data guru \"" + name + "\" berhasil diperbarui!");
                     }
                 } else {
                     var newId = Date.now();
@@ -3595,7 +3922,7 @@
                         photo: savedPhoto
                     }, 'Data Guru');
 
-                    showToast("Guru baru berhasil ditambahkan secara aman!");
+                    showToast("Guru baru berhasil ditambahkan!");
                 }
                 renderTeachersModule();
             } else if (type === 'media') {
@@ -3635,7 +3962,7 @@
                         appState.mediaCenter[mIdx].images = combinedPhotos;
                         appState.mediaCenter[mIdx].url = url;
 
-                        saveLocalMediaStateSafe();
+                        saveLocalMediaState();
                         sendSecureJsonToSheets('update', appState.mediaCenter[mIdx], 'Media Center');
                         renderMediaCenter();
                         showToast("Berita berhasil diperbarui!");
@@ -3661,10 +3988,10 @@
                     };
 
                     appState.mediaCenter.unshift(newMediaObj);
-                    saveLocalMediaStateSafe();
+                    saveLocalMediaState();
                     sendSecureJsonToSheets('create', newMediaObj, 'Media Center');
                     renderMediaCenter();
-                    showToast("Berita halaman penuh & galeri foto berhasil diterbitkan!");
+                    showToast("Berita baru berhasil diterbitkan beserta link uniknya!");
                 }
             } else if (type === 'practice') {
                 var pSchool = document.getElementById('input-school').value;
@@ -3748,6 +4075,15 @@
             setTimeout(function() { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
         }
 
+        var originalSync = syncFromGoogleSheetsSafe;
+        syncFromGoogleSheetsSafe = async function() {
+            await originalSync();
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('p') || params.get('berita')) {
+                handleInitialUrlRouting();
+            }
+        };
+
         window.onload = function() {
             checkUrlSecretAccess();
             updateAccessUI();
@@ -3760,8 +4096,324 @@
             renderArchiveGrid();
             renderTestimonials();
 
+            handleInitialUrlRouting();
             syncFromGoogleSheetsSafe();
         };
+
+        var PUBLIC_SITE_ORIGIN_HTTP = "http://smartsbi.web.id";
+        var PUBLIC_SITE_ORIGIN_WWW = "https://www.smartsbi.web.id";
+        var currentOpenedArticleId = null;
+
+        function getCleanBaseDomain() {
+            var modeEl = document.getElementById('share-link-mode');
+            var selectedMode = modeEl ? modeEl.value : 'http';
+            var host = window.location.hostname || "";
+
+            // Jika dibuka dari dalam Google Sites (googleusercontent / atari-embeds)
+            if (host.indexOf("googleusercontent.com") !== -1 || host.indexOf("atari-embeds") !== -1 || host.indexOf("sites.google.com") !== -1 || !host) {
+                if (selectedMode === 'www') {
+                    return PUBLIC_SITE_ORIGIN_WWW + "/";
+                }
+                return PUBLIC_SITE_ORIGIN_HTTP + "/";
+            }
+            return window.location.origin + window.location.pathname;
+        }
+
+        function createSlug(text) {
+            return String(text || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .substring(0, 65);
+        }
+
+        function createArticlePathCode(item) {
+            if (!item) return "";
+            var slug = createSlug(item.title) || "liputan-sbi";
+            return "2026/10/" + slug + "-" + item.id + ".html";
+        }
+
+        function getShareableArticleUrl(item) {
+            if (!item) return getCleanBaseDomain();
+            var baseUrl = getCleanBaseDomain();
+            var articlePath = createArticlePathCode(item);
+            var separator = baseUrl.indexOf('?') !== -1 ? '&' : '?';
+            return baseUrl + separator + "p=" + articlePath;
+        }
+
+        function refreshShareUrlInputs() {
+            if (!currentOpenedArticleId) return;
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(currentOpenedArticleId); });
+            if (!item) return;
+            var updatedUrl = getShareableArticleUrl(item);
+            var topInput = document.getElementById('top-article-url-bar');
+            var sideInput = document.getElementById('sidebar-share-url-input');
+            if (topInput) topInput.value = updatedUrl;
+            if (sideInput) sideInput.value = updatedUrl;
+        }
+
+        function updateBrowserUrl(tabId, articleItem) {
+            var cleanShareUrl = articleItem ? getShareableArticleUrl(articleItem) : getCleanBaseDomain();
+            var topBarInput = document.getElementById('top-article-url-bar');
+            if (topBarInput && articleItem) topBarInput.value = cleanShareUrl;
+
+            try {
+                var baseUrl = window.location.origin + window.location.pathname;
+                if (articleItem) {
+                    window.history.pushState({ tab: 'mediacenter', beritaId: articleItem.id }, '', baseUrl + "?p=" + createArticlePathCode(articleItem));
+                } else if (tabId && tabId !== 'dashboard') {
+                    window.history.pushState({ tab: tabId, beritaId: null }, '', baseUrl + "?tab=" + tabId);
+                } else {
+                    window.history.pushState({ tab: 'dashboard', beritaId: null }, '', baseUrl);
+                }
+            } catch (e) {}
+        }
+
+        // Fungsi Copy-Paste yang 100% Aktif di Google Sites & Semua Browser
+        function copyTextToClipboard(text) {
+            var topInput = document.getElementById('top-article-url-bar');
+            if (topInput) {
+                topInput.value = text;
+                topInput.focus();
+                topInput.select();
+                try {
+                    if (document.execCommand("copy")) {
+                        showToast("Link berhasil disalin! Silakan Paste (Ctrl+V): " + text);
+                        return;
+                    }
+                } catch (e) {}
+            }
+
+            var tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            tempInput.style.position = "fixed";
+            tempInput.style.left = "0";
+            tempInput.style.top = "0";
+            tempInput.style.opacity = "0";
+            document.body.appendChild(tempInput);
+            tempInput.focus();
+            tempInput.select();
+            try {
+                document.execCommand("copy");
+                showToast("Link berhasil disalin! Silakan Paste (Ctrl+V): " + text);
+            } catch (err) {
+                showToast("Silakan tekan Ctrl+C pada kotak URL berita.", "warning");
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        function shareArticleById(id, event) {
+            if (event) event.stopPropagation();
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(id); });
+            if (!item) return;
+            copyTextToClipboard(getShareableArticleUrl(item));
+        }
+
+        function copyCurrentArticleLink() {
+            if (!currentOpenedArticleId) return;
+            shareArticleById(currentOpenedArticleId);
+        }
+
+        function shareCurrentArticleWhatsApp() {
+            if (!currentOpenedArticleId) return;
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(currentOpenedArticleId); });
+            if (!item) return;
+            var shareUrl = getShareableArticleUrl(item);
+            var waText = "*" + item.title + "*\n\n" + (item.excerpt || '') + "\n\nBaca selengkapnya di Portal SBI HST 2026:\n" + shareUrl;
+            window.open("https://wa.me/?text=" + encodeURIComponent(waText), '_blank');
+        }
+
+        function shareSocialPlatform(platform) {
+            if (!currentOpenedArticleId) return;
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(currentOpenedArticleId); });
+            if (!item) return;
+            var shareUrl = encodeURIComponent(getShareableArticleUrl(item));
+            var shareTitle = encodeURIComponent(item.title);
+            var targetUrl = "";
+
+            if (platform === 'facebook') targetUrl = "https://www.facebook.com/sharer/sharer.php?u=" + shareUrl;
+            else if (platform === 'twitter') targetUrl = "https://twitter.com/intent/tweet?text=" + shareTitle + "&url=" + shareUrl;
+            else if (platform === 'linkedin') targetUrl = "https://www.linkedin.com/sharing/share-offsite/?url=" + shareUrl;
+            else if (platform === 'telegram') targetUrl = "https://t.me/share/url?url=" + shareUrl + "&text=" + shareTitle;
+
+            if (targetUrl) window.open(targetUrl, '_blank');
+        }
+
+        function renderMediaCenter() {
+            var grid = document.getElementById('media-grid');
+            if (!grid) return;
+            var filterElem = document.getElementById('media-category-filter');
+            var filter = filterElem ? filterElem.value : 'ALL';
+            var searchElem = document.getElementById('media-search-input');
+            var keyword = (searchElem && searchElem.value ? searchElem.value : '').toLowerCase().trim();
+
+            var filtered = appState.mediaCenter.filter(function(m) {
+                var matchCat = (filter === 'ALL' || m.category === filter);
+                var matchKey = !keyword ||
+                               (m.title || '').toLowerCase().indexOf(keyword) !== -1 ||
+                               (m.excerpt || '').toLowerCase().indexOf(keyword) !== -1 ||
+                               (m.author || '').toLowerCase().indexOf(keyword) !== -1;
+                return matchCat && matchKey;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl p-10 text-center text-slate-400 border border-slate-200 italic">Belum ada berita atau publikasi yang sesuai.</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(function(item) {
+                var photos = parsePhotosArray(item.images || item.image, item.image);
+                var coverImg = photos[0] || "https://placehold.co/600x400/1b365d/white?text=SBI+HST+2026";
+                var photoCountBadge = photos.length > 1 ? `
+                    <span class="absolute bottom-2.5 right-2.5 bg-sbi-900/85 text-amber-300 text-[10px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm flex items-center space-x-1 shadow">
+                        <i class="fa-regular fa-images"></i>
+                        <span>${photos.length} Foto</span>
+                    </span>
+                ` : ``;
+
+                var adminActionBtns = isAdminLoggedIn ? `
+                    <div class="flex items-center space-x-1" onclick="event.stopPropagation()">
+                        <button onclick="editMediaItem('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 transition" title="Edit Berita">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteMediaItem('${item.id}')" class="text-rose-600 hover:text-rose-800 p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 transition" title="Hapus Berita">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                ` : ``;
+
+                return `
+                    <div onclick="openMediaArticleModal('${item.id}')" class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer group">
+                        <div class="h-52 overflow-hidden relative bg-slate-100">
+                            <img src="${coverImg}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/1b365d/white?text=SBI+HST+2026'">
+                            <span class="absolute top-3 left-3 bg-sbi-900/90 text-amber-300 text-[10px] font-bold px-3 py-1 rounded-full backdrop-blur-sm shadow">${item.category}</span>
+                            ${photoCountBadge}
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                            <div class="space-y-2">
+                                <h3 class="font-bold font-serif text-slate-900 text-base sm:text-lg leading-snug group-hover:text-sbired-600 transition border-b border-slate-100 pb-2.5">
+                                    ${item.title}
+                                </h3>
+                                <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                                    Portal Liputan SBI – ${item.author} (${item.date}) • ${item.excerpt}
+                                </p>
+                            </div>
+                            <div class="pt-2 flex items-center justify-between text-[11px] text-slate-400">
+                                <span class="text-sbi-700 font-bold group-hover:underline flex items-center space-x-1">
+                                    <span>Baca Selengkapnya</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </span>
+                                <div class="flex items-center space-x-2">
+                                    <button type="button" onclick="shareArticleById('${item.id}', event)" class="text-slate-600 hover:text-sbi-900 bg-slate-100 hover:bg-amber-100 px-2.5 py-1 rounded-md font-semibold transition flex items-center space-x-1" title="Salin Link Berita">
+                                        <i class="fa-solid fa-share-nodes text-sbired-500"></i>
+                                        <span>Salin Link</span>
+                                    </button>
+                                    ${adminActionBtns}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openMediaArticleModal(id, skipUrlUpdate) {
+            var item = appState.mediaCenter.find(function(m) { return String(m.id) === String(id); });
+            if (!item) return;
+
+            currentOpenedArticleId = item.id;
+            document.title = item.title + " - SBI HST 2026";
+
+            var fullCanonicalUrl = getShareableArticleUrl(item);
+
+            var catEl = document.getElementById('fullpage-category');
+            var breadCatEl = document.getElementById('fullpage-breadcrumb-cat');
+            var breadTitleEl = document.getElementById('fullpage-breadcrumb-title');
+            var slugPillEl = document.getElementById('fullpage-slug-pill');
+            var dateEl = document.getElementById('fullpage-date');
+            var titleEl = document.getElementById('fullpage-title');
+            var authorEl = document.getElementById('fullpage-author');
+            var reachEl = document.getElementById('fullpage-reach');
+            var contentEl = document.getElementById('fullpage-content');
+            var shareUrlInput = document.getElementById('sidebar-share-url-input');
+            var topBarInput = document.getElementById('top-article-url-bar');
+
+            if (catEl) catEl.innerText = item.category || 'Berita Kegiatan';
+            if (breadCatEl) breadCatEl.innerText = item.category || 'Berita Kegiatan';
+            if (breadTitleEl) breadTitleEl.innerText = item.title || '';
+            if (slugPillEl) slugPillEl.innerText = (createSlug(item.title).substring(0, 28) || 'berita_sbi') + ".html";
+            if (dateEl) dateEl.innerHTML = '<i class="fa-regular fa-calendar mr-1 text-sbi-600"></i>' + (item.date || '2026');
+            if (titleEl) titleEl.innerText = item.title || '';
+            if (authorEl) authorEl.innerText = item.author || 'Tim Publikasi SBI';
+            if (reachEl) reachEl.innerText = item.reach || 'Terpublikasi';
+            if (contentEl) contentEl.innerText = item.content || item.excerpt || '';
+            if (shareUrlInput) shareUrlInput.value = fullCanonicalUrl;
+            if (topBarInput) topBarInput.value = fullCanonicalUrl;
+
+            activeArticlePhotos = parsePhotosArray(item.images || item.image, item.image);
+            if (activeArticlePhotos.length === 0) {
+                activeArticlePhotos = ["https://placehold.co/1000x550/1b365d/ffffff?text=SBI+HST+2026"];
+            }
+
+            switchReaderMainPhoto(0);
+
+            var galleryWrap = document.getElementById('fullpage-gallery-wrap');
+            var thumbsContainer = document.getElementById('fullpage-gallery-thumbs');
+            var counterEl = document.getElementById('fullpage-photo-counter');
+
+            if (activeArticlePhotos.length > 1) {
+                if (counterEl) {
+                    counterEl.innerText = "1 / " + activeArticlePhotos.length + " Foto";
+                    counterEl.classList.remove('hidden');
+                }
+                if (galleryWrap) galleryWrap.classList.remove('hidden');
+                if (thumbsContainer) {
+                    thumbsContainer.innerHTML = activeArticlePhotos.map(function(imgSrc, idx) {
+                        return `<img onclick="switchReaderMainPhoto(${idx})" id="reader-thumb-${idx}" src="${imgSrc}" onerror="this.src='https://placehold.co/150x100/1b365d/ffffff?text=Foto+${idx + 1}'" class="w-24 h-16 object-cover rounded-lg cursor-pointer border-2 ${idx === 0 ? 'border-sbired-500 opacity-100 scale-105' : 'border-transparent opacity-60 hover:opacity-100'} transition flex-shrink-0 shadow-sm" />`;
+                    }).join('');
+                }
+            } else {
+                if (counterEl) counterEl.classList.add('hidden');
+                if (galleryWrap) galleryWrap.classList.add('hidden');
+                if (thumbsContainer) thumbsContainer.innerHTML = '';
+            }
+
+            var extWrap = document.getElementById('fullpage-ext-link-wrap');
+            if (extWrap) {
+                if (item.url && item.url !== '#' && item.url.trim() !== '') {
+                    extWrap.innerHTML = `<a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-xs font-bold text-white bg-sbired-500 hover:bg-sbired-600 px-4 py-2.5 rounded-xl shadow transition"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Buka Tautan Sumber / Lampiran Luar</span></a>`;
+                } else {
+                    extWrap.innerHTML = `<span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Artikel Terverifikasi • Portal Resmi SBI HST 2026</span>`;
+                }
+            }
+
+            var relatedContainer = document.getElementById('sidebar-related-news');
+            if (relatedContainer) {
+                var others = appState.mediaCenter.filter(function(m) { return String(m.id) !== String(item.id); }).slice(0, 4);
+                relatedContainer.innerHTML = others.map(function(o) {
+                    var oPhotos = parsePhotosArray(o.images || o.image, o.image);
+                    var oThumb = oPhotos[0] || "https://placehold.co/120x90/1b365d/ffffff?text=SBI";
+                    return `
+                        <div onclick="openMediaArticleModal('${o.id}')" class="flex items-start space-x-3 p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition group">
+                            <img src="${oThumb}" class="w-16 h-12 rounded-lg object-cover flex-shrink-0 border border-slate-200" onerror="this.src='https://placehold.co/120x90/1b365d/ffffff?text=SBI'">
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-xs font-bold text-slate-800 group-hover:text-sbired-600 line-clamp-2 leading-snug">${o.title}</h4>
+                                <span class="text-[10px] text-slate-400">${o.date}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            var listView = document.getElementById('media-list-view');
+            var fullView = document.getElementById('media-fullpage-view');
+            if (listView) listView.classList.add('hidden');
+            if (fullView) fullView.classList.remove('hidden');
+
+            if (!skipUrlUpdate) updateBrowserUrl('mediacenter', item);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
