@@ -2469,7 +2469,7 @@
             if (fileInput) fileInput.click();
         }
 
-        function handleExcelImport(event) {
+		function handleExcelImport(event) {
             var file = event.target.files[0];
             if (!file) return;
 
@@ -2488,6 +2488,8 @@
                     }
 
                     var importedCount = 0;
+                    var batchRecords = [];
+
                     for (var i = 1; i < json.length; i++) {
                         var row = json[i];
                         if (!row || row.length === 0) continue;
@@ -2522,13 +2524,18 @@
 
                         saveLocalTeacherPhoto(newRecord);
                         appState.teachers.unshift(newRecord);
-                        sendSecureJsonToSheets('create', newRecord, 'Data Guru');
+                        batchRecords.push(newRecord);
                         importedCount++;
+                    }
+
+                    // Kirim seluruh 40+ guru sekaligus dalam 1 paket (Anti gagal / hilang saat reload)
+                    if (batchRecords.length > 0) {
+                        sendSecureJsonToSheets('bulk_create', batchRecords, 'Data Guru');
                     }
 
                     saveLocalTeachersState();
                     renderTeachersModule();
-                    showToast(`Berhasil mengimpor ${importedCount} data guru secara aman!`);
+                    showToast("Berhasil mengimpor " + importedCount + " data guru sekaligus ke Google Sheets!");
                 } catch (err) {
                     showToast("Gagal memproses file Excel.", "error");
                 }
@@ -2536,7 +2543,7 @@
             };
             reader.readAsArrayBuffer(file);
         }
-
+		
         function exportTeacherDataExcel() {
             try {
                 var dataForExcel = appState.teachers.map(function(t) {
