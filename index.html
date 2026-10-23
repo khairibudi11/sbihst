@@ -664,29 +664,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="media-grid"></div>
             </div>
 
-            <!-- 2. TAMPILAN BACA ARTIKEL 2 KOLOM + SIDEBAR KANAN -->
+<!-- 2. TAMPILAN BACA ARTIKEL 2 KOLOM + SIDEBAR KANAN -->
             <div id="media-fullpage-view" class="hidden space-y-4">
-                <!-- Bar URL Unik Artikel di Atas Berita -->
-                <div class="bg-white rounded-xl px-4 py-2.5 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex items-center space-x-2 flex-1 min-w-[240px]">
-                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded flex items-center space-x-1 flex-shrink-0">
-                            <i class="fa-solid fa-link text-[9px]"></i>
-                            <span>URL BERITA</span>
-                        </span>
-                        <input type="text" id="top-article-url-bar" readonly onclick="this.select(); copyCurrentArticleLink();" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1 text-xs font-mono text-sbi-800 focus:outline-none cursor-pointer" value="http://smartsbi.web.id/">
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button type="button" onclick="copyCurrentArticleLink()" class="bg-sbi-800 hover:bg-sbi-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg transition flex items-center space-x-1 shadow-sm">
-                            <i class="fa-regular fa-copy text-amber-300"></i>
-                            <span>Salin Link</span>
-                        </button>
-                        <button type="button" onclick="shareCurrentArticleWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg transition flex items-center space-x-1 shadow-sm">
-                            <i class="fa-brands fa-whatsapp"></i>
-                            <span>Share WA</span>
-                        </button>
-                    </div>
-                </div>
-
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                     <!-- KOLOM KIRI (ARTIKEL UTAMA) -->
                     <article class="lg:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-5 sm:p-8 space-y-6">
@@ -732,39 +711,6 @@
                             </div>
                         </div>
 
-                        <!-- Box Gelap di Bawah Poster -->
-                        <div class="bg-gradient-to-r from-sbi-900 via-sbi-800 to-sbi-900 text-white rounded-xl p-4 sm:p-5 shadow-md border border-sbi-700 space-y-3">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-extrabold text-lg shadow flex-shrink-0">
-                                        <i class="fa-solid fa-newspaper"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-extrabold text-sm sm:text-base text-white leading-tight">Portal Publikasi Resmi SBI HST 2026</h4>
-                                        <p class="text-[11px] text-slate-300">Bagikan tautan halaman berita ini kepada rekan guru & sekolah sasaran</p>
-                                    </div>
-                                </div>
-                                <div class="text-[11px] text-emerald-300 font-medium flex items-center space-x-1">
-                                    <i class="fa-solid fa-user-check"></i>
-                                    <span>Tim Kemitraan & Publikasi</span>
-                                </div>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-sbi-700/60">
-                                <button type="button" onclick="copyCurrentArticleLink()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition flex items-center space-x-1.5 shadow-sm">
-                                    <i class="fa-solid fa-link"></i>
-                                    <span>Salin Link Halaman Ini</span>
-                                </button>
-                                <button type="button" onclick="shareCurrentArticleWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition flex items-center space-x-1.5 shadow-sm">
-                                    <i class="fa-brands fa-whatsapp text-sm"></i>
-                                    <span>Bagikan ke WhatsApp</span>
-                                </button>
-                                <button type="button" onclick="window.print()" class="bg-sbi-700 hover:bg-sbi-600 text-slate-200 text-xs font-semibold px-3 py-2 rounded-lg transition flex items-center space-x-1.5">
-                                    <i class="fa-solid fa-print"></i>
-                                    <span>Cetak Berita</span>
-                                </button>
-                            </div>
-                        </div>
-
                         <div id="fullpage-content" class="text-slate-800 text-sm sm:text-base leading-relaxed space-y-4 whitespace-pre-line font-normal pt-2"></div>
 
                         <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -773,8 +719,8 @@
                                 <i class="fa-solid fa-arrow-left"></i>
                                 <span>Kembali ke Halaman Landing Berita</span>
                             </button>
-                        </div>
-                    </article>
+                        </div>                    
+					</article>
 
                     <!-- KOLOM KANAN (SIDEBAR SOCIAL PLUGIN & VIDEO) -->
                     <aside class="lg:col-span-4 space-y-6">
