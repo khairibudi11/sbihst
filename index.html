@@ -2587,7 +2587,7 @@
             }
         }
 
-        async function sendSecureJsonToSheets(actionType, recordData, targetSheet) {
+		async function sendSecureJsonToSheets(actionType, recordData, targetSheet) {
             if (!targetSheet) targetSheet = "Data Guru";
             if (!googleAppsScriptUrl) return;
 
@@ -2600,6 +2600,9 @@
 
             if (actionType === 'delete') {
                 payload.id = recordData;
+            } else if (actionType === 'bulk_create' || Array.isArray(recordData)) {
+                // PENTING: Jangan ubah Array menjadi Object saat bulk_create!
+                payload.data = recordData;
             } else {
                 var enrichedData = Object.assign({}, recordData);
                 if (targetSheet === "Media Center") {
@@ -2641,7 +2644,7 @@
                 console.warn("[Apps Script Error]", err);
             }
         }
-
+		
         async function syncFromGoogleSheetsSafe() {
             try {
                 if (googleAppsScriptUrl) {
